@@ -1,8 +1,42 @@
-import React from 'react';
-import styles from './App.module.css';
+import React,{useState} from 'react';
 
-function App() {
-  return <div className={styles.root}>App</div>
+import {connect} from 'react-redux';
+
+import ApplicationCore from '../ApplicationCore'
+import LoadingScreen from '../../Components/LoadingScreen';
+
+
+
+const App = props => {
+
+  console.log(props.data)
+
+  const [isLoading,setIsLoading] = useState(true)
+
+  window.onload = () =>{
+    setIsLoading(false);
+    props.LoadData();
+  }
+
+  window.onunload =()=>{
+    localStorage.setItem('data',JSON.stringify(props.data));
+  }
+
+  return <div>
+    {isLoading ? <LoadingScreen/> : <ApplicationCore/>}
+  </div>
 }
 
-export default App;
+const mapStateToProps = state =>{
+  return{
+    data: state
+  }
+}
+
+const mapDispatchToProps = dispatch =>{
+  return{
+    LoadData: ()=>dispatch({type:'LOAD_DATA'}),
+  }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(App);
