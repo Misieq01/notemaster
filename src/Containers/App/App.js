@@ -8,9 +8,7 @@ import LoadingScreen from '../../Components/LoadingScreen';
 
 
 const App = props => {
-
-  console.log(props.data)
-
+  console.log('update')
   const [isLoading,setIsLoading] = useState(true)
 
   window.onload = () =>{
@@ -19,7 +17,7 @@ const App = props => {
   }
 
   window.onunload =()=>{
-    localStorage.setItem('data',JSON.stringify(props.data));
+    props.SaveData();
   }
 
   return <div>
@@ -27,16 +25,11 @@ const App = props => {
   </div>
 }
 
-const mapStateToProps = state =>{
-  return{
-    data: state
-  }
-}
-
 const mapDispatchToProps = dispatch =>{
   return{
     LoadData: ()=>dispatch({type:'LOAD_DATA'}),
+    SaveData :()=>dispatch({type:'SAVE_DATA'}),
   }
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(App);
+export default connect(null,mapDispatchToProps)(App);

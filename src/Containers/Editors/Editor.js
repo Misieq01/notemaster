@@ -39,7 +39,7 @@ const Container = styled.div`
   left: 0;
   right: 0;
   margin: auto;
-  background: #eeeeee;
+  background: ${props => props.background || "#eeeeee"};
   border-radius: 8px;
   box-shadow: 0px 1px 5px #777777;
   text-align: center;
@@ -49,17 +49,11 @@ const Container = styled.div`
 const Editor = props => {
   const [noteData, setNoteData] = useState(null);
 
-  console.log('fired')
-
   if(props.editId === 'none' && noteData === null){
-    setNoteData({ id: props.id, title: "", content: "", type: props.editType });
+    setNoteData({ id: props.id, title: "", content: "", type: props.editType,});
   }else if(props.editId !=='none' && noteData === null){
     setNoteData(props.notes[props.editId]);
   }
-
-
-
-  console.log(noteData)
 
   const GetInputData = (event, type) => {
     setNoteData({ ...noteData, [type]:event.target.value});
@@ -69,7 +63,6 @@ const Editor = props => {
     props.AddNoteData(noteData);
     props.CloseEditMode();
   }
-
   return (
     <div>
       <Background />
@@ -89,6 +82,7 @@ const mapStateToProps = state => {
     id: state.id,
     editId: state.editId,
     notes: state.notes,
+    color: state.color,
   };
 };
 
@@ -97,7 +91,7 @@ const mapDispatchToProps = dispatch => {
     CloseEditMode: () => {
       dispatch({ type: "EDIT_MODE_CHANGER", editMode: false, editType: "",editId:'none' });
     },
-    AddNoteData: data=>{dispatch({ type: "ADD_NOTE_DATA" ,data:data});}
+    AddNoteData: data=>{dispatch({ type: "ADD_NOTE_DATA" ,data:data});},
   };
 };
 

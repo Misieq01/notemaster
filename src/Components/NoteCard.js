@@ -4,12 +4,12 @@ import styled from "styled-components";
 import { connect } from "react-redux";
 
 const Container = styled.div`
-  width: 310px;
-  max-height: 450px;
-  background: white;
+  width: 240px;
+  max-height: 360px;
+  background: ${props => props.color || 'white'};
   box-shadow: 0px 1px 5px grey;
   border-radius: 3px;
-  margin: 15px;
+  margin: 10px;
   display: inline-block;
   transition: all 0.2s ease-in-out;
   cursor: pointer;
@@ -24,6 +24,8 @@ const Title = styled.h2`
     height: 10%
     padding: 10px;
     margin:0;
+    text-align: left;
+    font-weight: normal;
 `;
 const Text = styled.p`
     width:90%
@@ -32,7 +34,7 @@ const Text = styled.p`
     margin:0;
     text-align: justify;
     display:inline-block;
-    font-size: 18px;
+    font-size: 14px;
 `;
 
 const NoteCard = props => {

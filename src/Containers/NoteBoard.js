@@ -15,7 +15,7 @@ const Container = styled.div`
 `;
 
 const MasonryWrapper = styled(Masonry)`
-  margin: 10px 80px 10px 80px;
+  margin: 10px 15px 10px 15px;
   z-index :1;
 `
 

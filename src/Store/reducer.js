@@ -10,14 +10,23 @@ let newState;
 
 const ExistingCheck = (id, state) => {
   for (let i = 0; i < state.notes.length; i++) {
-    console.log(i)
     if (state.notes[i].id === id) {
-      console.log('match')
       return true;
     }
   }
   return false;
 };
+
+const IdRefresh = state =>{
+  let data = state.notes
+  let newNote;
+  for(let i = 0;i<state.notes.length; i++){
+    newNote = {...data[i]};
+    newNote.id = i;
+    data[i] = newNote;
+  }
+  return {...state,notes:data}
+}
 
 const reducer = (state = initialState, action) => {
   if (action === "" || action === undefined) {
@@ -26,7 +35,7 @@ const reducer = (state = initialState, action) => {
 
   switch (action.type) {
     case "EDIT_MODE_CHANGER":
-      return { ...state, editMode: action.editMode, editType: action.editType, editId: action.editId };
+      return { ...state, editMode: action.editMode, editType: action.editType, editId: action.editId,color:'white' };
     case "ADD_NOTE_DATA":
       if (state.notes.length === 0 || !ExistingCheck(action.data.id, state)) {
         newState = { ...state };
@@ -50,6 +59,24 @@ const reducer = (state = initialState, action) => {
         newState={...JSON.parse(localStorage.getItem('data'))}
         return newState;
       }
+      case 'SAVE_DATA':
+        localStorage.setItem("data", JSON.stringify(state));
+        break;
+      case 'DELETE_NOTE_DATA':
+        newState = {...state};
+        newState.notes.splice(state.editId,1);
+        return newState
+      case "ID_REFRESH":
+       newState={...state,id:state.notes.length} 
+      newState = IdRefresh(newState);
+      return newState
+      case 'COPY_NOTE':
+        newState ={...state};
+        newState.notes.push(newState.notes[state.editId]);
+        return newState;
+        case'CHANGE_NOTE_COLOR':
+      break;
+
     default:
       return state;
   }
