@@ -31,9 +31,10 @@ const NoteBoard = props => {
             return (
               <NoteCard
                 title={data.title}
-                text={data.content}
+                text={data.text}
                 id={data.id}
                 key={index}
+                color={data.color}
               />
             );
           }

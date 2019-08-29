@@ -11,7 +11,7 @@ const Background = styled.div`
   width: 100%;
   background: black;
   opacity: 0.3;
-  z-index:999;
+  z-index: 999;
 `;
 
 const CloseButton = styled.button`
@@ -39,7 +39,7 @@ const Container = styled.div`
   left: 0;
   right: 0;
   margin: auto;
-  background: ${props => props.background || "#eeeeee"};
+  background: ${props => props.background || "white"};
   border-radius: 8px;
   box-shadow: 0px 1px 5px #777777;
   text-align: center;
@@ -47,28 +47,52 @@ const Container = styled.div`
 `;
 
 const Editor = props => {
-  const [noteData, setNoteData] = useState(null);
 
-  if(props.editId === 'none' && noteData === null){
-    setNoteData({ id: props.id, title: "", content: "", type: props.editType,});
-  }else if(props.editId !=='none' && noteData === null){
-    setNoteData(props.notes[props.editId]);
+  let data = {};
+
+  if (props.editId === "none") {
+    switch (props.editType) {
+      case "note":
+        data = {
+          id: props.id,
+          title: "",
+          text: "",
+          type: 'note',
+          color: 'white',
+        };
+        break;
+        case 'list':
+          break;
+
+        case 'remainder':
+          break;
+      default:
+        break;
+    }
+  }else if(props.editId !== 'none'){
+    data = props.notes[props.editId]
+  }
+
+  const [noteData, setNoteData] = useState(data);
+
+  if(props.color !== noteData.color && props.color!== ''){
+    setNoteData({...noteData,color:props.color});
   }
 
   const GetInputData = (event, type) => {
-    setNoteData({ ...noteData, [type]:event.target.value});
+    setNoteData({ ...noteData, [type]: event.target.value });
   };
 
-  const CloseHandler = () =>{
+  const CloseHandler = () => {
     props.AddNoteData(noteData);
     props.CloseEditMode();
-  }
+  };
   return (
     <div>
       <Background />
-      <Container>
+      <Container background={noteData.color}>
         {props.editType === "note" ? (
-          <NoteEditor GetInputData={GetInputData} twoWayBinding={noteData} />
+          <NoteEditor GetInputData={GetInputData} twoWayBinding={noteData} color={noteData.color}/>
         ) : null}
         <CloseButton onClick={CloseHandler}>Finish</CloseButton>
       </Container>
@@ -82,16 +106,23 @@ const mapStateToProps = state => {
     id: state.id,
     editId: state.editId,
     notes: state.notes,
-    color: state.color,
+    color: state.noteColor
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     CloseEditMode: () => {
-      dispatch({ type: "EDIT_MODE_CHANGER", editMode: false, editType: "",editId:'none' });
+      dispatch({
+        type: "EDIT_MODE_CHANGER",
+        editMode: false,
+        editType: "",
+        editId: "none"
+      });
     },
-    AddNoteData: data=>{dispatch({ type: "ADD_NOTE_DATA" ,data:data});},
+    AddNoteData: data => {
+      dispatch({ type: "ADD_NOTE_DATA", data: data });
+    }
   };
 };
 

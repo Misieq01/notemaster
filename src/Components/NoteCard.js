@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 const Container = styled.div`
   width: 240px;
   max-height: 360px;
-  background: ${props => props.color || 'white'};
+  background: ${props => props.background || 'white'};
   box-shadow: 0px 1px 5px grey;
   border-radius: 3px;
   margin: 10px;
@@ -14,7 +14,6 @@ const Container = styled.div`
   transition: all 0.2s ease-in-out;
   cursor: pointer;
   :hover {
-    background: #f0f0f0;
     transform: scale(1.1);
   }
   text-align: center;
@@ -60,6 +59,7 @@ const NoteCard = props => {
 
   return (
     <Container
+    background={props.color}
       onClick={() => {
         props.OpenEditMode(props.id);
       }}

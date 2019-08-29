@@ -4,6 +4,7 @@ const initialState = {
   notes: [],
   id: 0,
   editId: 'none',
+  noteColor: 'white',
 };
 
 let newState;
@@ -35,7 +36,7 @@ const reducer = (state = initialState, action) => {
 
   switch (action.type) {
     case "EDIT_MODE_CHANGER":
-      return { ...state, editMode: action.editMode, editType: action.editType, editId: action.editId,color:'white' };
+      return { ...state, editMode: action.editMode, editType: action.editType, editId: action.editId,noteColor:''};
     case "ADD_NOTE_DATA":
       if (state.notes.length === 0 || !ExistingCheck(action.data.id, state)) {
         newState = { ...state };
@@ -75,8 +76,7 @@ const reducer = (state = initialState, action) => {
         newState.notes.push(newState.notes[state.editId]);
         return newState;
         case'CHANGE_NOTE_COLOR':
-      break;
-
+        return{...state,noteColor:action.color}
     default:
       return state;
   }

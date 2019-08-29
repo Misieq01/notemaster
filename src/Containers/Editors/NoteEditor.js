@@ -6,7 +6,7 @@ import ResizableTextArea from "../../Components/ResizableTextArea";
 const Container = styled.div`
   width: 100%;
   min-height: 60px;
-  background: #eeeeee;
+  background: ${props => props.background || 'white'};
   border-radius: 8px 8px 0px 0px;
   text-align: center;
 `;
@@ -20,7 +20,7 @@ const TitleInput = styled.input`
   border: none;
   outline: none;
   padding: 2%;
-  background: #eeeeee;
+  background: ${props => props.background || "white"};
   resize: none;
   overflow: hidden;
 `;
@@ -33,7 +33,7 @@ const NoteArea = styled(ResizableTextArea)`
     text-decoration:none;
     outline:none;
     font-size: 23px;
-    background: #eeeeee;
+    background: ${props => props.background || "white"};
     line-height: 30px;
 }
 
@@ -42,8 +42,9 @@ const NoteArea = styled(ResizableTextArea)`
 
 const NoteEditor = props => {
   return (
-    <Container>
+    <Container background={props.color}>
       <TitleInput
+        background={props.color}
         placeholder="Title"
         minRows={1}
         maxRows={2}
@@ -54,12 +55,13 @@ const NoteEditor = props => {
         value={props.twoWayBinding.title}
       />
       <NoteArea
+        background={props.color}
         placeholder="Write Your Thoughts"
         minRows={1}
         maxRows={20}
         lineHeight={30}
         GetInputData={props.GetInputData}
-        value={props.twoWayBinding.content}
+        value={props.twoWayBinding.text}
       />
     </Container>
   );

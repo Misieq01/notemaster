@@ -26,7 +26,7 @@ const ResizableTextArea = props => {
 
   const HandleChange = event => {
 
-    props.GetInputData(event,'content')
+    props.GetInputData(event,'text')
 
     const lineHeight = props.lineHeight;
     const minRows = data.minRows;
