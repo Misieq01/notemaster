@@ -9,11 +9,11 @@ import AuthenticationPanel from "../AuthenticationPanel/AuthenticationPanel";
 import LoadingScreen from "../../Components/LoadingScreen";
 
 const App = props => {
+  console.log(props.data);
   const [isUser, setIsUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   const AuthListener = () => {
-
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         db.collection("users")
@@ -21,6 +21,7 @@ const App = props => {
           .get()
           .then(doc => {
             if (doc.exists) {
+              console.log("fuckup");
               props.LoadData(doc.data());
             } else {
               console.log("No such a document");
@@ -31,24 +32,28 @@ const App = props => {
       } else {
         setIsUser(null);
       }
-      setTimeout(() => setIsLoading(false), 1000);
+      setTimeout(() => setIsLoading(false), 500);
     });
   };
 
-
   useEffect(AuthListener, []);
-    /*useEffect(() => {
+
+  useEffect(() => {
     return () => {
-      console.log('kurwa');
-      db.collection('users').doc(firebase.auth().currentUser.uid).update({
-        'noteData.id' : props.data.id,
-        'noteData.labels' : props.data.labels,
-        'noteData.notes' : props.data.notes
-
-      })
+      if (!(props.data.notes.length === 0 && props.data.labels.length === 0)) {
+        console.log("kurwa");
+        db.collection("users")
+          .doc(firebase.auth().currentUser.uid)
+          .update({
+            "noteData.id": props.data.id + 1,
+            "noteData.labels": props.data.labels,
+            "noteData.notes": props.data.notes
+          });
+      } else {
+        return;
+      }
     };
-  }, [props.data.id,props.data.labels,props.data.notes])*/
-
+  }, [props.data.id, props.data.labels, props.data.notes]);
 
   return (
     <div>

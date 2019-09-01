@@ -6,7 +6,7 @@ const initialState = {
   editId: 'none',
   noteColor: 'white',
   displayLabelManager: false,
-  labels: []
+  labels: [],
 };
 
 let newState;

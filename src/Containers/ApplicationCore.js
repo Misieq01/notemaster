@@ -26,7 +26,6 @@ const ApplicationCore = props => {
 
 const mapStateToProps = state =>{
   return{
-    state: state,
     editMode: state.editMode,
     displayLabelManager: state.displayLabelManager,
   }
