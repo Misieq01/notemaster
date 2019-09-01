@@ -9,7 +9,6 @@ import AuthenticationPanel from "../AuthenticationPanel/AuthenticationPanel";
 import LoadingScreen from "../../Components/LoadingScreen";
 
 const App = props => {
-  console.log(props.data);
   const [isUser, setIsUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -40,7 +39,7 @@ const App = props => {
 
   useEffect(() => {
     return () => {
-      if (!(props.data.notes.length === 0 && props.data.labels.length === 0)) {
+      if (!isLoading) {
         console.log("kurwa");
         db.collection("users")
           .doc(firebase.auth().currentUser.uid)
@@ -53,7 +52,7 @@ const App = props => {
         return;
       }
     };
-  }, [props.data.id, props.data.labels, props.data.notes]);
+  }, [props.data.id, props.data.labels, props.data.notes,props.editMode,isLoading]);
 
   return (
     <div>
@@ -68,7 +67,8 @@ const App = props => {
 
 const mapStateToProps = state => {
   return {
-    data: state
+    data: state,
+    editMode: state.editMode
   };
 };
 
