@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-import NoteTypeSelectionPanel from "./NoteSelectionPanel";
+import firebase from '../../../../config/config';
+import db from '../../../../config/database';
+import {connect} from 'react-redux';
 
+import NoteTypeSelectionPanel from "./NoteSelectionPanel";
 ////////////  CSS  ////////////////////////////
 
 const Container = styled.div`
@@ -34,8 +37,21 @@ const OptionMode = props => {
     setDislpayNoteSelectionPanel
   ] = useState(false);
 
+  const SignOutHandler = () =>{
+    db.collection('users').doc(firebase.auth().currentUser.uid).update({
+      'noteData.id' : props.data.id,
+      'noteData.labels' : props.data.labels,
+      'noteData.notes' : props.data.notes
+    })
+    firebase.auth().signOut();
+  }
+
+
   return (
     <Container>
+      <Icon title="LogOut" onClick={SignOutHandler }>
+        &#10919;
+      </Icon>
       <Icon title="Add Note" onClick={() => setDislpayNoteSelectionPanel(true)}>
         &#43;
       </Icon>
@@ -44,8 +60,23 @@ const OptionMode = props => {
           close={() => setDislpayNoteSelectionPanel(false)}
         />
       ) : null}
+      <Icon title="Manage Labels" onClick={props.OpenLabelManager}>
+        &#9839;
+      </Icon>
     </Container>
   );
 };
 
-export default OptionMode;
+const mapStateToProps = state =>{
+  return {
+    data: state
+  }
+}
+
+const mapDispatchToProps = dispatch =>{
+  return {
+    OpenLabelManager: ()=>{dispatch({type:'SHOW/HIDE_LABEL_MANAGER',display:true})}
+  }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(OptionMode);

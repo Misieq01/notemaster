@@ -59,6 +59,7 @@ const Editor = props => {
           text: "",
           type: 'note',
           color: 'white',
+          labels: [],
         };
         break;
         case 'list':

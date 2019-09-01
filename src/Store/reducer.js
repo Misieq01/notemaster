@@ -5,6 +5,8 @@ const initialState = {
   id: 0,
   editId: 'none',
   noteColor: 'white',
+  displayLabelManager: false,
+  labels: []
 };
 
 let newState;
@@ -54,15 +56,8 @@ const reducer = (state = initialState, action) => {
       }
       break;
       case 'LOAD_DATA':
-      if(localStorage.getItem('data') === null){
-        return state;
-      }else{
-        newState={...JSON.parse(localStorage.getItem('data'))}
-        return newState;
-      }
-      case 'SAVE_DATA':
-        localStorage.setItem("data", JSON.stringify(state));
-        break;
+        let data= action.data.noteData;
+        return{...state,id:data.id,labels:data.labels,notes:data.notes}
       case 'DELETE_NOTE_DATA':
         newState = {...state};
         newState.notes.splice(state.editId,1);
@@ -77,6 +72,8 @@ const reducer = (state = initialState, action) => {
         return newState;
         case'CHANGE_NOTE_COLOR':
         return{...state,noteColor:action.color}
+        case 'SHOW/HIDE_LABEL_MANAGER':
+          return{...state,displayLabelManager:action.display}
     default:
       return state;
   }

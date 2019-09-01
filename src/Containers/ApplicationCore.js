@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import ConfigPanel from './ConfigPanel/ConfigPanel'
 import NoteBoard from './NoteBoard'
 import Editor from './Editors/Editor';
-
+import LabelManager from '../Containers/ConfigPanel/Modes/OptionMode/LabelManager';
 
 import {connect} from 'react-redux';
 
@@ -18,6 +18,7 @@ const ApplicationCore = props => {
 
   return <Container >
     {props.editMode ? <Editor/> : null}
+    {props.displayLabelManager ? <LabelManager/> : null}
     <ConfigPanel/>
     <NoteBoard/>
   </Container>;
@@ -25,15 +26,10 @@ const ApplicationCore = props => {
 
 const mapStateToProps = state =>{
   return{
+    state: state,
     editMode: state.editMode,
-    state:state
+    displayLabelManager: state.displayLabelManager,
   }
 }
 
-const mapDispatchToProps = dispatch =>{
-  return {
-    LoadData: data=>{dispatch({type:'LOAD_DATA_FROM_LOCALSTORAGE',data:data})}
-  }
-}
-
-export default connect(mapStateToProps,mapDispatchToProps)(ApplicationCore);
+export default connect(mapStateToProps)(ApplicationCore);
