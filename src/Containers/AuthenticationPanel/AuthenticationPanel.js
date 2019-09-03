@@ -67,6 +67,8 @@ const AuthenticationPanel = () => {
       .then(u => {})
       .catch(error => console.log(error));
   };
+
+  // This function is creating user and add his data to firestore
   const SignUp = () => {
     firebase
       .auth()
@@ -80,7 +82,6 @@ const AuthenticationPanel = () => {
               id: 0,
               notes: [],
               labels: [],
-              time: Date.now()
             }
           });
 

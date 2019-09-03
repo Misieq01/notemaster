@@ -74,6 +74,10 @@ const reducer = (state = initialState, action) => {
         return{...state,noteColor:action.color}
         case 'SHOW/HIDE_LABEL_MANAGER':
           return{...state,displayLabelManager:action.display}
+          case 'ADD_LABEL':
+            newState = {...state}
+            newState.labels.push(action.name)
+            return newState
     default:
       return state;
   }

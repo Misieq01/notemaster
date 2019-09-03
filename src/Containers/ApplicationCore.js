@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import ConfigPanel from './ConfigPanel/ConfigPanel'
 import NoteBoard from './NoteBoard'
 import Editor from './Editors/Editor';
-import LabelManager from '../Containers/ConfigPanel/Modes/OptionMode/LabelManager';
+import LabelManager from './ConfigPanel/Modes/OptionMode/LabelManager/LabelManager';
 
 import {connect} from 'react-redux';
 
