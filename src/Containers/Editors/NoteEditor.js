@@ -1,69 +1,41 @@
 import React from "react";
 import styled from "styled-components";
 
-import ResizableTextArea from "../../Components/ResizableTextArea";
+import TextArea from "../../Components/ResizableTextArea";
 
-const Container = styled.div`
+const Title = styled.input`
   width: 100%;
-  min-height: 60px;
-  background: ${props => props.background || 'white'};
-  border-radius: 8px 8px 0px 0px;
-  text-align: center;
-`;
-
-const TitleInput = styled.input`
-  width: 96%;
-  line-height: 35px;
-  border-radius: 8px 8px 0px 0px;
   font-size: 30px;
-  text-decoration: none;
+  line-height: 30px;
   border: none;
   outline: none;
-  padding: 2%;
-  background: ${props => props.background || "white"};
-  resize: none;
-  overflow: hidden;
+  text-decoration: none;
+  background: "#eeeeee";
+  border-radius: 8px 8px 0px 0px;
 `;
-const NoteArea = styled(ResizableTextArea)`
-    width:96%
-    min-height: 30px;
-    padding: 2%;
-    resize:none;
-    border:none;
-    text-decoration:none;
-    outline:none;
-    font-size: 23px;
-    background: ${props => props.background || "white"};
-    line-height: 30px;
-}
-
-
+const Text = styled(TextArea)`
+  font-size: 25px;
 `;
 
 const NoteEditor = props => {
+  console.log(props.twoWayBinding);
+
   return (
-    <Container background={props.color}>
-      <TitleInput
-        background={props.color}
+    <div>
+      <Title
         placeholder="Title"
-        minRows={1}
-        maxRows={2}
-        lineHeight={35}
-        onChange={event => {
-          props.GetInputData(event, "title");
-        }}
+        onChange={event => props.getValue(event, "title")}
         value={props.twoWayBinding.title}
       />
-      <NoteArea
-        background={props.color}
-        placeholder="Write Your Thoughts"
+      <Text
         minRows={1}
         maxRows={20}
         lineHeight={30}
-        GetInputData={props.GetInputData}
-        value={props.twoWayBinding.text}
+        placeholder="Place for your thoughts"
+        change={event => props.getValue(event, "content")}
+        value={props.twoWayBinding.content}
       />
-    </Container>
+    </div>
   );
 };
 

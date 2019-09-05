@@ -1,7 +1,19 @@
 import React, { useState } from "react";
-import styled from 'styled-components';
+import styled from "styled-components";
 
 const WrittingArea = styled.textarea`
+
+    width:96%
+    min-height: ${props => props.lineHeight};
+    padding: 2%;
+    resize:none;
+    border:none;
+    text-decoration:none;
+    outline:none;
+    font-size: 23px;
+    background: ${props => props.background || "white"};
+    line-height: ${props => props.lineHeight};
+
   ::-webkit-scrollbar {
     width: 10px;
     cursor: default;
@@ -10,9 +22,8 @@ const WrittingArea = styled.textarea`
     background: #eeeeee;
   }
   ::-webkit-scrollbar-thumb {
-    border-radius: 5px;
     background: #cccccc;
-  };
+  }
 `;
 
 const ResizableTextArea = props => {
@@ -20,13 +31,11 @@ const ResizableTextArea = props => {
     minRows: props.minRows,
     maxRows: props.maxRows,
     value: props.value,
-    rows: props.minRows,
+    rows: props.minRows
   });
 
-
   const HandleChange = event => {
-
-    props.GetInputData(event,'text')
+    props.change(event, "content");
 
     const lineHeight = props.lineHeight;
     const minRows = data.minRows;
@@ -62,7 +71,8 @@ const ResizableTextArea = props => {
       placeholder={props.placeholder}
       onChange={event => HandleChange(event)}
       onFocus={event => HandleChange(event)}
-      
+      background={props.background}
+      lineHeight={props.lineHeight + "px"}
     />
   );
 };

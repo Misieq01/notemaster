@@ -1,104 +1,86 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from "react";
 
-import { connect } from 'react-redux'
-import firebase from '../../config/config'
-import db from '../../config/database'
+import firebase from "../../config/config";
 
-import ApplicationCore from '../ApplicationCore'
-import AuthenticationPanel from '../AuthenticationPanel/AuthenticationPanel'
-import LoadingScreen from '../../Components/LoadingScreen'
+import AuthenticationPanel from "../AuthenticationPanel/AuthenticationPanel";
+import AppCore from "../AppCore/AppCore";
+import LoadingScreen from "../../Components/LoadingScreen";
+
+import * as action from "../../Store/Actions/ActionType";
+import { connect } from "react-redux";
+import db from "../../config/database";
 
 const App = props => {
-  const [isUser, setIsUser] = useState(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const [user, setUser] = useState(null);
+  const [isLoading, setLoading] = useState(true);
 
-  console.log('Notes: ',props.notes)
-  console.log('Labels: ',props.labels)
-  console.log('ID: ',props.id)
-
-  // AuthListener checks if user is signIN, if it is then loads user data from firestore to redux
+  // AuthListener checks if user is signIN
   const AuthListener = () => {
     // Listening to user change
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        //Get his data
-        db.collection('users')
+        setUser(user);
+        db.collection("users")
           .doc(user.uid)
           .get()
           .then(doc => {
             if (doc.exists) {
-              // Load data to redux state
-              props.LoadData(doc.data())
+              //Load Data to server_data reducer
+              props.LoadData(doc.data());
+              //Load Data to core_data reducer
+              props.PassDataToCoreData({
+                notes: doc.get("notes"),
+                labels: doc.get("labels")
+              });
             } else {
-              console.log('No such a document')
+              console.log("No user data");
             }
-          })
-        // Change display from AuthenticationPanel to ApplicationCore
-        setIsUser(user)
+          });
       } else {
-        // If there is no user then change display to AuthenticationPanel
-        setIsUser(null)
+        setUser(null);
       }
-      // Loading data takes time so I displaying LoadingScreen over time
-      // There is line of code which close LoadingScreen
-      setTimeout(() => setIsLoading(false), 500)
-    })
-  }
+      setTimeout(() => setLoading(false), 500);
+    });
+  };
 
-  // Fire AuthListener when page is loaded
-  useEffect(AuthListener, [])
-
-  //This updating firestore data every each note editing or label changing
+  useEffect(AuthListener, []);
   useEffect(() => {
-    return () => {
-      // This IF is important because its prevent to load blank data on page loading to firestore
-      if (!isLoading) {
-        db.collection('users')
-          .doc(firebase.auth().currentUser.uid)
-          .update({
-            'noteData.id': props.id + 1,
-            'noteData.labels': props.labels,
-            'noteData.notes': props.notes,
-          })
-      } else {
-        return
-      }
+    if (!isLoading && (props.notes !== [] && props.labels !== [])) {
+      console.log("fired");
+      db.collection("users")
+        .doc(firebase.auth().currentUser.uid)
+        .update({ notes: props.notes, labels: props.labels });
     }
-  }, [
-    props.id,
-    props.labels,
-    props.notes,
-    props.editMode,
-    isLoading,
-  ])
+  }, [props.notes, props.labels, isLoading]);
 
   return (
     <div>
       {isLoading ? (
         <LoadingScreen />
       ) : (
-        <div>{isUser ? <ApplicationCore /> : <AuthenticationPanel />}</div>
+        <div>{user ? <AppCore /> : <AuthenticationPanel />}</div>
       )}
     </div>
-  )
-}
+  );
+};
 
 const mapStateToProps = state => {
   return {
-    id: state.id,
-    labels: state.labels,
-    notes: state.notes,
-    editMode: state.editMode,
-  }
-}
+    data: state.coreData,
+    notes: state.servData.notes,
+    labels: state.servData.labels
+  };
+};
 
 const mapDispatchToProps = dispatch => {
   return {
-    LoadData: data => dispatch({ type: 'LOAD_DATA', data: data }),
-  }
-}
+    LoadData: data => dispatch({ type: action.LOAD_SERVER_DATA, data: data }),
+    PassDataToCoreData: data =>
+      dispatch({ type: action.LOAD_DATA_TO_APP, data: data })
+  };
+};
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(App)
+)(App);

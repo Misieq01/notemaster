@@ -13,12 +13,12 @@ const store = new Store({
 storiesOf("ResizableTextArea", module).add("default", () => (
   <ResizableTextArea
     onClick={action("clicked")}
-    lineHeight={30}
     placeholder="Example"
+    lineHeight={30}
     minRows={1}
-    color="#99CC66"
-    maxRows={20}
+    maxRows={10}
     value={store.get("value")}
     GetInputData={e => store.set("value", e)}
+    background={"#eeeeee"}
   />
 ));

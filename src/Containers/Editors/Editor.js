@@ -1,17 +1,26 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-import NoteEditor from "./NoteEditor";
-
 import { connect } from "react-redux";
+import * as action from "../../Store/Actions/ActionType";
 
-const Background = styled.div`
-  position: fixed;
-  height: 100%;
-  width: 100%;
-  background: black;
-  opacity: 0.3;
-  z-index: 999;
+import NoteEditor from "./NoteEditor";
+import ListEditor from "./ListEditor";
+import CodeSnippetEditor from "./CodeSnippetEditor";
+import Background from "../../Components/Background";
+
+const Container = styled.div`
+  width: 35%;
+  min-height: 60px;
+  position: absolute;
+  z-index: 1000;
+  top: 100px;
+  right: 0;
+  left: 0;
+  margin: auto;
+  background: #eeeeee;
+  border-radius: 8px;
+  text-align: center;
 `;
 
 const CloseButton = styled.button`
@@ -31,71 +40,62 @@ const CloseButton = styled.button`
   font-size: 20px;
 `;
 
-const Container = styled.div`
-  width: 35%;
-  min-height: 60px;
-  position: absolute;
-  top: 100px;
-  left: 0;
-  right: 0;
-  margin: auto;
-  background: ${props => props.background || "white"};
-  border-radius: 8px;
-  box-shadow: 0px 1px 5px #777777;
-  text-align: center;
-  z-index: 1000;
-`;
-
 const Editor = props => {
-
-  let data = {};
-
-  if (props.editId === "none") {
-    switch (props.editType) {
-      case "note":
-        data = {
-          id: props.id,
-          title: "",
-          text: "",
-          type: 'note',
-          color: 'white',
-          labels: [],
-        };
-        break;
-        case 'list':
-          break;
-
-        case 'remainder':
-          break;
-      default:
-        break;
+  const InitialData = () => {
+    if (props.editId === null) {
+      return {
+        id: props.id,
+        type: props.type,
+        title: "",
+        content: "",
+        color: props.color
+      };
+    } else {
+      return props.notes[props.editId];
     }
-  }else if(props.editId !== 'none'){
-    data = props.notes[props.editId]
-  }
-
-  const [noteData, setNoteData] = useState(data);
-
-  if(props.color !== noteData.color && props.color!== ''){
-    setNoteData({...noteData,color:props.color});
-  }
-
-  const GetInputData = (event, type) => {
-    setNoteData({ ...noteData, [type]: event.target.value });
   };
 
-  const CloseHandler = () => {
-    props.AddNoteData(noteData);
-    props.CloseEditMode();
+  const [data, setData] = useState(InitialData());
+
+  const GetInputValue = (event, type) => {
+    setData({ ...data, [type]: event.target.value });
   };
+
+  const WhichEditor = type => {
+    switch (type) {
+      case "note":
+        return <NoteEditor getValue={GetInputValue} twoWayBinding={data} />;
+      case "list":
+        return <ListEditor getValue={GetInputValue} twoWayBinding={data} />;
+      case "snippet":
+        return (
+          <CodeSnippetEditor getValue={GetInputValue} twoWayBinding={data} />
+        );
+      default:
+        console.log("Nie określono typu notatki do edytowania");
+        return null;
+    }
+  };
+
+  let editor = WhichEditor(props.type);
+
+  const FinishEditingHandler = () => {
+    if (props.editId === null) {
+      props.AddNote(data);
+    } else if (props.editId !== null) {
+      props.UpdateNote(data, props.editId);
+    }
+    props.CloseEditing();
+  };
+
+  console.log(data.id);
+
   return (
     <div>
       <Background />
-      <Container background={noteData.color}>
-        {props.editType === "note" ? (
-          <NoteEditor GetInputData={GetInputData} twoWayBinding={noteData} color={noteData.color}/>
-        ) : null}
-        <CloseButton onClick={CloseHandler}>Finish</CloseButton>
+      <Container>
+        {editor}
+        <CloseButton onClick={FinishEditingHandler}>Finish</CloseButton>
       </Container>
     </div>
   );
@@ -103,27 +103,20 @@ const Editor = props => {
 
 const mapStateToProps = state => {
   return {
-    editType: state.editType,
-    id: state.id,
-    editId: state.editId,
-    notes: state.notes,
-    color: state.noteColor
+    type: state.editNote.editType,
+    id: state.coreData.id,
+    editId: state.editNote.editId,
+    color: state.editNote.color,
+    notes: state.coreData.notes
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    CloseEditMode: () => {
-      dispatch({
-        type: "EDIT_MODE_CHANGER",
-        editMode: false,
-        editType: "",
-        editId: "none"
-      });
-    },
-    AddNoteData: data => {
-      dispatch({ type: "ADD_NOTE_DATA", data: data });
-    }
+    AddNote: data => dispatch({ type: action.ADD_NOTE, data: data }),
+    UpdateNote: (data, editId) =>
+      dispatch({ type: action.UPDATE_NOTE, data: data, editId: editId }),
+    CloseEditing: () => dispatch({ type: action.CLOSE_EDIT_MODE })
   };
 };
 
