@@ -1,16 +1,70 @@
 import React from "react";
 import styled from "styled-components";
 
+import { connect } from "react-redux";
+import * as action from "../../Store/Actions/ActionType";
+
+import Masonry from "react-masonry-component";
+
+import NoteCard from "../../Components/Notes/NoteCard";
+
+const MasonryDisplay = styled(Masonry)`
+  margin: 20px;
+`;
+
 const Container = styled.div`
   display: inline-block;
   float: left;
-  width: 95%;
+  width: 97%;
   height: 100%;
-  background: orange;
+  background: #eeeeee;
 `;
 
 const NoteBoard = props => {
-  return <Container>NoteBoard</Container>;
+  const RenderNotes = () => {
+    return props.notes.map((note, index) => {
+      switch (note.type) {
+        case "note":
+          return (
+            <NoteCard
+              color={note.color}
+              text={note.content}
+              title={note.title}
+              id={note.id}
+              key={index}
+              click={props.EditNote}
+            />
+          );
+        default:
+          return null;
+      }
+    });
+  };
+
+  let notes = RenderNotes();
+
+  return (
+    <Container>
+      <MasonryDisplay>{notes}</MasonryDisplay>
+    </Container>
+  );
 };
 
-export default NoteBoard;
+const mapStateToProps = state => {
+  return {
+    notes: state.coreData.notes,
+    editMode: state.editNote.editMode
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    EditNote: (noteType, editId) =>
+      dispatch({ type: action.EDIT_NOTE, noteType: noteType, editId: editId })
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(NoteBoard);

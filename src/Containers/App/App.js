@@ -32,26 +32,27 @@ const App = props => {
                 notes: doc.get("notes"),
                 labels: doc.get("labels")
               });
+              setLoading(false);
             } else {
               console.log("No user data");
             }
           });
       } else {
         setUser(null);
+        setTimeout(() => setLoading(false), 500);
       }
-      setTimeout(() => setLoading(false), 500);
     });
   };
 
   useEffect(AuthListener, []);
   useEffect(() => {
-    if (!isLoading && (props.notes !== [] && props.labels !== [])) {
+    if (!isLoading && firebase.auth().currentUser !== null) {
       console.log("fired");
       db.collection("users")
         .doc(firebase.auth().currentUser.uid)
         .update({ notes: props.notes, labels: props.labels });
     }
-  }, [props.notes, props.labels, isLoading]);
+  }, [props.notes, props.labels, props.dataChange, isLoading]);
 
   return (
     <div>
@@ -68,7 +69,8 @@ const mapStateToProps = state => {
   return {
     data: state.coreData,
     notes: state.servData.notes,
-    labels: state.servData.labels
+    labels: state.servData.labels,
+    dataChange: state.servData.dataChange
   };
 };
 

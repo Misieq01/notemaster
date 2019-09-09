@@ -7,6 +7,7 @@ import * as action from "../../Store/Actions/ActionType";
 import ConfigPanel from "../ConfigPanel/ConfigPanel";
 import NoteBoard from "../NoteBoard/NoteBoard";
 import Editor from "../Editors/Editor";
+import LabelsManager from "../LabelManager/LabelManager";
 
 const AppContainer = styled.div`
   width: 100vw;
@@ -16,15 +17,18 @@ const AppContainer = styled.div`
 const AppCore = props => {
   useEffect(() => {
     return () => {
-      if (props.mode) {
+      if (props.mode || props.labelsDisplay) {
         props.SaveDataToServer(props.notes, props.labels);
       }
     };
-  }, [props]);
+  }, [props, props.mode, props.labelsDisplay]);
+
+  console.log(props.labels.length);
 
   return (
     <AppContainer>
       {props.mode ? <Editor /> : null}
+      {props.labelsDisplay ? <LabelsManager /> : null}
       <ConfigPanel />
       <NoteBoard />
     </AppContainer>
@@ -35,7 +39,8 @@ const mapStateToProps = state => {
   return {
     mode: state.editNote.editMode,
     notes: state.coreData.notes,
-    labels: state.coreData.labels
+    labels: state.coreData.labels,
+    labelsDisplay: state.labelMng.display
   };
 };
 const mapDispatchToProps = dispatch => {

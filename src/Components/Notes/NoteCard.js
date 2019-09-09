@@ -1,20 +1,17 @@
 import React from "react";
 import styled from "styled-components";
 
-import { connect } from "react-redux";
-
 const Container = styled.div`
-  width: 310px;
-  max-height: 450px;
-  background: white;
+  width: 240px;
+  max-height: 360px;
+  background: ${props => props.color};
   box-shadow: 0px 1px 5px grey;
   border-radius: 3px;
-  margin: 15px;
+  margin: 10px;
   display: inline-block;
   transition: all 0.2s ease-in-out;
   cursor: pointer;
   :hover {
-    background: #f0f0f0;
     transform: scale(1.1);
   }
   text-align: center;
@@ -32,7 +29,14 @@ const Text = styled.p`
     margin:0;
     text-align: justify;
     display:inline-block;
-    font-size: 18px;
+    font-size: 15px;
+`;
+
+const Label = styled.div`
+  font-size: 18px;
+  padding: 3px;
+  margin: 2px;
+  border-radius: 5px;
 `;
 
 const NoteCard = props => {
@@ -56,7 +60,10 @@ const NoteCard = props => {
   const text = NoteTruncate(props.text);
 
   return (
-    <Container>
+    <Container
+      onClick={() => props.click("note", props.id)}
+      color={props.color}
+    >
       <Title>{props.title}</Title>
       <Text>{text}</Text>
     </Container>

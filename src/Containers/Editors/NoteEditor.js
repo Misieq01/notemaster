@@ -10,22 +10,29 @@ const Title = styled.input`
   border: none;
   outline: none;
   text-decoration: none;
-  background: "#eeeeee";
+  background: ${props => props.background};
   border-radius: 8px 8px 0px 0px;
 `;
 const Text = styled(TextArea)`
   font-size: 25px;
+  background: ${props => props.background};
+`;
+
+const Label = styled.div`
+  font-size: 20px;
+  padding: 5px;
+  margin: 4px;
+  border-radius: 5px;
 `;
 
 const NoteEditor = props => {
-  console.log(props.twoWayBinding);
-
   return (
     <div>
       <Title
         placeholder="Title"
         onChange={event => props.getValue(event, "title")}
         value={props.twoWayBinding.title}
+        background={props.color}
       />
       <Text
         minRows={1}
@@ -34,7 +41,13 @@ const NoteEditor = props => {
         placeholder="Place for your thoughts"
         change={event => props.getValue(event, "content")}
         value={props.twoWayBinding.content}
+        background={props.color}
       />
+      <div>
+        {props.labels.map((label, index) => {
+          return <Label key={index}>{label}</Label>;
+        })}
+      </div>
     </div>
   );
 };

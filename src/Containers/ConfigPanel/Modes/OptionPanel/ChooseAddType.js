@@ -8,6 +8,7 @@ const Container = styled.div`
   height: 200px;
   top: 40px;
   right: 80px;
+  z-index: 500;
 `;
 
 const ChooseAddType = props => {

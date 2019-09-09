@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
 import { connect } from "react-redux";
@@ -18,7 +18,7 @@ const Container = styled.div`
   right: 0;
   left: 0;
   margin: auto;
-  background: #eeeeee;
+  background: ${props => props.background};
   border-radius: 8px;
   text-align: center;
 `;
@@ -48,7 +48,8 @@ const Editor = props => {
         type: props.type,
         title: "",
         content: "",
-        color: props.color
+        color: "#ffffff",
+        labels: []
       };
     } else {
       return props.notes[props.editId];
@@ -57,6 +58,15 @@ const Editor = props => {
 
   const [data, setData] = useState(InitialData());
 
+  useEffect(() => {
+    console.log(data);
+    if (props.color !== data.color && props.color !== "") {
+      setData({ ...data, color: props.color });
+    } else {
+      return;
+    }
+  }, [props.color, data]);
+
   const GetInputValue = (event, type) => {
     setData({ ...data, [type]: event.target.value });
   };
@@ -64,7 +74,14 @@ const Editor = props => {
   const WhichEditor = type => {
     switch (type) {
       case "note":
-        return <NoteEditor getValue={GetInputValue} twoWayBinding={data} />;
+        return (
+          <NoteEditor
+            getValue={GetInputValue}
+            twoWayBinding={data}
+            color={data.color}
+            labels={data.labels}
+          />
+        );
       case "list":
         return <ListEditor getValue={GetInputValue} twoWayBinding={data} />;
       case "snippet":
@@ -93,7 +110,7 @@ const Editor = props => {
   return (
     <div>
       <Background />
-      <Container>
+      <Container background={data.color}>
         {editor}
         <CloseButton onClick={FinishEditingHandler}>Finish</CloseButton>
       </Container>

@@ -1,13 +1,19 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 
-import OptionPanel from "./OptionPanel/OptionPanel";
-import EditPanel from "./EditPanel";
+import { connect } from "react-redux";
+
+import OptionPanel from "./Modes/OptionPanel/OptionPanel";
+import EditPanel from "./Modes/EditPanel/EditPanel";
 
 const ConfigPanel = props => {
-  const [option, setOption] = useState(true);
-
-  return <div>{option ? <OptionPanel /> : <EditPanel />}</div>;
+  return <div>{props.editMode ? <EditPanel /> : <OptionPanel />}</div>;
 };
 
-export default ConfigPanel;
+const mapStateToProps = state => {
+  return {
+    editMode: state.editNote.editMode
+  };
+};
+
+export default connect(mapStateToProps)(ConfigPanel);
