@@ -52,6 +52,15 @@ const core_data = (state = initialState, action) => {
       newState = { ...state };
       newState.labels[action.id] = action.label;
       return newState;
+    case type.ADD_LABEL_TO_NOTE:
+      newState = { ...state };
+      let newLabels = newState.notes[action.id].labels.concat(action.labels);
+      newState.notes[action.id].labels = newLabels;
+      return newState;
+    case type.REMOVE_LABEL_FROM_NOTE:
+      newState = { ...state };
+      newState.notes[action.id].labels.splice(action.label, 1);
+      return newState;
     default:
       return state;
   }

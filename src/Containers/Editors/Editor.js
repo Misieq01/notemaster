@@ -59,7 +59,6 @@ const Editor = props => {
   const [data, setData] = useState(InitialData());
 
   useEffect(() => {
-    console.log(data);
     if (props.color !== data.color && props.color !== "") {
       setData({ ...data, color: props.color });
     } else {
@@ -104,8 +103,6 @@ const Editor = props => {
     }
     props.CloseEditing();
   };
-
-  console.log(data.id);
 
   return (
     <div>

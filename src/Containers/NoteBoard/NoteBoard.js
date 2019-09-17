@@ -33,6 +33,7 @@ const NoteBoard = props => {
               id={note.id}
               key={index}
               click={props.EditNote}
+              labels={note.labels}
             />
           );
         default:

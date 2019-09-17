@@ -37,6 +37,7 @@ const Label = styled.div`
   padding: 3px;
   margin: 2px;
   border-radius: 5px;
+  display: inline-block;
 `;
 
 const NoteCard = props => {
@@ -58,6 +59,7 @@ const NoteCard = props => {
   };
 
   const text = NoteTruncate(props.text);
+  console.log(props.labels);
 
   return (
     <Container
@@ -66,6 +68,9 @@ const NoteCard = props => {
     >
       <Title>{props.title}</Title>
       <Text>{text}</Text>
+      {props.labels.map((label, index) => {
+        return <Label key={index}>{label}</Label>;
+      })}
     </Container>
   );
 };

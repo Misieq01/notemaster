@@ -77,6 +77,7 @@ const LabelManager = props => {
     }
     if (!isExist && SearchValue !== "") {
       props.AddLabel(SearchValue);
+      setSearchValue("");
     } else {
       console.log("You cant add label beacause it already exists");
     }

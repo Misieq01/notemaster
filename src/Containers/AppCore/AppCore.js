@@ -23,8 +23,6 @@ const AppCore = props => {
     };
   }, [props, props.mode, props.labelsDisplay]);
 
-  console.log(props.labels.length);
-
   return (
     <AppContainer>
       {props.mode ? <Editor /> : null}

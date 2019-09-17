@@ -1,7 +1,8 @@
 import * as type from "../Actions/ActionType";
 
 const initialState = {
-  display: false
+  display: false,
+  labels: []
 };
 
 const label_manager = (state = initialState, action) => {

@@ -76,7 +76,10 @@ const EditPanel = props => {
         ) : null}
         <Button onClick={() => setAddLabelDisplay(true)}>Add Label</Button>
         {addLabelDisplay ? (
-          <AddLabel close={() => setAddLabelDisplay(false)} />
+          <AddLabel
+            Close={() => setAddLabelDisplay(false)}
+            AddLabel={props.AddLabelToNote}
+          />
         ) : null}
         <Button onClick={props.CloseEditor}>Cancel</Button>
       </Container>
@@ -95,7 +98,9 @@ const mapDispatchToProps = dispatch => {
     CloseEditor: () => dispatch({ type: action.CLOSE_EDIT_MODE }),
     DeleteNote: id => dispatch({ type: action.DELETE_NOTE, id: id }),
     CopyNote: id => dispatch({ type: action.COPY_NOTE, id: id }),
-    RefreshNotesId: () => dispatch({ type: action.REFRESH_NOTES_ID })
+    RefreshNotesId: () => dispatch({ type: action.REFRESH_NOTES_ID }),
+    AddLabelToNote: (id, labels) =>
+      dispatch({ type: action.ADD_LABEL_TO_NOTE, id: id, labels: labels })
   };
 };
 
