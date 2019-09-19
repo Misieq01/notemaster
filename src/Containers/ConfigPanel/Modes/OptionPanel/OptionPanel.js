@@ -74,7 +74,8 @@ const OptionPanel = props => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    CreateNote: type => dispatch({ type: action.CREATE_NOTE, noteType: type }),
+    CreateNote: type =>
+      dispatch({ type: action.CREATE_NOTE, noteType: type, color: "#ffffff" }),
     OpenLabelsManager: () =>
       dispatch({ type: action.OPEN_LABELS_MANAGER, display: true })
   };

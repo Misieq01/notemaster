@@ -43,7 +43,7 @@ const LabelTag = styled.span`
 const AddLabel = props => {
   const [labels, setLabels] = useState([]);
 
-  const test = event => {
+  const ChooseLabel = event => {
     let newLabels = [...labels];
     if (event.target.style.background === "rgb(204, 204, 204)") {
       event.target.style.background = "#eeeeee";
@@ -70,7 +70,7 @@ const AddLabel = props => {
             key={index}
             children={label}
             id={index}
-            onClick={event => test(event)}
+            onClick={event => ChooseLabel(event)}
           />
         );
       })}

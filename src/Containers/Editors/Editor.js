@@ -48,7 +48,7 @@ const Editor = props => {
         type: props.type,
         title: "",
         content: "",
-        color: "#ffffff",
+        color: props.color,
         labels: []
       };
     } else {
@@ -57,14 +57,6 @@ const Editor = props => {
   };
 
   const [data, setData] = useState(InitialData());
-
-  useEffect(() => {
-    if (props.color !== data.color && props.color !== "") {
-      setData({ ...data, color: props.color });
-    } else {
-      return;
-    }
-  }, [props.color, data]);
 
   const GetInputValue = (event, type) => {
     setData({ ...data, [type]: event.target.value });
@@ -77,7 +69,7 @@ const Editor = props => {
           <NoteEditor
             getValue={GetInputValue}
             twoWayBinding={data}
-            color={data.color}
+            color={props.color}
             labels={data.labels}
           />
         );
@@ -97,9 +89,9 @@ const Editor = props => {
 
   const FinishEditingHandler = () => {
     if (props.editId === null) {
-      props.AddNote(data);
+      props.AddNote({ ...data, color: props.color });
     } else if (props.editId !== null) {
-      props.UpdateNote(data, props.editId);
+      props.UpdateNote({ ...data, color: props.color }, props.editId);
     }
     props.CloseEditing();
   };
@@ -107,7 +99,7 @@ const Editor = props => {
   return (
     <div>
       <Background />
-      <Container background={data.color}>
+      <Container background={props.color}>
         {editor}
         <CloseButton onClick={FinishEditingHandler}>Finish</CloseButton>
       </Container>

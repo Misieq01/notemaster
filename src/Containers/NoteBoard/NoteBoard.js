@@ -60,8 +60,13 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    EditNote: (noteType, editId) =>
-      dispatch({ type: action.EDIT_NOTE, noteType: noteType, editId: editId })
+    EditNote: (noteType, editId, color) =>
+      dispatch({
+        type: action.EDIT_NOTE,
+        noteType: noteType,
+        editId: editId,
+        color: color
+      })
   };
 };
 

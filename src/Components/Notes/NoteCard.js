@@ -42,8 +42,8 @@ const Label = styled.div`
 
 const NoteCard = props => {
   const NoteTruncate = text => {
-    if (text.length > 450) {
-      let newText = text.substring(0, 450);
+    if (text.length > 430) {
+      let newText = text.substring(0, 430);
       if (newText.lastIndexOf(" ") > 0) {
         newText = newText.substring(
           0,
@@ -63,7 +63,7 @@ const NoteCard = props => {
 
   return (
     <Container
-      onClick={() => props.click("note", props.id)}
+      onClick={() => props.click("note", props.id, props.color)}
       color={props.color}
     >
       <Title>{props.title}</Title>

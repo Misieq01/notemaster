@@ -4,7 +4,8 @@ const initialState = {
   editMode: false,
   editId: null,
   editType: "",
-  color: ""
+  color: "",
+  addLabels: []
 };
 
 const edit_note = (state = initialState, action) => {
@@ -17,14 +18,15 @@ const edit_note = (state = initialState, action) => {
         editId: null,
         editType: "",
         editMode: false,
-        color: ""
+        color: "#ffffff"
       };
     case type.EDIT_NOTE:
       return {
         ...state,
         editMode: true,
         editType: action.noteType,
-        editId: action.editId
+        editId: action.editId,
+        color: action.color
       };
     case type.CHANGE_COLOR:
       return { ...state, color: action.color };
