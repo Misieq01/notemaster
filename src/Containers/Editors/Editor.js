@@ -41,27 +41,11 @@ const CloseButton = styled.button`
 `;
 
 const Editor = props => {
-  const InitialData = () => {
-    if (props.editId === null) {
-      return {
-        id: props.id,
-        type: props.type,
-        title: "",
-        content: "",
-        color: props.color,
-        labels: []
-      };
-    } else {
-      return props.notes[props.editId];
-    }
-  };
-
-  const [data, setData] = useState(InitialData());
+  const [data, setData] = useState(props.notes[props.editId]);
 
   const GetInputValue = (event, type) => {
     setData({ ...data, [type]: event.target.value });
   };
-
   const WhichEditor = type => {
     switch (type) {
       case "note":
@@ -70,7 +54,7 @@ const Editor = props => {
             getValue={GetInputValue}
             twoWayBinding={data}
             color={props.color}
-            labels={data.labels}
+            labels={props.notes[props.editId].labels}
           />
         );
       case "list":
@@ -88,11 +72,10 @@ const Editor = props => {
   let editor = WhichEditor(props.type);
 
   const FinishEditingHandler = () => {
-    if (props.editId === null) {
-      props.AddNote({ ...data, color: props.color });
-    } else if (props.editId !== null) {
-      props.UpdateNote({ ...data, color: props.color }, props.editId);
-    }
+    props.UpdateNote(
+      { ...data, color: props.color, labels: props.notes[props.editId].labels },
+      props.editId
+    );
     props.CloseEditing();
   };
 
@@ -109,17 +92,18 @@ const Editor = props => {
 
 const mapStateToProps = state => {
   return {
-    type: state.editNote.editType,
-    id: state.coreData.id,
-    editId: state.editNote.editId,
-    color: state.editNote.color,
-    notes: state.coreData.notes
+    type: state.editing.editType,
+    //id: state.notes.id,
+    editId: state.editing.editId,
+    color: state.editing.color,
+    notes: state.notes.notes,
+    RefreshWhenNoteLabelChange:
+      state.notes.notes[state.editing.editId].labels.length
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    AddNote: data => dispatch({ type: action.ADD_NOTE, data: data }),
     UpdateNote: (data, editId) =>
       dispatch({ type: action.UPDATE_NOTE, data: data, editId: editId }),
     CloseEditing: () => dispatch({ type: action.CLOSE_EDIT_MODE })

@@ -26,12 +26,10 @@ const App = props => {
           .then(doc => {
             if (doc.exists) {
               //Load Data to server_data reducer
-              props.LoadData(doc.data());
-              //Load Data to core_data reducer
-              props.PassDataToCoreData({
-                notes: doc.get("notes"),
-                labels: doc.get("labels")
-              });
+              props.LoadServerData(doc.data());
+              //Load Data to notes and labels reducers
+              props.LoadLabels(doc.get("labels"));
+              props.LoadNotes(doc.get("notes"));
               setLoading(false);
             } else {
               console.log("No user data");
@@ -43,7 +41,6 @@ const App = props => {
       }
     });
   };
-
   useEffect(AuthListener, []);
   useEffect(() => {
     if (!isLoading && firebase.auth().currentUser !== null) {
@@ -67,18 +64,20 @@ const App = props => {
 
 const mapStateToProps = state => {
   return {
-    data: state.coreData,
-    notes: state.servData.notes,
-    labels: state.servData.labels,
+    notes: state.notes.notes,
+    labels: state.labels.labels,
     dataChange: state.servData.dataChange
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    LoadData: data => dispatch({ type: action.LOAD_SERVER_DATA, data: data }),
-    PassDataToCoreData: data =>
-      dispatch({ type: action.LOAD_DATA_TO_APP, data: data })
+    LoadServerData: data =>
+      dispatch({ type: action.LOAD_SERVER_DATA, data: data }),
+    LoadNotes: data =>
+      dispatch({ type: action.LOAD_NOTES_FROM_SERVER, data: data }),
+    LoadLabels: data =>
+      dispatch({ type: action.LOAD_LABELS_FROM_SERVER, data: data })
   };
 };
 

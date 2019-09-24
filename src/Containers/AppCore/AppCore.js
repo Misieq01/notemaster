@@ -35,10 +35,10 @@ const AppCore = props => {
 
 const mapStateToProps = state => {
   return {
-    mode: state.editNote.editMode,
-    notes: state.coreData.notes,
-    labels: state.coreData.labels,
-    labelsDisplay: state.labelMng.display
+    mode: state.editing.editMode,
+    notes: state.notes.notes,
+    labels: state.notes.labels,
+    labelsDisplay: state.labels.display
   };
 };
 const mapDispatchToProps = dispatch => {

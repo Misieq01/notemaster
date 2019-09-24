@@ -52,6 +52,11 @@ const OptionPanel = props => {
     firebase.auth().signOut();
   };
 
+  const CreateNoteHandler = type => {
+    props.AddNote(type);
+    props.StartEditing(type, props.id);
+  };
+
   return (
     <Container>
       <Wrapper>
@@ -62,7 +67,7 @@ const OptionPanel = props => {
           <AddIcon title="Add Note" />
         </Icon>
         {addPanel ? (
-          <ChooseAddType close={setAddPanel} createNote={props.CreateNote} />
+          <ChooseAddType Close={setAddPanel} CreateNote={CreateNoteHandler} />
         ) : null}
         <Icon onClick={props.OpenLabelsManager}>
           <LabelsIcon title="Edit Labels" />
@@ -72,16 +77,28 @@ const OptionPanel = props => {
   );
 };
 
+const mapStateToProps = state => {
+  return {
+    id: state.notes.id
+  };
+};
+
 const mapDispatchToProps = dispatch => {
   return {
-    CreateNote: type =>
-      dispatch({ type: action.CREATE_NOTE, noteType: type, color: "#ffffff" }),
+    StartEditing: (type, id) =>
+      dispatch({
+        type: action.START_EDITING,
+        noteType: type,
+        color: "#ffffff",
+        id: id
+      }),
+    AddNote: type => dispatch({ type: action.ADD_NOTE, noteType: type }),
     OpenLabelsManager: () =>
       dispatch({ type: action.OPEN_LABELS_MANAGER, display: true })
   };
 };
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(OptionPanel);

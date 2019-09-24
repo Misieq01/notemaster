@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 const Container = styled.div`
   width: 240px;
-  max-height: 360px;
+  max-height: 385px;
   background: ${props => props.color};
   box-shadow: 0px 1px 5px grey;
   border-radius: 3px;
@@ -25,7 +25,7 @@ const Title = styled.h2`
 const Text = styled.p`
     width:90%
     hegiht: 70%
-    padding: 5px;
+    padding: 3px;
     margin:0;
     text-align: justify;
     display:inline-block;
@@ -33,11 +33,12 @@ const Text = styled.p`
 `;
 
 const Label = styled.div`
-  font-size: 18px;
-  padding: 3px;
+  font-size: 12px;
+  padding: 2px;
   margin: 2px;
   border-radius: 5px;
   display: inline-block;
+  background: #eeeeee;
 `;
 
 const NoteCard = props => {
@@ -57,9 +58,23 @@ const NoteCard = props => {
     }
     return text;
   };
+  const LabelsTruncate = labels => {
+    let length = 0;
+    let newLabels = [...labels];
+    for (let i = 0; i < newLabels.length; i++) {
+      length += newLabels[i].length;
+      if (length > 40) {
+        newLabels.splice(i, newLabels.length);
+      }
+    }
+    let renderedLabels = newLabels.map((label, index) => {
+      return <Label key={index}>{label}</Label>;
+    });
+    return renderedLabels;
+  };
 
   const text = NoteTruncate(props.text);
-  console.log(props.labels);
+  const labels = LabelsTruncate(props.labels);
 
   return (
     <Container
@@ -68,9 +83,7 @@ const NoteCard = props => {
     >
       <Title>{props.title}</Title>
       <Text>{text}</Text>
-      {props.labels.map((label, index) => {
-        return <Label key={index}>{label}</Label>;
-      })}
+      {labels}
     </Container>
   );
 };

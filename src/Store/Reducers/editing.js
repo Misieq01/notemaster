@@ -4,14 +4,19 @@ const initialState = {
   editMode: false,
   editId: null,
   editType: "",
-  color: "",
-  addLabels: []
+  color: ""
 };
 
 const edit_note = (state = initialState, action) => {
   switch (action.type) {
-    case type.CREATE_NOTE:
-      return { ...state, editMode: true, editType: action.noteType };
+    case type.START_EDITING:
+      return {
+        ...state,
+        editMode: true,
+        editType: action.noteType,
+        editId: action.id,
+        color: action.color
+      };
     case type.CLOSE_EDIT_MODE:
       return {
         ...state,

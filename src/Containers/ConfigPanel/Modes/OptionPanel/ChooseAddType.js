@@ -13,8 +13,8 @@ const Container = styled.div`
 
 const ChooseAddType = props => {
   const AddHandler = type => {
-    props.close(false);
-    props.createNote(type);
+    props.Close(false);
+    props.CreateNote(type);
   };
 
   return (

@@ -88,9 +88,10 @@ const LabelManager = props => {
       <Background />
       <Container>
         <SearchBar
-          placeholder="Search or Add label"
+          placeholder="Search or Add label that has max 10 signs"
           onChange={event => setSearchValue(event.target.value)}
           value={SearchValue}
+          maxLength="22"
         />
         <AddButton onClick={AddLabelHandler}>Add Label</AddButton>
         <LabelsContainer>
@@ -116,8 +117,8 @@ const LabelManager = props => {
 
 const mapStateToProps = state => {
   return {
-    labels: state.coreData.labels,
-    JustForRerender: state.coreData.labels.length
+    labels: state.labels.labels,
+    JustForRerender: state.labels.labels.length
   };
 };
 

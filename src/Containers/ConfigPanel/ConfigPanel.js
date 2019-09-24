@@ -12,7 +12,7 @@ const ConfigPanel = props => {
 
 const mapStateToProps = state => {
   return {
-    editMode: state.editNote.editMode
+    editMode: state.editing.editMode
   };
 };
 

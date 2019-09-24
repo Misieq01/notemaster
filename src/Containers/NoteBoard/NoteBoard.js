@@ -53,8 +53,8 @@ const NoteBoard = props => {
 
 const mapStateToProps = state => {
   return {
-    notes: state.coreData.notes,
-    editMode: state.editNote.editMode
+    notes: state.notes.notes,
+    editMode: state.editing.editMode
   };
 };
 

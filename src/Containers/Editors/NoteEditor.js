@@ -19,10 +19,13 @@ const Text = styled(TextArea)`
 `;
 
 const Label = styled.div`
-  font-size: 20px;
-  padding: 5px;
-  margin: 4px;
+  font-size: 15px;
+  padding: 3px;
+  margin: 2px;
   border-radius: 5px;
+  display: inline-block;
+  background: #eeeeee;
+  cursor: default;
 `;
 
 const NoteEditor = props => {
