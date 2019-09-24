@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 import { connect } from "react-redux";
@@ -7,9 +7,11 @@ import * as action from "../../Store/Actions/ActionType";
 import Masonry from "react-masonry-component";
 
 import NoteCard from "../../Components/Notes/NoteCard";
+import SearchBar from "./SearchBar";
 
 const MasonryDisplay = styled(Masonry)`
   margin: 20px;
+  background: #eeeeee;
 `;
 
 const Container = styled.div`
@@ -18,11 +20,34 @@ const Container = styled.div`
   width: 97%;
   height: 100%;
   background: #eeeeee;
+  text-align: center;
 `;
 
 const NoteBoard = props => {
+  const [search, setSearch] = useState({ value: "", type: "Title" });
+
+  let filteredNotes = props.notes.filter(note => {
+    if (search.value === "") {
+      return note;
+    } else {
+      if (search.type === "Title") {
+        return note.title.toLowerCase().includes(search.value.toLowerCase());
+      } else if (search.type === "Content") {
+        switch (note.type) {
+          case "note":
+            return note.content
+              .toLowerCase()
+              .includes(search.value.toLowerCase());
+          default:
+            console.log("Something is wrong because note doesnt have a type");
+            return note;
+        }
+      }
+    }
+  });
+
   const RenderNotes = () => {
-    return props.notes.map((note, index) => {
+    return filteredNotes.map((note, index) => {
       switch (note.type) {
         case "note":
           return (
@@ -46,6 +71,7 @@ const NoteBoard = props => {
 
   return (
     <Container>
+      <SearchBar search={search} SetSearch={setSearch} />
       <MasonryDisplay>{notes}</MasonryDisplay>
     </Container>
   );

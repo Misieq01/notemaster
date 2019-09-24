@@ -58,7 +58,7 @@ const notes = (state = initialState, action) => {
       return newState;
     ///////////////////////////////////////////////////////////
     case type.ADD_LABELS_TO_NOTE:
-      newState = { ...state };
+      newState = { ...state, forceRefresh: !state.forceRefresh };
       newState.notes[action.id].labels = action.labels;
       return newState;
     ///////////////////////////////////////////////////////////
@@ -71,6 +71,7 @@ const notes = (state = initialState, action) => {
           action.newLabel
         );
       }
+
       return newState;
     default:
       return state;

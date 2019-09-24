@@ -97,8 +97,7 @@ const mapStateToProps = state => {
     editId: state.editing.editId,
     color: state.editing.color,
     notes: state.notes.notes,
-    RefreshWhenNoteLabelChange:
-      state.notes.notes[state.editing.editId].labels.length
+    RefreshWhenNoteLabelChange: state.notes.forceRefresh
   };
 };
 
