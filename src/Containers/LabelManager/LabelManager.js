@@ -66,7 +66,6 @@ const LabelsContainer = styled.div`
 
 const LabelManager = props => {
   const [SearchValue, setSearchValue] = useState("");
-  const [edit, setEdit] = useState(false);
 
   const AddLabelHandler = () => {
     let isExist = false;
@@ -103,8 +102,7 @@ const LabelManager = props => {
                 name={label}
                 Remove={props.RemoveLabel}
                 Rename={props.ChangeLabel}
-                edit={edit}
-                setEdit={setEdit}
+                RefreshLabelNameInNotes={props.RefreshNotesLabels}
               />
             );
           })}
@@ -128,7 +126,13 @@ const mapDispatchToProps = dispatch => {
     AddLabel: label => dispatch({ type: action.ADD_LABEL, label: label }),
     RemoveLabel: label => dispatch({ type: action.REMOVE_LABEL, label: label }),
     ChangeLabel: (label, id) =>
-      dispatch({ type: action.RENAME_LABEL, label: label, id: id })
+      dispatch({ type: action.RENAME_LABEL, label: label, id: id }),
+    RefreshNotesLabels: (oldLabel, newLabel) =>
+      dispatch({
+        type: action.REFRESH_NOTES_LABELS_NAMES,
+        oldLabel: oldLabel,
+        newLabel: newLabel
+      })
   };
 };
 

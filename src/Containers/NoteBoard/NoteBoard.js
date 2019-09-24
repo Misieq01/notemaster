@@ -54,7 +54,8 @@ const NoteBoard = props => {
 const mapStateToProps = state => {
   return {
     notes: state.notes.notes,
-    editMode: state.editing.editMode
+    editMode: state.editing.editMode,
+    RefreshWhenLabelsChange: state.notes.forceRefresh
   };
 };
 

@@ -2,12 +2,19 @@ import * as type from "../Actions/ActionType";
 
 const initialState = {
   notes: [],
-  id: 0
+  id: 0,
+  forceRefresh: false
 };
 
 let newState;
 
-const core_data = (state = initialState, action) => {
+const RefresLabelsNames = (labels, oldLabel, newLabel) => {
+  let newLabels = [...labels];
+  newLabels[newLabels.indexOf(oldLabel)] = newLabel;
+  return newLabels;
+};
+
+const notes = (state = initialState, action) => {
   switch (action.type) {
     case type.LOAD_NOTES_FROM_SERVER:
       return { notes: action.data, id: action.data.length };
@@ -55,9 +62,19 @@ const core_data = (state = initialState, action) => {
       newState.notes[action.id].labels = action.labels;
       return newState;
     ///////////////////////////////////////////////////////////
+    case type.REFRESH_NOTES_LABELS_NAMES:
+      newState = { ...state, forceRefresh: !state.forceRefresh };
+      for (let i = 0; i < newState.notes.length; i++) {
+        newState.notes[i].labels = RefresLabelsNames(
+          newState.notes[i].labels,
+          action.oldLabel,
+          action.newLabel
+        );
+      }
+      return newState;
     default:
       return state;
   }
 };
 
-export default core_data;
+export default notes;

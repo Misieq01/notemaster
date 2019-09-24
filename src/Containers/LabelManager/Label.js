@@ -29,24 +29,24 @@ const Icon = styled.div`
 
 const Label = props => {
   const [newValue, setNewValue] = useState(props.name);
-
-  console.log(props.id);
+  const [edit, setEdit] = useState(false);
 
   const RenameHandler = () => {
     props.Rename(newValue, props.id);
-    props.setEdit(false);
+    props.RefreshLabelNameInNotes(props.name, newValue);
+    setEdit(false);
   };
 
   return (
     <Container>
-      {props.edit ? (
+      {edit ? (
         <div>
           <input
             value={newValue}
             onChange={event => setNewValue(event.target.value)}
           />
           <Icon>
-            <DeleteIcon title="Cancle" onClick={() => props.setEdit(false)} />
+            <DeleteIcon title="Cancle" onClick={() => setEdit(false)} />
           </Icon>
           <Icon>
             <AcceptIcon title="Confirm" onClick={RenameHandler} />
@@ -62,7 +62,7 @@ const Label = props => {
             />
           </Icon>
           <Icon>
-            <RenameIcon title="Rename" onClick={() => props.setEdit(true)} />
+            <RenameIcon title="Rename" onClick={() => setEdit(true)} />
           </Icon>
         </div>
       )}
