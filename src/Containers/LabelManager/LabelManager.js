@@ -103,6 +103,7 @@ const LabelManager = props => {
                 Remove={props.RemoveLabel}
                 Rename={props.ChangeLabel}
                 RefreshLabelNameInNotes={props.RefreshNotesLabels}
+                DeleteLabelFromNotes={props.DeleteLabelFromNotes}
               />
             );
           })}
@@ -132,7 +133,9 @@ const mapDispatchToProps = dispatch => {
         type: action.REFRESH_NOTES_LABELS_NAMES,
         oldLabel: oldLabel,
         newLabel: newLabel
-      })
+      }),
+    DeleteLabelFromNotes: label =>
+      dispatch({ type: action.DELETE_LABEL_FROM_NOTES, label: label })
   };
 };
 

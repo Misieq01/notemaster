@@ -13,6 +13,11 @@ const RefresLabelsNames = (labels, oldLabel, newLabel) => {
   newLabels[newLabels.indexOf(oldLabel)] = newLabel;
   return newLabels;
 };
+const DeleteLabelFromNotes = (labels, deletedLabel) => {
+  let newLabels = [...labels];
+  newLabels.splice(newLabels.indexOf(deletedLabel), 1);
+  return newLabels;
+};
 
 const notes = (state = initialState, action) => {
   switch (action.type) {
@@ -72,6 +77,15 @@ const notes = (state = initialState, action) => {
         );
       }
 
+      return newState;
+    case type.DELETE_LABEL_FROM_NOTES:
+      newState = { ...state, forceRefresh: !state.forceRefresh };
+      for (let i = 0; i < newState.notes.length; i++) {
+        newState.notes[i].labels = DeleteLabelFromNotes(
+          newState.notes[i].labels,
+          action.label
+        );
+      }
       return newState;
     default:
       return state;

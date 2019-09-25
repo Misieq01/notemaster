@@ -22,7 +22,7 @@ const ChooseAddType = props => {
       <button onClick={() => AddHandler("note")}>Add Note</button>
       <button onClick={() => AddHandler("list")}>Add List</button>
       <button onClick={() => AddHandler("snippet")}>Add Code Snippet</button>
-      <button onClick={() => props.close(false)}>Close</button>
+      <button onClick={() => props.Close(false)}>Close</button>
     </Container>
   );
 };

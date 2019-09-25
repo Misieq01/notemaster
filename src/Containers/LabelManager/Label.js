@@ -36,6 +36,10 @@ const Label = props => {
     props.RefreshLabelNameInNotes(props.name, newValue);
     setEdit(false);
   };
+  const RemoveHandler = () => {
+    props.Remove(props.name);
+    props.DeleteLabelFromNotes(props.name);
+  };
 
   return (
     <Container>
@@ -56,10 +60,7 @@ const Label = props => {
         <div>
           {props.name}
           <Icon>
-            <DeleteIcon
-              title="Delete"
-              onClick={() => props.Remove(props.name)}
-            />
+            <DeleteIcon title="Delete" onClick={RemoveHandler} />
           </Icon>
           <Icon>
             <RenameIcon title="Rename" onClick={() => setEdit(true)} />
