@@ -37,6 +37,8 @@ const SearchBar = props => {
     if (props.search.type === "Title") {
       props.SetSearch({ ...props.search, type: "Content" });
     } else if (props.search.type === "Content") {
+      props.SetSearch({ ...props.search, type: "Label" });
+    } else if (props.search.type === "Label") {
       props.SetSearch({ ...props.search, type: "Title" });
     }
   };

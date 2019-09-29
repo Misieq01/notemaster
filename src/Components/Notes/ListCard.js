@@ -109,7 +109,7 @@ const ListCard = props => {
           <Icon>
             <FiledBoxIcon />
           </Icon>
-          <ListElement>{parent.name}</ListElement>
+          <ListElement background={props.color}>{parent.name}</ListElement>
         </ListItemWrapper>
         <div style={{ marginLeft: "20px" }}>
           {parent.childs.map((child, childIndex) => {
@@ -118,7 +118,7 @@ const ListCard = props => {
                 <Icon>
                   <BoxIcon />
                 </Icon>
-                <ListElement>{child.name}</ListElement>
+                <ListElement background={props.color}>{child.name}</ListElement>
               </ListItemWrapper>
             );
           })}

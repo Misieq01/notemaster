@@ -21,11 +21,30 @@ const Container = styled.div`
   width: 97%;
   height: 100%;
   background: #eeeeee;
-  text-align: center;
+  \text-align: center;
 `;
 
 const NoteBoard = props => {
   const [search, setSearch] = useState({ value: "", type: "Title" });
+
+  const PlaceListContentIntoOneString = list => {
+    let Text = "";
+    list.map(parent => {
+      Text = Text.concat(parent.name, " ");
+      parent.childs.map(child => {
+        Text = Text.concat(child.name, " ");
+      });
+    });
+    return Text;
+  };
+
+  const PlaceLabelsIntoOneString = labels => {
+    let Text = "";
+    labels.map(label => {
+      Text = Text.concat(label, " ");
+    });
+    return Text;
+  };
 
   let filteredNotes = props.notes.filter(note => {
     if (search.value === "") {
@@ -39,10 +58,18 @@ const NoteBoard = props => {
             return note.content
               .toLowerCase()
               .includes(search.value.toLowerCase());
+          case "list":
+            let text = PlaceListContentIntoOneString(note.content);
+            return text
+              .toLowerCase()
+              .includes(search.value.toLocaleLowerCase());
           default:
             console.log("Something is wrong because note doesnt have a type");
             return note;
         }
+      } else if (search.type === "Label") {
+        let text = PlaceLabelsIntoOneString(note.labels);
+        return text.toLowerCase().includes(search.value.toLowerCase());
       }
     }
   });
