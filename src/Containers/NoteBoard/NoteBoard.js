@@ -7,6 +7,7 @@ import * as action from "../../Store/Actions/ActionType";
 import Masonry from "react-masonry-component";
 
 import NoteCard from "../../Components/Notes/NoteCard";
+import ListCard from "../../Components/Notes/ListCard";
 import SearchBar from "./SearchBar";
 
 const MasonryDisplay = styled(Masonry)`
@@ -53,11 +54,23 @@ const NoteBoard = props => {
           return (
             <NoteCard
               color={note.color}
-              text={note.content}
+              content={note.content}
               title={note.title}
               id={note.id}
               key={index}
-              click={props.EditNote}
+              Click={props.EditNote}
+              labels={note.labels}
+            />
+          );
+        case "list":
+          return (
+            <ListCard
+              color={note.color}
+              content={note.content}
+              title={note.title}
+              id={note.id}
+              key={index}
+              Click={props.EditNote}
               labels={note.labels}
             />
           );

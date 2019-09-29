@@ -35,7 +35,7 @@ const ResizableTextArea = props => {
   });
 
   const HandleChange = event => {
-    props.change(event, "content");
+    props.onChange(event, "content");
 
     const lineHeight = props.lineHeight;
     const minRows = data.minRows;
@@ -71,6 +71,9 @@ const ResizableTextArea = props => {
       placeholder={props.placeholder}
       onChange={event => HandleChange(event)}
       onFocus={event => HandleChange(event)}
+      onClick={props.onClick}
+      onKeyUp={props.onKeyUp}
+      onKeyDown={props.onKeyDown}
       background={props.background}
       lineHeight={props.lineHeight + "px"}
     />

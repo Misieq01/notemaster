@@ -101,9 +101,9 @@ const LabelManager = props => {
                 id={index}
                 name={label}
                 Remove={props.RemoveLabel}
+                DeleteLabelFromNotes={props.DeleteLabelFromNotes}
                 Rename={props.ChangeLabel}
                 RefreshLabelNameInNotes={props.RefreshNotesLabels}
-                DeleteLabelFromNotes={props.DeleteLabelFromNotes}
               />
             );
           })}

@@ -42,7 +42,7 @@ const NoteEditor = props => {
         maxRows={20}
         lineHeight={30}
         placeholder="Place for your thoughts"
-        change={event => props.getValue(event, "content")}
+        onChange={event => props.getValue(event, "content")}
         value={props.twoWayBinding.content}
         background={props.color}
       />

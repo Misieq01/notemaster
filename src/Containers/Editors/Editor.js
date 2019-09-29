@@ -46,6 +46,9 @@ const Editor = props => {
   const GetInputValue = (event, type) => {
     setData({ ...data, [type]: event.target.value });
   };
+  const GetList = list => {
+    setData({ ...data, content: list });
+  };
   const WhichEditor = type => {
     switch (type) {
       case "note":
@@ -58,7 +61,15 @@ const Editor = props => {
           />
         );
       case "list":
-        return <ListEditor getValue={GetInputValue} twoWayBinding={data} />;
+        return (
+          <ListEditor
+            GetValue={GetInputValue}
+            GetList={GetList}
+            data={data}
+            color={props.color}
+            labels={props.notes[props.editId].labels}
+          />
+        );
       case "snippet":
         return (
           <CodeSnippetEditor getValue={GetInputValue} twoWayBinding={data} />

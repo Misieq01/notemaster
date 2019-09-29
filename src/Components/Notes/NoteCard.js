@@ -73,12 +73,12 @@ const NoteCard = props => {
     return renderedLabels;
   };
 
-  const text = NoteTruncate(props.text);
+  const text = NoteTruncate(props.content);
   const labels = LabelsTruncate(props.labels);
 
   return (
     <Container
-      onClick={() => props.click("note", props.id, props.color)}
+      onClick={() => props.Click("note", props.id, props.color)}
       color={props.color}
     >
       <Title>{props.title}</Title>

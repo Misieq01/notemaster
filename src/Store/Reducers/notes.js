@@ -3,7 +3,8 @@ import * as type from "../Actions/ActionType";
 const initialState = {
   notes: [],
   id: 0,
-  forceRefresh: false
+  forceRefresh: false,
+  isNew: false
 };
 
 let newState;
@@ -26,20 +27,35 @@ const notes = (state = initialState, action) => {
     ///////////////////////////////////////////////////////////
     case type.ADD_NOTE:
       newState = { ...state };
+      let content;
+      if (action.noteType === "note") {
+        content = "";
+      } else if (action.noteType === "list") {
+        content = [{ id: 0, name: "", childs: [] }];
+      }
       newState.notes.push({
         id: state.id,
         type: action.noteType,
         title: "",
-        content: "",
+        content: content,
         color: "#ffffff",
         labels: []
       });
-      return { ...newState, id: state.id + 1 };
+      return { ...newState, id: state.id + 1, isNew: true };
+    ///////////////////////////////////////////////////////////
+    case type.CANCEL_ADDING_NEW_NOTE:
+      newState = { ...state };
+      if (state.isNew === true) {
+        newState.notes.pop();
+        return newState;
+      } else {
+        return state;
+      }
     ///////////////////////////////////////////////////////////
     case type.UPDATE_NOTE:
       newState = { ...state };
       newState.notes[action.editId] = action.data;
-      return { ...newState };
+      return { ...newState, isNew: false };
     ///////////////////////////////////////////////////////////
     case type.DELETE_NOTE:
       newState = { ...state };

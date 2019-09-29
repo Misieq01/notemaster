@@ -5,6 +5,7 @@ export const SAVE_DATA_TO_SERVER = "SAVE_DATA_TO_SERVER";
 // REDUCER ===> NOTES
 export const LOAD_NOTES_FROM_SERVER = "LOAD_NOTES_FROM_SERVER";
 export const ADD_NOTE = "ADD_NOTE";
+export const CANCEL_ADDING_NEW_NOTE = "CANCEL_ADDING_NEW_NOTE";
 export const UPDATE_NOTE = "UPDATE_NOTE";
 export const DELETE_NOTE = "DELETE_NOTE";
 export const COPY_NOTE = "COPY_NOTE";

@@ -64,6 +64,12 @@ const EditPanel = props => {
     props.CloseEditor();
   };
 
+  const CancelHandler = () => {
+    props.CloseEditor();
+    props.CancelAddingNewNote();
+    props.RefreshNotesId();
+  };
+
   return (
     <div>
       <Wrapper />
@@ -76,12 +82,9 @@ const EditPanel = props => {
         ) : null}
         <Button onClick={() => setAddLabelDisplay(true)}>Add Label</Button>
         {addLabelDisplay ? (
-          <AddLabel
-            Close={() => setAddLabelDisplay(false)}
-            //AddLabel={props.AddLabelToNote}
-          />
+          <AddLabel Close={() => setAddLabelDisplay(false)} />
         ) : null}
-        <Button onClick={props.CloseEditor}>Cancel</Button>
+        <Button onClick={CancelHandler}>Cancel</Button>
       </Container>
     </div>
   );
@@ -98,7 +101,8 @@ const mapDispatchToProps = dispatch => {
     CloseEditor: () => dispatch({ type: action.CLOSE_EDIT_MODE }),
     DeleteNote: id => dispatch({ type: action.DELETE_NOTE, id: id }),
     CopyNote: id => dispatch({ type: action.COPY_NOTE, id: id }),
-    RefreshNotesId: () => dispatch({ type: action.REFRESH_NOTES_ID })
+    RefreshNotesId: () => dispatch({ type: action.REFRESH_NOTES_ID }),
+    CancelAddingNewNote: () => dispatch({ type: action.CANCEL_ADDING_NEW_NOTE })
   };
 };
 
