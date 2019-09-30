@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 
 import { ReactComponent as BoxIcon } from "../../SVGS/box.svg";
-import { ReactComponent as FiledBoxIcon } from "../../SVGS/filled_box.svg";
 
 const Container = styled.div`
   width: 240px;
@@ -107,7 +106,7 @@ const ListCard = props => {
       <div key={parent.id}>
         <ListItemWrapper>
           <Icon>
-            <FiledBoxIcon />
+            <BoxIcon />
           </Icon>
           <ListElement background={props.color}>{parent.name}</ListElement>
         </ListItemWrapper>

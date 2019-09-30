@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 
 import TextArea from "../../Components/ResizableTextArea";
 
 import { ReactComponent as BoxIcon } from "../../SVGS/box.svg";
-import { ReactComponent as FiledBoxIcon } from "../../SVGS/filled_box.svg";
 
 const Title = styled.input`
   width: 100%;
@@ -134,7 +133,7 @@ const ListEditor = props => {
             <div key={parent.id}>
               <ListItemWrapper>
                 <Icon>
-                  <FiledBoxIcon />
+                  <BoxIcon />
                 </Icon>
                 <ListElementText
                   minRows={1}
