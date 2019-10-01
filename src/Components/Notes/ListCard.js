@@ -1,20 +1,20 @@
-import React from "react";
+import React, { useMemo } from "react";
 import styled from "styled-components";
 
 import { ReactComponent as BoxIcon } from "../../SVGS/box.svg";
+import { useList } from "../../utils/useList";
 
 const Container = styled.div`
   width: 240px;
-  max-height: 450px;
   background: ${props => props.color};
-  box-shadow: 0px 2px 6px #595959;
-  border-radius: 3px;
-  margin: 10px;
-  display: inline-block;
-  transition: all 0.2s ease-in-out;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  border-radius: 8px;
+  padding: 12px;
+  margin: 10px 0;
+  transition: all 155ms ease-in-out;
   cursor: pointer;
   :hover {
-    transform: scale(1.05);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
   }
   text-align: center;
 `;
@@ -24,6 +24,18 @@ const Title = styled.h2`
     padding: 10px;
     margin:0;
     font-size: 18px;
+    text-transform: uppercase;
+    text-align: left;
+    opacity: 0.95;
+`;
+
+const Label = styled.div`
+  font-size: 12px;
+  padding: 2px;
+  margin: 2px;
+  border-radius: 5px;
+  display: inline-block;
+  background: #eeeeee;
 `;
 const List = styled.div`
   text-align: left;
@@ -52,96 +64,63 @@ const Icon = styled.div`
   margin-left: 5px;
 `;
 
-const Label = styled.div`
-  font-size: 12px;
-  padding: 2px;
-  margin: 2px;
-  border-radius: 5px;
-  display: inline-block;
-  background: #eeeeee;
-`;
+const MAX_PARENT_LEN = 8;
+const MAX_CHILD_LEN = 5;
+const MAX_TEXT_LEN = 100;
 
-const ListCard = props => {
-  // This fucking shit has to be reworked
-  // Funny thing: If you try to slice child list it will mute redux state
-  // And if you slice in parent it will work without some fucking mutating
-  // And the funniest thing is that this shit has no acces to update redux state
-  // So i don't have fucking idea how it is possible
-  const ListTruncate = oldList => {
-    let list = [...oldList];
-    let textLength = 0;
-    let elementsCounter = 0;
+const ListCard = ({ content, color, id, title, ...props }) => {
+  const [list] = useList([...content]);
+  const [labels] = useList([...props.labels]);
 
-    for (let i = 0; i < list.length; i++) {
-      elementsCounter += 1;
-      textLength += list[i].name.length;
-      if (elementsCounter >= 10 || textLength >= 300) {
-        return list.slice(0, i);
-      }
-      for (let j = 0; j < list[i].childs.length; j++) {
-        elementsCounter += 1;
-        textLength += list[i].childs[j].name;
-        if (elementsCounter >= 10 || textLength >= 300) {
-          list[i].childs = list[i].childs.slice(0, j);
-          return list;
-        }
-      }
-    }
-
-    return list;
+  const truncateText = (t, len = MAX_TEXT_LEN) => {
+    if (t.length > len) t = t.splice(0, len) + "...";
+    return t;
   };
 
-  const LabelsTruncate = labels => {
-    let length = 0;
-    let newLabels = [...labels];
-    for (let i = 0; i < newLabels.length; i++) {
-      length += newLabels[i].length;
-      if (length > 40) {
-        newLabels.splice(i, newLabels.length);
-      }
-    }
-    let renderedLabels = newLabels.map((label, index) => {
-      return <Label key={index}>{label}</Label>;
-    });
-    return renderedLabels;
-  };
+  const truncList = useMemo(() => {
+    return [...list].slice(0, MAX_PARENT_LEN).map(e => {
+      let childs = [...e.childs]
+        .slice(0, MAX_CHILD_LEN)
+        .map(x => ({ id: x.id, name: truncateText(x.name) }));
+      e.name = truncateText(e.name, 40);
 
-  let truncatedList = ListTruncate(props.content);
-
-  const list = truncatedList.map((parent, index) => {
-    return (
-      <div key={parent.id}>
-        <ListItemWrapper>
-          <Icon>
-            <BoxIcon />
-          </Icon>
-          <ListElement background={props.color}>{parent.name}</ListElement>
-        </ListItemWrapper>
-        <div style={{ marginLeft: "20px" }}>
-          {parent.childs.map((child, childIndex) => {
-            return (
-              <ListItemWrapper key={child.id}>
-                <Icon>
-                  <BoxIcon />
-                </Icon>
-                <ListElement background={props.color}>{child.name}</ListElement>
-              </ListItemWrapper>
-            );
-          })}
+      return (
+        <div key={e.id}>
+          <ListItemWrapper>
+            <Icon>
+              <BoxIcon />
+            </Icon>
+            <ListElement background={color}>{e.name}</ListElement>
+          </ListItemWrapper>
+          <div style={{ marginLeft: "20px" }}>
+            {childs.map(c => {
+              return (
+                <ListItemWrapper key={c.id}>
+                  <Icon>
+                    <BoxIcon />
+                  </Icon>
+                  <ListElement background={color}>{c.name}</ListElement>
+                </ListItemWrapper>
+              );
+            })}
+          </div>
         </div>
-      </div>
-    );
-  });
-  const labels = LabelsTruncate(props.labels);
+      );
+    });
+  }, [list, color]);
+
+  const truncLabels = useMemo(
+    () => labels.map((e, i) => <Label key={i}>{truncateText(e, 40)}</Label>),
+    [labels]
+  );
 
   return (
-    <Container
-      onClick={() => props.Click("list", props.id, props.color)}
-      color={props.color}
-    >
-      <Title>{props.title}</Title>
-      <List>{list}</List>
-      {labels}
+    <Container onClick={() => props.Click("list", id, color)} color={color}>
+      <Title>{title}</Title>
+
+      <List>{truncList}</List>
+
+      {truncLabels}
     </Container>
   );
 };
