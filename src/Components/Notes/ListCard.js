@@ -63,8 +63,8 @@ const Label = styled.div`
 
 const ListCard = props => {
   // This fucking shit has to be reworked
-  // Funny thing: If you try to splice child list it will mute redux state
-  // And if you splice in parent it will work without some fucking mutating
+  // Funny thing: If you try to slice child list it will mute redux state
+  // And if you slice in parent it will work without some fucking mutating
   // And the funniest thing is that this shit has no acces to update redux state
   // So i don't have fucking idea how it is possible
   const ListTruncate = oldList => {
@@ -82,7 +82,7 @@ const ListCard = props => {
         elementsCounter += 1;
         textLength += list[i].childs[j].name;
         if (elementsCounter >= 10 || textLength >= 300) {
-          list[i].childs = list[i].childs.splice(0, j);
+          list[i].childs = list[i].childs.slice(0, j);
           return list;
         }
       }
