@@ -14,35 +14,39 @@ import { ReactComponent as LabelsIcon } from "../../../../SVGS/tags.svg";
 
 const Container = styled.div`
   height: 100vh;
-  width: 3%;
+  max-height: 100%;
+  padding: 0 1.2rem;
   background: #eeeeee;
   text-align: center;
-  border-left: 2px solid #4a89ff;
+  border-left: 2px solid rgba(21, 21, 21, 0.14);
   position: fixed;
   right: 0;
   top: 0;
-  margin: auto;
   z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
 `;
 
 const Icon = styled.div`
-  width: 40px;
-  height: 40px;
-  transition: all 0.2s ease-in-out;
+  width: 30px;
+  height: 30px;
+  transition: all 155ms ease-in-out;
   cursor: pointer;
   :hover {
-    transform: scale(1.2);
+    transform: scale(1.1);
   }
   display: block;
   margin-bottom: 25px;
 `;
 const Wrapper = styled.div`
   width: 100%;
-  height: 30%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  margin: 24px 0;
 `;
 
 const OptionPanel = props => {
@@ -60,9 +64,6 @@ const OptionPanel = props => {
   return (
     <Container>
       <Wrapper>
-        <Icon onClick={SingOut}>
-          <LogoutIcon title="Logout" />
-        </Icon>
         <Icon onClick={() => setAddPanel(true)}>
           <AddIcon title="Add Note" />
         </Icon>
@@ -71,6 +72,11 @@ const OptionPanel = props => {
         ) : null}
         <Icon onClick={props.OpenLabelsManager}>
           <LabelsIcon title="Edit Labels" />
+        </Icon>
+      </Wrapper>
+      <Wrapper>
+        <Icon onClick={SingOut}>
+          <LogoutIcon title="Logout" />
         </Icon>
       </Wrapper>
     </Container>

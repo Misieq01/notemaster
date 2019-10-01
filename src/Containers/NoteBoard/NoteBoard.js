@@ -11,14 +11,17 @@ import ListCard from "../../Components/Notes/ListCard";
 import SearchBar from "./SearchBar";
 
 const MasonryDisplay = styled(Masonry)`
-  margin: 20px;
+  margin-right: 20px;
+  margin-left: 65px;
   background: #eeeeee;
+  position: relative;
 `;
 
 const Container = styled.div`
-  display: inline-block;
+  display: block;
   float: left;
-  width: 97%;
+  width: calc(100vw - 45px - 16px);
+  max-width: 1920px;
   height: 100%;
   background: #eeeeee;
   text-align: center;
@@ -28,7 +31,7 @@ const NoteBoard = props => {
   const [search, setSearch] = useState({ value: "", type: "Title" });
 
   const MasonryOptions = {
-    columnWidth: 260,
+    columnWidth: 284,
     transitionDuration: 0
   };
 

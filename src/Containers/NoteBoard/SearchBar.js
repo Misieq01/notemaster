@@ -2,26 +2,32 @@ import React from "react";
 import styled from "styled-components";
 
 const Container = styled.div`
-  margin: 20px;
+  margin: 20px 20px 40px 20px;
   display: flex;
   justify-content: center;
+  background: #fff;
   align-items: center;
   width: 740px;
-  border-radius: 6px;
-  box-shadow: 0px 2px 6px #6e6e6e;
+  border-radius: 45px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 `;
 
 const SearchInput = styled.input`
-  padding: 10px;
+  padding: 10px 16px 10px 24px;
   width: 600px;
   height: 45px;
   font-size: 21px;
   display: inline-block;
-  border-radius: 6px 0px 0px 6px;
+  border-radius: 45px 0px 0px 45px;
   border: none;
   outline: none;
   text-decoration: none;
-  background: #eeeeee;
+  background: #fff;
+  opacity: 0.7;
+  transition: all 155ms ease;
+  :focus {
+    opacity: 1;
+  }
   ::placeholder {
     color: #1c1a1a;
   }
@@ -29,13 +35,10 @@ const SearchInput = styled.input`
 
 const TypeBox = styled.div`
   font-size: 20px;
-  padding: 10px;
-  width: 100px;
-  height: 45px;
+  padding: 10px 16px 10px 10px;
+  min-width: 100px;
   border-radius: 0px 6px 6px 0px;
-  background: #ffc929;
-  display: inline-block;
-  line-height: 45px;
+  color: #f3b500;
   cursor: pointer;
   user-select: none;
 `;
@@ -60,7 +63,9 @@ const SearchBar = props => {
             props.SetSearch({ ...props.search, value: event.target.value })
           }
         ></SearchInput>
-        <TypeBox onClick={ChangeSearchType}>By {props.search.type}</TypeBox>
+        <TypeBox onClick={ChangeSearchType}>
+          by {props.search.type.toLowerCase()}
+        </TypeBox>
       </Container>
     </div>
   );

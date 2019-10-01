@@ -3,16 +3,15 @@ import styled from "styled-components";
 
 const Container = styled.div`
   width: 240px;
-  max-height: 385px;
   background: ${props => props.color};
-  box-shadow: 0px 2px 6px #595959;
-  border-radius: 3px;
-  margin: 10px;
-  display: inline-block;
-  transition: all 0.2s ease-in-out;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  border-radius: 8px;
+  padding: 12px;
+  margin: 10px 0;
+  transition: all 155ms ease-in-out;
   cursor: pointer;
   :hover {
-    transform: scale(1.05);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
   }
   text-align: center;
 `;
@@ -22,10 +21,13 @@ const Title = styled.h2`
     padding: 10px;
     margin:0;
     font-size: 18px;
+    text-transform: uppercase;
+    text-align: left;
+    opacity: 0.95;
 `;
 const Text = styled.p`
     width:90%
-    hegiht: 70%
+    opacity: 0.75;
     padding: 3px;
     margin:0;
     text-align: justify;
@@ -88,5 +90,24 @@ const NoteCard = props => {
     </Container>
   );
 };
+
+function hexToRgbA(hex, alpha = 1) {
+  var c;
+  if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
+    c = hex.substring(1).split("");
+    if (c.length == 3) {
+      c = [c[0], c[0], c[1], c[1], c[2], c[2]];
+    }
+    c = "0x" + c.join("");
+    return (
+      "rgba(" +
+      [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(",") +
+      "," +
+      alpha +
+      ")"
+    );
+  }
+  throw new Error("Bad Hex");
+}
 
 export default NoteCard;

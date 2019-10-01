@@ -54,9 +54,9 @@ const ColorPicker = props => {
   return (
     <Container>
       <Color
-        background="#ff5252"
+        background="##ff6b6b"
         rounded="5px 0px 0px 0px"
-        onClick={() => ChangeColorHandler("#ff5252")}
+        onClick={() => ChangeColorHandler("##ff6b6b")}
       />
       <Color
         background="#ffcc4d"
