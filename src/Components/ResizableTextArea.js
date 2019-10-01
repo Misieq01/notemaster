@@ -76,6 +76,7 @@ const ResizableTextArea = props => {
       onKeyDown={props.onKeyDown}
       background={props.background}
       lineHeight={props.lineHeight + "px"}
+      maxLength={props.maxLength}
     />
   );
 };

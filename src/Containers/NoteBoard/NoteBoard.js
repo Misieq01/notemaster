@@ -21,11 +21,16 @@ const Container = styled.div`
   width: 97%;
   height: 100%;
   background: #eeeeee;
-  \text-align: center;
+  text-align: center;
 `;
 
 const NoteBoard = props => {
   const [search, setSearch] = useState({ value: "", type: "Title" });
+
+  const MasonryOptions = {
+    columnWidth: 260,
+    transitionDuration: 0
+  };
 
   const PlaceListContentIntoOneString = list => {
     let Text = "";
@@ -112,7 +117,7 @@ const NoteBoard = props => {
   return (
     <Container>
       <SearchBar search={search} SetSearch={setSearch} />
-      <MasonryDisplay>{notes}</MasonryDisplay>
+      <MasonryDisplay options={MasonryOptions}>{notes}</MasonryDisplay>
     </Container>
   );
 };

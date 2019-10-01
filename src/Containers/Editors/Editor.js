@@ -89,7 +89,7 @@ const Editor = props => {
     );
     props.CloseEditing();
   };
-
+  console.log(props.color);
   return (
     <div>
       <Background />

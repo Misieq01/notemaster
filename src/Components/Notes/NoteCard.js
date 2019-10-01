@@ -5,14 +5,14 @@ const Container = styled.div`
   width: 240px;
   max-height: 385px;
   background: ${props => props.color};
-  box-shadow: 0px 1px 5px grey;
+  box-shadow: 0px 2px 6px #595959;
   border-radius: 3px;
   margin: 10px;
   display: inline-block;
   transition: all 0.2s ease-in-out;
   cursor: pointer;
   :hover {
-    transform: scale(1.1);
+    transform: scale(1.05);
   }
   text-align: center;
 `;
@@ -21,6 +21,7 @@ const Title = styled.h2`
     height: 10%
     padding: 10px;
     margin:0;
+    font-size: 18px;
 `;
 const Text = styled.p`
     width:90%

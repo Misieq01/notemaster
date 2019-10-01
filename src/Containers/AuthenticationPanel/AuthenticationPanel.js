@@ -6,6 +6,7 @@ import Signup from "./Signup";
 
 import { ReactComponent as LoginIlustration } from "../../SVGS/Ilustrations/login.svg";
 import { ReactComponent as SignupIlustration } from "../../SVGS/Ilustrations/signup.svg";
+import { ReactComponent as BackArrowIcon } from "../../SVGS/back-arrow.svg";
 
 const Container = styled.div`
   width: 100vw;
@@ -79,6 +80,16 @@ const Button = styled.button`
   }
 `;
 
+const BackIcon = styled.div`
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  cursor: pointer;
+  margin: 5px;
+`;
+
 const AuthenticationPanlel = props => {
   const [mode, setMode] = useState("none");
 
@@ -106,11 +117,17 @@ const AuthenticationPanlel = props => {
       {mode === "login" ? (
         <InputPanel>
           <Login />
+          <BackIcon onClick={() => setMode("none")}>
+            <BackArrowIcon style={{ fill: "#eeeeee" }} />
+          </BackIcon>
         </InputPanel>
       ) : null}
       {mode === "signup" ? (
         <InputPanel>
           <Signup />
+          <BackIcon onClick={() => setMode("none")}>
+            <BackArrowIcon style={{ fill: "#eeeeee" }} />
+          </BackIcon>
         </InputPanel>
       ) : null}
     </Container>

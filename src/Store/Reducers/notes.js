@@ -38,7 +38,7 @@ const notes = (state = initialState, action) => {
         type: action.noteType,
         title: "",
         content: content,
-        color: "#ffffff",
+        color: "#eeeeee",
         labels: []
       });
       return { ...newState, id: state.id + 1, isNew: true };

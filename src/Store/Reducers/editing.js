@@ -23,7 +23,7 @@ const edit_note = (state = initialState, action) => {
         editId: null,
         editType: "",
         editMode: false,
-        color: "#ffffff"
+        color: "#eeeeee"
       };
     case type.EDIT_NOTE:
       return {

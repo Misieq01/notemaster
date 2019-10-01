@@ -89,7 +89,7 @@ const mapDispatchToProps = dispatch => {
       dispatch({
         type: action.START_EDITING,
         noteType: type,
-        color: "#ffffff",
+        color: "#eeeeee",
         id: id
       }),
     AddNote: type => dispatch({ type: action.ADD_NOTE, noteType: type }),

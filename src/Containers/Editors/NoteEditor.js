@@ -10,12 +10,12 @@ const Title = styled.input`
   border: none;
   outline: none;
   text-decoration: none;
-  background: ${props => props.background};
+  background: ${props => props.background || "#eeeeee"};
   border-radius: 8px 8px 0px 0px;
 `;
 const Text = styled(TextArea)`
   font-size: 25px;
-  background: ${props => props.background};
+  background: ${props => props.background || "#eeeeee"};
 `;
 
 const Label = styled.div`

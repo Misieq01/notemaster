@@ -53,7 +53,6 @@ const Text = styled.p`
 const Icon = styled.div`
   width: 40px;
   height: 40px;
-  transition: all 0.2s ease-in-out;
   display: inline-block;
 `;
 

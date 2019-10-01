@@ -71,9 +71,9 @@ const ColorPicker = props => {
         onClick={() => ChangeColorHandler("#8ced66")}
       />
       <Color
-        background="#ffffff"
+        background="#eeeeee"
         rounded="0px 5px 0px 0px"
-        onClick={() => ChangeColorHandler("#ffffff")}
+        onClick={() => ChangeColorHandler("#eeeeee")}
       />
       <CloseButton onClick={props.Close}>Close</CloseButton>
     </Container>

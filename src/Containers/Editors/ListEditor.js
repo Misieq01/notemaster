@@ -33,7 +33,7 @@ const NewListElement = styled.div`
     text-decoration:none;
     outline:none;
     font-size: 23px;
-    background: ${props => props.background || "white"};
+    background: ${props => props.background || "#eeeeee"};
     line-height: 30px;
     cursor: pointer
 `;
@@ -117,8 +117,6 @@ const ListEditor = props => {
     }
   };
 
-  console.log(props.data.content);
-
   return (
     <div style={{ textAlign: "left" }}>
       <Title
@@ -144,6 +142,7 @@ const ListEditor = props => {
                   value={parent.name}
                   onKeyUp={event => KeyUpHandler(event, index, null, false)}
                   onChange={() => console.log()}
+                  maxLength="80"
                 />
               </ListItemWrapper>
               <div style={{ marginLeft: "10px" }}>
