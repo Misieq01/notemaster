@@ -163,6 +163,7 @@ const ListEditor = props => {
                           KeyUpHandler(event, index, childIndex, true)
                         }
                         onChange={() => console.log()}
+                        maxLength="80"
                       />
                     </ListItemWrapper>
                   );

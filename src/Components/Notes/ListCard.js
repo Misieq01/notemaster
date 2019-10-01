@@ -5,7 +5,7 @@ import { ReactComponent as BoxIcon } from "../../SVGS/box.svg";
 
 const Container = styled.div`
   width: 240px;
-  max-height: 385px;
+  max-height: 450px;
   background: ${props => props.color};
   box-shadow: 0px 2px 6px #595959;
   border-radius: 3px;
@@ -64,31 +64,30 @@ const Label = styled.div`
 const ListCard = props => {
   // This fucking shit has to be reworked
   // Funny thing: If you try to splice child list it will mute redux state
-  // but only child where you splice not whole spliced thing
-  // And if you splice in parent it will work without some fuckning mutating
+  // And if you splice in parent it will work without some fucking mutating
+  // And the funniest thing is that this shit has no acces to update redux state
+  // So i don't have fucking idea how it is possible
   const ListTruncate = oldList => {
     let list = [...oldList];
     let textLength = 0;
     let elementsCounter = 0;
-    let childs;
 
     for (let i = 0; i < list.length; i++) {
-      childs = [...list[i].childs];
       elementsCounter += 1;
       textLength += list[i].name.length;
       if (elementsCounter >= 10 || textLength >= 300) {
-        return list.splice(0, i);
-      } else {
-        for (let j = 0; j < childs.length; j++) {
-          elementsCounter += 1;
-          textLength += list[i].name.length;
-          if (elementsCounter >= 10 || textLength >= 300) {
-            list[i].childs = childs.splice(0, j);
-            return list;
-          }
+        return list.slice(0, i);
+      }
+      for (let j = 0; j < list[i].childs.length; j++) {
+        elementsCounter += 1;
+        textLength += list[i].childs[j].name;
+        if (elementsCounter >= 10 || textLength >= 300) {
+          list[i].childs = list[i].childs.splice(0, j);
+          return list;
         }
       }
     }
+
     return list;
   };
 
@@ -107,7 +106,7 @@ const ListCard = props => {
     return renderedLabels;
   };
 
-  const truncatedList = ListTruncate(props.content);
+  let truncatedList = ListTruncate(props.content);
 
   const list = truncatedList.map((parent, index) => {
     return (
