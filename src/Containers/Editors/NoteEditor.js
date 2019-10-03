@@ -14,11 +14,21 @@ const Title = styled.input`
   text-decoration: none;
   background: ${props => props.background || "#eeeeee"};
   border-radius: 8px 8px 0px 0px;
+  transition: all 0.2s ease-in-out;
+  :focus {
+    opacity: 1;
+  }
 `;
 const Text = styled(TextArea)`
   font-size: 25px;
   background: ${props => props.background || "#eeeeee"};
   opacity: 0.75;
+  padding: 4% 4% 2% 4%;
+  width: 92%;
+  transition: all 0.2s ease-in-out;
+  :focus {
+    opacity: 1;
+  }
 `;
 
 const Label = styled.div`

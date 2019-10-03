@@ -19,7 +19,7 @@ const Container = styled.div`
 const Title = styled.h2`
     width:90%;
     height: 10%
-    padding: 10px;
+    padding: 10px 0;
     margin:0;
     font-size: 18px;
     text-transform: uppercase;
@@ -53,6 +53,7 @@ const ListElement = styled.div`
     font-size: 15px;
     background: ${props => props.background || "white"};
     cursor: pointer
+    opacity: 0.75;
 `;
 
 const Icon = styled.div`
@@ -71,16 +72,17 @@ const ListCard = ({ content, color, id, title, ...props }) => {
   const labels = [...props.labels];
 
   const truncateText = (t, len = MAX_TEXT_LEN) => {
-    if (t.length > len) t = t.splice(0, len) + "...";
+    if (t.length > len) t = t.slice(0, len) + "...";
     return t;
   };
 
   const truncList = useMemo(() => {
     return [...list].slice(0, MAX_PARENT_LEN).map(e => {
+      let name = [...e.name];
       let childs = [...e.childs]
-        .slice(0, MAX_CHILD_LEN)
+        .splice(0, MAX_CHILD_LEN)
         .map(x => ({ id: x.id, name: truncateText(x.name) }));
-      e.name = truncateText(e.name, 40);
+      name = truncateText(e.name, 40);
 
       return (
         <div key={e.id}>
@@ -88,7 +90,7 @@ const ListCard = ({ content, color, id, title, ...props }) => {
             <Icon>
               <BoxIcon />
             </Icon>
-            <ListElement background={color}>{e.name}</ListElement>
+            <ListElement background={color}>{name}</ListElement>
           </ListItemWrapper>
           <div style={{ marginLeft: "20px" }}>
             {childs.map(c => {

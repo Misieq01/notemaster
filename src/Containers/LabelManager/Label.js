@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-import { ReactComponent as RenameIcon } from "../../SVGS/rename.svg";
-import { ReactComponent as DeleteIcon } from "../../SVGS/close.svg";
-import { ReactComponent as AcceptIcon } from "../../SVGS/accept.svg";
+import { ReactComponent as RenameIcon } from "../../SVGS/pencil.svg";
+import { ReactComponent as DeleteIcon } from "../../SVGS/x.svg";
+import { ReactComponent as AcceptIcon } from "../../SVGS/tick.svg";
 
 const Container = styled.div`
   width: 40%;

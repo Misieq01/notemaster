@@ -8,7 +8,7 @@ import * as action from "../../../../Store/Actions/ActionType";
 
 import ChooseAddType from "./ChooseAddType";
 
-import { ReactComponent as AddIcon } from "../../../../SVGS/add.svg";
+import { ReactComponent as AddIcon } from "../../../../SVGS/circle_plus.svg";
 import { ReactComponent as LogoutIcon } from "../../../../SVGS/logout.svg";
 import { ReactComponent as LabelsIcon } from "../../../../SVGS/tags.svg";
 
@@ -95,7 +95,7 @@ const mapDispatchToProps = dispatch => {
       dispatch({
         type: action.START_EDITING,
         noteType: type,
-        color: "#eeeeee",
+        color: "#fff269",
         id: id
       }),
     AddNote: type => dispatch({ type: action.ADD_NOTE, noteType: type }),

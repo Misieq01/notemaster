@@ -7,70 +7,55 @@ import * as action from "../../../../Store/Actions/ActionType";
 import ColorPicker from "./ColorPicker";
 import AddLabel from "./AddLabel";
 
+import { ReactComponent as DeleteIcon } from "../../../../SVGS/EditPanel/delete.svg";
+import { ReactComponent as CopyIcon } from "../../../../SVGS/EditPanel/copy.svg";
+import { ReactComponent as ColorIcon } from "../../../../SVGS/EditPanel/color.svg";
+import { ReactComponent as LabelIcon } from "../../../../SVGS/EditPanel/label.svg";
+import { ReactComponent as CancelIcon } from "../../../../SVGS/EditPanel/cancel.svg";
+
 const Container = styled.div`
-  height: 100vh;
-  width: 12vw;
-  background: #eeeeee;
+  height: 75px;
+  width: 20vw;
+  background: ${props => props.background};
   position: fixed;
   right: 0;
   top: 0;
+  left:0;
   margin: auto;
   z-index: 1000;
-  border-left: 2px solid rgba(21, 21, 21, 0.14);
+  border-radius: 0 0 50px 50px
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+  align-items: flex-end;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 `;
 
-const Wrapper = styled.div`
-  height: 100vh;
-  width: 3%;
-  background: #eeeeee;
-  border-left: 2px solid #4a89ff;
-  position: fixed;
-  right: 0;
-  top: 0;
-  margin: auto;
-`;
-
-const Button = styled.div`
-  background: ${props => props.background || "inherit"}
-  color: ${props => props.fontColor || "black"}
-  width: 100%;
-  height: 60px;
-  font-size: 25px;
-  padding 10px;
-  opacity: 0.6;
-  text-align: center;
-  line-height: 60px;
-  border-bottom: 2px solid rgba(21, 21, 21, 0.05);
-  cursor:pointer;
-  transition: all 0.2s ease-in-out;
-  :hover{
-    border-bottom: 2px solid rgba(21, 21, 21, 0.30);
+const Icon = styled.div`
+  width: 30px;
+  height: 30px;
+  transition: all 155ms ease-in-out;
+  cursor: pointer;
+  :hover {
     opacity: 1;
   }
+  display: inline-block;
+  margin-bottom: 25px;
+  opacity: 0.75;
 `;
 
 const EditPanel = props => {
-  const [colorPickerDisplay, setColorPickerDisplay] = useState({
-    bool: false,
-    text: "Change Color"
-  });
+  const [colorPickerDisplay, setColorPickerDisplay] = useState(false);
   const [addLabelDisplay, setAddLabelDisplay] = useState(false);
 
   const ColorPickerDisplay = () => {
-    if (colorPickerDisplay.bool) {
-      return <ColorPicker Close={ColorPickerSetter} />;
+    if (colorPickerDisplay) {
+      return <ColorPicker Close={() => setColorPickerDisplay(false)} />;
     } else {
       return null;
     }
   };
-  const ColorPickerSetter = () => {
-    console.log("fired");
-    if (colorPickerDisplay.bool) {
-      setColorPickerDisplay({ bool: false, text: "Change Color" });
-    } else {
-      setColorPickerDisplay({ bool: true, text: "Close" });
-    }
-  };
+
   const ColorPickerEl = ColorPickerDisplay();
 
   const DeleteHandler = () => {
@@ -93,17 +78,32 @@ const EditPanel = props => {
 
   return (
     <div>
-      <Wrapper />
-      <Container>
-        <Button onClick={DeleteHandler}>Delete</Button>
-        <Button onClick={CopyHandler}>Copy</Button>
-        <Button onClick={ColorPickerSetter}>{colorPickerDisplay.text}</Button>
+      <Container background={props.color}>
+        <Icon>
+          <DeleteIcon onClick={DeleteHandler} title="Delete Note" />
+        </Icon>
+        <Icon>
+          <CopyIcon onClick={CopyHandler} title="Copy Note" />
+        </Icon>
+        <Icon>
+          <ColorIcon
+            onClick={() => setColorPickerDisplay(true)}
+            title="Change Color"
+          />
+        </Icon>
         {ColorPickerEl}
-        <Button onClick={() => setAddLabelDisplay(true)}>Add Label</Button>
+        <Icon>
+          <LabelIcon
+            onClick={() => setAddLabelDisplay(true)}
+            title="Change Labels"
+          />
+        </Icon>
         {addLabelDisplay ? (
           <AddLabel Close={() => setAddLabelDisplay(false)} />
         ) : null}
-        <Button onClick={CancelHandler}>Cancel Editing</Button>
+        <Icon>
+          <CancelIcon onClick={CancelHandler} title="Cancel" />
+        </Icon>
       </Container>
     </div>
   );
@@ -111,7 +111,8 @@ const EditPanel = props => {
 
 const mapStateToProps = state => {
   return {
-    editId: state.editing.editId
+    editId: state.editing.editId,
+    color: state.editing.color
   };
 };
 

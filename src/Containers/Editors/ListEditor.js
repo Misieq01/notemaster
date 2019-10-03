@@ -6,20 +6,29 @@ import TextArea from "../../Components/ResizableTextArea";
 import { ReactComponent as BoxIcon } from "../../SVGS/box.svg";
 
 const Title = styled.input`
-  width: 96%;
+  width: 92%;
   font-size: 30px;
   line-height: 30px;
   opacity: 0.8;
-  padding: 2% 2% 0 2%;
+  padding: 4% 4% 0 4%;
   border: none;
   outline: none;
   text-decoration: none;
   background: ${props => props.background || "#eeeeee"};
   border-radius: 8px 8px 0px 0px;
+  transition: all 0.2s ease-in-out;
+  :focus {
+    opacity: 1;
+  }
 `;
 const ListElementText = styled(TextArea)`
   font-size: 25px;
   background: ${props => props.background};
+  opacity: 0.75;
+  transition: all 0.2s ease-in-out;
+  :focus {
+    opacity: 1;
+  }
 `;
 const ListItemWrapper = styled.div`
   display: flex;
@@ -40,7 +49,9 @@ const NewListElement = styled.div`
     line-height: 30px;
     cursor: pointer
 `;
-const List = styled.div``;
+const List = styled.div`
+  padding: 2% 2% 1% 2%;
+`;
 
 const Label = styled.div`
   font-size: 15px;

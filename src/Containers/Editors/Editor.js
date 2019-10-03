@@ -14,13 +14,14 @@ const Container = styled.div`
   min-height: 60px;
   position: absolute;
   z-index: 1000;
-  top: 100px;
+  top: 200px;
   right: 0;
   left: 0;
   margin: auto;
   background: ${props => props.background};
   border-radius: 8px;
   text-align: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 `;
 
 const CloseButton = styled.button`
@@ -28,18 +29,17 @@ const CloseButton = styled.button`
   width: 50%;
   margin: 1.5%;
   cursor: pointer;
-  border: 2px solid rgba(21, 21, 21, 0.1);
+  border: none;
   outline: none;
-  opacity: 0.6;
   background: none;
   text-decoration: none;
   border-radius: 5px;
   transition: all 0.2s ease-in-out;
-  :hover {
-    opacity: 1;
-    border: 2px solid rgba(21, 21, 21, 0.3);
-  }
   font-size: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  :hover {
+    transform: scale(1.05);
+  }
 `;
 
 const Editor = props => {

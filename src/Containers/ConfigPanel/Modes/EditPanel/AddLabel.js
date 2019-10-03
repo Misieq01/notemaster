@@ -10,42 +10,48 @@ import { connect } from "react-redux";
 
 const Container = styled.div`
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 200px;
+  right: -650px;
   margin: auto;
-  width: 21vw;
-  height: 20vw;
-  box-shadow: 0px 1p 5px #777777;
+  width: 250px;
+  padding: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   border-radius: 6px;
-  background: red;
+  background: ${props => props.background};
   text-align: center;
 `;
 
 const Button = styled.div`
-  display:inline-block;
-  background: #5496ff;
-  color: #eeeeee;
-  width: 90%;
-  font-size: 25px;
-  padding 5px;
-  text-align: center;
-  cursor:pointer;
+  height: 15%;
+  width: 50%;
+  margin: 1.5%;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  background: none;
+  display: inline-block;
+  border-radius: 5px;
   transition: all 0.2s ease-in-out;
-  border-radius:4px;
-  :hover{
-    transform: scale(1.05)
+  font-size: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  :hover {
+    transform: scale(1.05);
   }
 `;
 const LabelTag = styled.div`
-  background: #eeeeee;
-  padding: 5px;
-  width: 80%;
-  hegiht: 22px;
+  background: none;
+  width: 96%;
+  height: 22px;
   display: flex;
+  padding: 2%;
   align-items: center;
   cursor: pointer;
-  margin: 5px;
   text-align: center;
+  transition: all 0.2s ease-in-out;
+  opacity: 0.8;
+  :hover {
+    opacity: 1;
+  }
 `;
 const LabelText = styled.p`
   margin: 0px 0px 0px 5px;
@@ -136,8 +142,7 @@ const AddLabel = props => {
   };
 
   return (
-    <Container>
-      <p>Choose labels to add</p>
+    <Container background={props.color}>
       {labels.map((label, index) => {
         return (
           <LabelTag
@@ -151,7 +156,6 @@ const AddLabel = props => {
         );
       })}
       <Button onClick={AddLabelHandler}>Apply</Button>
-      <Button onClick={props.Close}>Cancel</Button>
     </Container>
   );
 };
@@ -160,7 +164,8 @@ const mapStateToProps = state => {
   return {
     labels: state.labels.labels,
     id: state.editing.editId,
-    notes: state.notes.notes
+    notes: state.notes.notes,
+    color: state.editing.color
   };
 };
 
