@@ -28,14 +28,16 @@ const CloseButton = styled.button`
   width: 50%;
   margin: 1.5%;
   cursor: pointer;
-  border: none;
+  border: 2px solid rgba(21, 21, 21, 0.1);
+  outline: none;
+  opacity: 0.6;
+  background: none;
   text-decoration: none;
   border-radius: 5px;
-  background: #5496ff;
-  color: #eeeeee;
   transition: all 0.2s ease-in-out;
   :hover {
-    transform: scale(1.1);
+    opacity: 1;
+    border: 2px solid rgba(21, 21, 21, 0.3);
   }
   font-size: 20px;
 `;

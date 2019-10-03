@@ -13,36 +13,20 @@ const Container = styled.div`
   position:absolute;
   z-index: 600;
   top: 150px;
-  right: 100px;
+  right: 250px;
 `;
 const Color = styled.div`
   width: 20%;
-  height: 80%;
+  height: 100%;
   border-radius: ${props => props.rounded || "none"}
   background: ${props => props.background || "red"};
   display: inline-block;
   transition: all 0.2s ease-in-out;
+  opacity: 0.8
   cursor: pointer;
   :hover{
-    transform: scale(1.05)
+    opacity: 1;
   }
-`;
-const CloseButton = styled.button`
-  height: 20%;
-  width: 100%;
-  cursor: pointer;
-  border: 2px solid #5496ff;
-  text-decoration: none;
-  border-radius: 0px 0px 5px 5px;
-  background: #5496ff;
-  color: #eeeeee;
-  transition: all 0.3s ease-in-out;
-  :hover {
-    background: #eeeeee;
-    color: black;
-  }
-  font-size: 20px;
-  margin-top: -4px;
 `;
 
 const ColorPicker = props => {
@@ -54,9 +38,9 @@ const ColorPicker = props => {
   return (
     <Container>
       <Color
-        background="##ff6b6b"
+        background="#ff6b6b"
         rounded="5px 0px 0px 0px"
-        onClick={() => ChangeColorHandler("##ff6b6b")}
+        onClick={() => ChangeColorHandler("#ff6b6b")}
       />
       <Color
         background="#ffcc4d"
@@ -75,7 +59,6 @@ const ColorPicker = props => {
         rounded="0px 5px 0px 0px"
         onClick={() => ChangeColorHandler("#eeeeee")}
       />
-      <CloseButton onClick={props.Close}>Close</CloseButton>
     </Container>
   );
 };

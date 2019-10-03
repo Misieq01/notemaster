@@ -4,9 +4,11 @@ import styled from "styled-components";
 import TextArea from "../../Components/ResizableTextArea";
 
 const Title = styled.input`
-  width: 100%;
+  width: 92%;
   font-size: 30px;
   line-height: 30px;
+  opacity: 0.8;
+  padding: 4% 4% 0 4%;
   border: none;
   outline: none;
   text-decoration: none;
@@ -16,6 +18,7 @@ const Title = styled.input`
 const Text = styled(TextArea)`
   font-size: 25px;
   background: ${props => props.background || "#eeeeee"};
+  opacity: 0.75;
 `;
 
 const Label = styled.div`

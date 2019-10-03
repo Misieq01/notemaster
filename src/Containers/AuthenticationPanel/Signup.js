@@ -8,20 +8,23 @@ import { ReactComponent as EmailIcon } from "../../SVGS/email.svg";
 import { ReactComponent as PasswordIcon } from "../../SVGS/password.svg";
 
 const InputBox = styled.input`
-  width: 80%;
-  font-size: 25px;
+  font-size: 22px;
   margin-left: 5px
   padding: 10px;
   outline: none;
   text-decoration: none;
   border: none;
-  background: #5465d1;
-  color: #eeeeee
+  background: #eeeeee;
   border-radius: 3px;
   display: inline-block;
+  transition: all 0.2s ease-in-out;
+  opacity: 0.7;
   ::placeholder {
-    color: #eeeeee;
+    color: #1c1a1a;
   }
+:focus{
+  opacity: 1;
+}
 `;
 
 const InputWrapper = styled.div`
@@ -32,28 +35,36 @@ const InputWrapper = styled.div`
 `;
 
 const Button = styled.button`
-  background: #5465d1;
-  border: 1px solid #5465d1;
+  background: #eeeeee;
+  border: 1px solid black;
   border-radius: 3px;
+  outline: none;
   width: 90%;
   height: 10%;
   padding: 5px;
+  margin-top: 70px;
   font-size: 25px;
-  color: #eeeeee
   cursor: pointer;
   transition: all 0.2s ease-in-out;
-  :hover{
-    border: 1px solid #eeeeee;
+  opacity: 0.7;
+  :hover {
+    opacity: 1;
   }
 `;
 const Text = styled.p`
-  color: ${props => props.color || "#eeeeee"};
-  font-size: 22px;
+  font-size: ${props => props.fontSize || "19px"};
+  cursor: ${props => props.cursor};
+  color: ${props => props.color};
+  opacity: ${props => props.opacity || 0.7}
+  transition: all 0.2s ease-in-out;
+  :hover {
+    opacity: ${props => props.opacityHover || 0.7};
+  }
 `;
 
 const Icon = styled.div`
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   display: inline-block;
 `;
 
@@ -113,13 +124,15 @@ const Signup = props => {
   return (
     <div style={{ textAlign: "center" }}>
       {error.check ? (
-        <Text color="#fa6e6e">{error.text}</Text>
+        <Text color="#fa6e6e" opacity={1}>
+          {error.text}
+        </Text>
       ) : (
         <Text>Fill required data to signup</Text>
       )}
       <InputWrapper>
         <Icon>
-          <NameIcon style={{ fill: "#eeeeee" }} />
+          <NameIcon />
         </Icon>
         <InputBox
           placeholder="FirsName"
@@ -128,7 +141,7 @@ const Signup = props => {
       </InputWrapper>
       <InputWrapper>
         <Icon>
-          <NameIcon style={{ fill: "#eeeeee" }} />
+          <NameIcon />
         </Icon>
         <InputBox
           placeholder="LastName"
@@ -137,7 +150,7 @@ const Signup = props => {
       </InputWrapper>
       <InputWrapper>
         <Icon>
-          <EmailIcon style={{ fill: "#eeeeee" }} />
+          <EmailIcon />
         </Icon>
         <InputBox
           placeholder="Email"
@@ -147,7 +160,7 @@ const Signup = props => {
       </InputWrapper>
       <InputWrapper>
         <Icon>
-          <PasswordIcon style={{ fill: "#eeeeee" }} />
+          <PasswordIcon />
         </Icon>
         <InputBox
           placeholder="Password"
@@ -155,6 +168,14 @@ const Signup = props => {
           onChange={event => ChangeData(event, "password")}
         />
       </InputWrapper>
+      <Text
+        fontSize="16px"
+        cursor="pointer"
+        opacityHover={1}
+        onClick={props.Login}
+      >
+        Back to login
+      </Text>
       <Button onClick={CreateAccount}>SignUp</Button>
     </div>
   );

@@ -9,14 +9,14 @@ import AddLabel from "./AddLabel";
 
 const Container = styled.div`
   height: 100vh;
-  width: 20vw;
+  width: 12vw;
   background: #eeeeee;
   position: fixed;
   right: 0;
   top: 0;
   margin: auto;
   z-index: 1000;
-  border-left: 2px solid #4a89ff;
+  border-left: 2px solid rgba(21, 21, 21, 0.14);
 `;
 
 const Wrapper = styled.div`
@@ -37,20 +37,41 @@ const Button = styled.div`
   height: 60px;
   font-size: 25px;
   padding 10px;
+  opacity: 0.6;
   text-align: center;
   line-height: 60px;
+  border-bottom: 2px solid rgba(21, 21, 21, 0.05);
   cursor:pointer;
-  border-bottom: 1px solid rgba(74, 137, 255,0.5);
   transition: all 0.2s ease-in-out;
   :hover{
-    font-size: 28px;
-    border-bottom: 2px solid #4a89ff;
+    border-bottom: 2px solid rgba(21, 21, 21, 0.30);
+    opacity: 1;
   }
 `;
 
 const EditPanel = props => {
-  const [colorPickerDisplay, setColorPickerDisplay] = useState(false);
+  const [colorPickerDisplay, setColorPickerDisplay] = useState({
+    bool: false,
+    text: "Change Color"
+  });
   const [addLabelDisplay, setAddLabelDisplay] = useState(false);
+
+  const ColorPickerDisplay = () => {
+    if (colorPickerDisplay.bool) {
+      return <ColorPicker Close={ColorPickerSetter} />;
+    } else {
+      return null;
+    }
+  };
+  const ColorPickerSetter = () => {
+    console.log("fired");
+    if (colorPickerDisplay.bool) {
+      setColorPickerDisplay({ bool: false, text: "Change Color" });
+    } else {
+      setColorPickerDisplay({ bool: true, text: "Close" });
+    }
+  };
+  const ColorPickerEl = ColorPickerDisplay();
 
   const DeleteHandler = () => {
     props.DeleteNote(props.editId);
@@ -76,15 +97,13 @@ const EditPanel = props => {
       <Container>
         <Button onClick={DeleteHandler}>Delete</Button>
         <Button onClick={CopyHandler}>Copy</Button>
-        <Button onClick={() => setColorPickerDisplay(true)}>Set Color</Button>
-        {colorPickerDisplay ? (
-          <ColorPicker Close={() => setColorPickerDisplay(false)} />
-        ) : null}
+        <Button onClick={ColorPickerSetter}>{colorPickerDisplay.text}</Button>
+        {ColorPickerEl}
         <Button onClick={() => setAddLabelDisplay(true)}>Add Label</Button>
         {addLabelDisplay ? (
           <AddLabel Close={() => setAddLabelDisplay(false)} />
         ) : null}
-        <Button onClick={CancelHandler}>Cancel</Button>
+        <Button onClick={CancelHandler}>Cancel Editing</Button>
       </Container>
     </div>
   );

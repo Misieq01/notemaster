@@ -2,8 +2,6 @@ import React, { useMemo } from "react";
 import styled from "styled-components";
 
 import { ReactComponent as BoxIcon } from "../../SVGS/box.svg";
-import { useList } from "../../utils/useList";
-
 const Container = styled.div`
   width: 240px;
   background: ${props => props.color};
@@ -64,13 +62,13 @@ const Icon = styled.div`
   margin-left: 5px;
 `;
 
-const MAX_PARENT_LEN = 8;
-const MAX_CHILD_LEN = 5;
-const MAX_TEXT_LEN = 100;
+const MAX_PARENT_LEN = 5;
+const MAX_CHILD_LEN = 3;
+const MAX_TEXT_LEN = 90;
 
 const ListCard = ({ content, color, id, title, ...props }) => {
-  const [list] = useList([...content]);
-  const [labels] = useList([...props.labels]);
+  const list = [...content];
+  const labels = [...props.labels];
 
   const truncateText = (t, len = MAX_TEXT_LEN) => {
     if (t.length > len) t = t.splice(0, len) + "...";

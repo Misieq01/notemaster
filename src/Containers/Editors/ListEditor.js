@@ -6,13 +6,15 @@ import TextArea from "../../Components/ResizableTextArea";
 import { ReactComponent as BoxIcon } from "../../SVGS/box.svg";
 
 const Title = styled.input`
-  width: 100%;
+  width: 96%;
   font-size: 30px;
   line-height: 30px;
+  opacity: 0.8;
+  padding: 2% 2% 0 2%;
   border: none;
   outline: none;
   text-decoration: none;
-  background: ${props => props.background};
+  background: ${props => props.background || "#eeeeee"};
   border-radius: 8px 8px 0px 0px;
 `;
 const ListElementText = styled(TextArea)`
@@ -27,6 +29,7 @@ const ListItemWrapper = styled.div`
 const NewListElement = styled.div`
     width: '96%'
     min-height: 30px;
+    opacity: 0.75;
     padding: 2%;
     resize:none;
     border:none;
@@ -142,7 +145,6 @@ const ListEditor = props => {
                   value={parent.name}
                   onKeyUp={event => KeyUpHandler(event, index, null, false)}
                   onChange={() => console.log()}
-                  maxLength="80"
                 />
               </ListItemWrapper>
               <div style={{ marginLeft: "10px" }}>
@@ -163,7 +165,6 @@ const ListEditor = props => {
                           KeyUpHandler(event, index, childIndex, true)
                         }
                         onChange={() => console.log()}
-                        maxLength="80"
                       />
                     </ListItemWrapper>
                   );
