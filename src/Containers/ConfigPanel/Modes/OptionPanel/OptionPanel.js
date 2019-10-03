@@ -64,7 +64,7 @@ const OptionPanel = props => {
   return (
     <Container>
       <Wrapper>
-        <Icon onClick={() => setAddPanel(true)}>
+        <Icon onClick={() => setAddPanel(!addPanel)}>
           <AddIcon title="Add Note" />
         </Icon>
         {addPanel ? (
