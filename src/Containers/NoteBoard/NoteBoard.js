@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import styled from "styled-components";
 
 import { connect } from "react-redux";
@@ -36,10 +36,10 @@ const NoteBoard = props => {
 
   const PlaceListContentIntoOneString = list => {
     let Text = "";
-    list.map(parent => {
-      Text = Text.concat(parent.name, " ");
-      parent.childs.map(child => {
-        Text = Text.concat(child.name, " ");
+    list.map(e => {
+      Text = Text.concat(e.name, " ");
+      e.childs.map(el => {
+        Text = Text.concat(el.name, " ");
       });
     });
     return Text;
@@ -47,39 +47,45 @@ const NoteBoard = props => {
 
   const PlaceLabelsIntoOneString = labels => {
     let Text = "";
-    labels.map(label => {
-      Text = Text.concat(label, " ");
+    labels.map(e => {
+      Text = Text.concat(e, " ");
     });
     return Text;
   };
 
-  let filteredNotes = props.notes.filter(note => {
-    if (search.value === "") {
-      return note;
-    } else {
-      if (search.type === "Title") {
-        return note.title.toLowerCase().includes(search.value.toLowerCase());
-      } else if (search.type === "Content") {
-        switch (note.type) {
-          case "note":
-            return note.content
+  const filteredNotes = useMemo(() => {
+    const ContentHandler = (type, content, value) => {
+      if (type === "note") {
+        return content.toLowerCase().includes(value.toLowerCase());
+      } else {
+        return PlaceListContentIntoOneString(content)
+          .toLowerCase()
+          .includes(value.toLocaleLowerCase());
+      }
+    };
+
+    return props.notes.filter(note => {
+      if (search.value === "") {
+        return note;
+      } else {
+        switch (search.type) {
+          case "Title":
+            return note.title
               .toLowerCase()
               .includes(search.value.toLowerCase());
-          case "list":
-            let text = PlaceListContentIntoOneString(note.content);
-            return text
+          case "Content":
+            console.log(ContentHandler(note.type, note.content, search.value));
+            return ContentHandler(note.type, note.content, search.value);
+          case "Label":
+            return PlaceLabelsIntoOneString(note.labels)
               .toLowerCase()
-              .includes(search.value.toLocaleLowerCase());
+              .includes(search.value.toLowerCase());
           default:
-            console.log("Something is wrong because note doesnt have a type");
             return note;
         }
-      } else if (search.type === "Label") {
-        let text = PlaceLabelsIntoOneString(note.labels);
-        return text.toLowerCase().includes(search.value.toLowerCase());
       }
-    }
-  });
+    });
+  }, [props.notes, search]);
 
   const Notes = filteredNotes.map((e, i) => {
     return (
