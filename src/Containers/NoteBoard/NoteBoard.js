@@ -6,8 +6,7 @@ import * as action from "../../Store/Actions/ActionType";
 
 import Masonry from "react-masonry-component";
 
-import NoteCard from "../../Components/Notes/NoteCard";
-import ListCard from "../../Components/Notes/ListCard";
+import Card from "../../Components/Notes/Card";
 import SearchBar from "./SearchBar";
 
 const MasonryDisplay = styled(Masonry)`
@@ -82,45 +81,25 @@ const NoteBoard = props => {
     }
   });
 
-  const RenderNotes = () => {
-    return filteredNotes.map((note, index) => {
-      switch (note.type) {
-        case "note":
-          return (
-            <NoteCard
-              color={note.color}
-              content={note.content}
-              title={note.title}
-              id={note.id}
-              key={index}
-              Click={props.EditNote}
-              labels={note.labels}
-            />
-          );
-        case "list":
-          return (
-            <ListCard
-              color={note.color}
-              content={note.content}
-              title={note.title}
-              id={note.id}
-              key={index}
-              Click={props.EditNote}
-              labels={note.labels}
-            />
-          );
-        default:
-          return null;
-      }
-    });
-  };
-
-  let notes = RenderNotes();
+  const Notes = filteredNotes.map((e, i) => {
+    return (
+      <Card
+        color={e.color}
+        content={e.content}
+        title={e.title}
+        id={e.id}
+        key={i}
+        Click={props.EditNote}
+        labels={e.labels}
+        type={e.type}
+      />
+    );
+  });
 
   return (
     <Container>
       <SearchBar search={search} SetSearch={setSearch} />
-      <MasonryDisplay options={MasonryOptions}>{notes}</MasonryDisplay>
+      <MasonryDisplay options={MasonryOptions}>{Notes}</MasonryDisplay>
     </Container>
   );
 };
