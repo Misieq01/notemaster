@@ -5,22 +5,6 @@ import TextArea from "../../Components/ResizableTextArea";
 
 import { ReactComponent as BoxIcon } from "../../SVGS/box.svg";
 
-const Title = styled.input`
-  width: 92%;
-  font-size: 30px;
-  line-height: 30px;
-  opacity: 0.8;
-  padding: 4% 4% 0 4%;
-  border: none;
-  outline: none;
-  text-decoration: none;
-  background: ${props => props.background || "#eeeeee"};
-  border-radius: 8px 8px 0px 0px;
-  transition: all 0.2s ease-in-out;
-  :focus {
-    opacity: 1;
-  }
-`;
 const ListElementText = styled(TextArea)`
   font-size: 25px;
   background: ${props => props.background};
@@ -53,16 +37,6 @@ const List = styled.div`
   padding: 2% 2% 1% 2%;
 `;
 
-const Label = styled.div`
-  font-size: 15px;
-  padding: 3px;
-  margin: 2px;
-  border-radius: 5px;
-  display: inline-block;
-  background: #eeeeee;
-  cursor: default;
-`;
-
 const Icon = styled.div`
   width: 15px;
   height: auto;
@@ -70,77 +44,61 @@ const Icon = styled.div`
   margin-left: 5px;
 `;
 
-const ListEditor = props => {
+const ListEditor = ({ content, color, GetContent, ...props }) => {
   const AddNewListElement = (isChild, id) => {
-    let newList = [...props.data.content];
+    const newList = [...content];
     if (!isChild) {
       newList.push({
         id: newList[newList.length - 1].id + 1,
         name: "",
         childs: []
       });
-      props.GetList(newList);
     } else if (isChild) {
-      if (newList[id].childs.length === 0) {
-        newList[id].childs.push({ id: 0, name: "" });
-        props.GetList(newList);
+      const element = newList[id].childs;
+      if (element.length === 0) {
+        element.push({ id: 0, name: "" });
       } else {
-        newList[id].childs.push({
-          id: newList[id].childs[newList[id].childs.length - 1].id + 1,
+        element.push({
+          id: element[element.length - 1].id + 1,
           name: ""
         });
-        props.GetList(newList);
       }
     }
+    GetContent(newList);
   };
 
   const KeyUpHandler = (event, parentId, childId, isChild) => {
-    let newList = [...props.data.content];
+    let newList = [...content];
+    const element = newList[parentId];
 
     // Deleting and changing parents list elements
     if (!isChild) {
-      if (
-        event.keyCode === 8 &&
-        newList[parentId].name === "" &&
-        newList.length > 1
-      ) {
+      if (event.keyCode === 8 && element.name === "" && newList.length > 1) {
         newList = [
           ...newList.slice(0, parentId),
           ...newList.slice(parentId + 1)
         ];
-        props.GetList(newList);
       } else {
-        newList[parentId].name = event.target.value;
-        props.GetList(newList);
+        element.name = event.target.value;
       }
     } // Deleting and changing child list elements
     else if (isChild) {
-      if (
-        event.keyCode === 8 &&
-        newList[parentId].childs[childId].name === ""
-      ) {
-        newList[parentId].childs = [
-          ...newList[parentId].childs.slice(0, childId),
-          ...newList[parentId].childs.slice(childId + 1)
+      if (event.keyCode === 8 && element.childs[childId].name === "") {
+        element.childs = [
+          ...element.childs.slice(0, childId),
+          ...element.childs.slice(childId + 1)
         ];
-        props.GetList(newList);
       } else {
-        newList[parentId].childs[childId].name = event.target.value;
-        props.GetList(newList);
+        element.childs[childId].name = event.target.value;
       }
     }
+    GetContent(newList);
   };
 
   return (
     <div style={{ textAlign: "left" }}>
-      <Title
-        placeholder="Title"
-        onChange={event => props.GetValue(event, "title")}
-        value={props.data.title}
-        background={props.color}
-      />
       <List>
-        {props.data.content.map((parent, index) => {
+        {content.map((parent, index) => {
           return (
             <div key={parent.id}>
               <ListItemWrapper>
@@ -152,7 +110,7 @@ const ListEditor = props => {
                   maxRows={4}
                   lineHeight={30}
                   placeholder="Write your thoughts..."
-                  background={props.color}
+                  background={color}
                   value={parent.name}
                   onKeyUp={event => KeyUpHandler(event, index, null, false)}
                   onChange={() => console.log()}
@@ -170,7 +128,7 @@ const ListEditor = props => {
                         maxRows={4}
                         lineHeight={30}
                         placeholder="Write your thoughts..."
-                        background={props.color}
+                        background={color}
                         value={child.name}
                         onKeyUp={event =>
                           KeyUpHandler(event, index, childIndex, true)
@@ -181,7 +139,7 @@ const ListEditor = props => {
                   );
                 })}
                 <NewListElement
-                  background={props.color}
+                  background={color}
                   onClick={() => AddNewListElement(true, parent.id)}
                 >
                   Add sub list element
@@ -191,15 +149,12 @@ const ListEditor = props => {
           );
         })}
         <NewListElement
-          background={props.color}
+          background={color}
           onClick={() => AddNewListElement(false, null)}
         >
           Add list element
         </NewListElement>
       </List>
-      {props.labels.map((label, index) => {
-        return <Label key={index}>{label}</Label>;
-      })}
     </div>
   );
 };

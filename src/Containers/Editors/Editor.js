@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 import { connect } from "react-redux";
@@ -6,7 +6,6 @@ import * as action from "../../Store/Actions/ActionType";
 
 import NoteEditor from "./NoteEditor";
 import ListEditor from "./ListEditor";
-import CodeSnippetEditor from "./CodeSnippetEditor";
 import Background from "../../Components/Background";
 
 const Container = styled.div`
@@ -22,6 +21,23 @@ const Container = styled.div`
   border-radius: 8px;
   text-align: center;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+`;
+
+const Title = styled.input`
+  width: 92%;
+  font-size: 30px;
+  line-height: 30px;
+  opacity: 0.8;
+  padding: 4% 4% 0 4%;
+  border: none;
+  outline: none;
+  text-decoration: none;
+  background: ${props => props.background || "#eeeeee"};
+  border-radius: 8px 8px 0px 0px;
+  transition: all 0.2s ease-in-out;
+  :focus {
+    opacity: 1;
+  }
 `;
 
 const CloseButton = styled.button`
@@ -41,40 +57,45 @@ const CloseButton = styled.button`
     transform: scale(1.05);
   }
 `;
+const Label = styled.div`
+  font-size: 15px;
+  padding: 3px;
+  margin: 2px;
+  border-radius: 5px;
+  display: inline-block;
+  background: #eeeeee;
+  cursor: default;
+`;
+const LabelsWrapper = styled.div`
+  width: 92%;
+  padding: 1%;
+  height: 20px;
+`;
 
-const Editor = props => {
-  const [data, setData] = useState(props.notes[props.editId]);
+const Editor = ({ type, color, id, notes, UpdateNote, CloseEditing }) => {
+  const [data, setData] = useState(notes[id]);
+  const NoteLabels = notes[id].labels;
 
-  const GetInputValue = (event, type) => {
-    setData({ ...data, [type]: event.target.value });
-  };
-  const GetList = list => {
-    setData({ ...data, content: list });
+  const GetContent = content => {
+    setData({ ...data, content: content });
   };
   const WhichEditor = type => {
     switch (type) {
       case "note":
         return (
           <NoteEditor
-            getValue={GetInputValue}
-            twoWayBinding={data}
-            color={props.color}
-            labels={props.notes[props.editId].labels}
+            GetContent={GetContent}
+            content={data.content}
+            color={color}
           />
         );
       case "list":
         return (
           <ListEditor
-            GetValue={GetInputValue}
-            GetList={GetList}
-            data={data}
-            color={props.color}
-            labels={props.notes[props.editId].labels}
+            GetContent={GetContent}
+            content={data.content}
+            color={color}
           />
-        );
-      case "snippet":
-        return (
-          <CodeSnippetEditor getValue={GetInputValue} twoWayBinding={data} />
         );
       default:
         console.log("Nie określono typu notatki do edytowania");
@@ -82,21 +103,32 @@ const Editor = props => {
     }
   };
 
-  let editor = WhichEditor(props.type);
-
   const FinishEditingHandler = () => {
-    props.UpdateNote(
-      { ...data, color: props.color, labels: props.notes[props.editId].labels },
-      props.editId
-    );
-    props.CloseEditing();
+    UpdateNote({ ...data, color: color, labels: NoteLabels }, id);
+    CloseEditing();
   };
-  console.log(props.color);
+
+  const Editor = WhichEditor(type);
+  const Labels = (
+    <LabelsWrapper>
+      {NoteLabels.map((label, index) => {
+        return <Label key={index}>{label}</Label>;
+      })}
+    </LabelsWrapper>
+  );
+
   return (
     <div>
       <Background />
-      <Container background={props.color}>
-        {editor}
+      <Container background={color}>
+        <Title
+          placeholder="Title"
+          onChange={event => setData({ ...data, title: event.target.value })}
+          value={data.title}
+          background={color}
+        />
+        {Editor}
+        {Labels}
         <CloseButton onClick={FinishEditingHandler}>Finish</CloseButton>
       </Container>
     </div>
@@ -106,8 +138,7 @@ const Editor = props => {
 const mapStateToProps = state => {
   return {
     type: state.editing.editType,
-    //id: state.notes.id,
-    editId: state.editing.editId,
+    id: state.editing.editId,
     color: state.editing.color,
     notes: state.notes.notes,
     RefreshWhenNoteLabelChange: state.notes.forceRefresh

@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 
-import firebase from "../../config/config";
+import firebase from "../../FireBase/config";
+import db from "../../FireBase/database";
 
 import AuthenticationPanel from "../AuthenticationPanel/AuthenticationPanel";
 import AppCore from "../AppCore/AppCore";
@@ -8,10 +9,17 @@ import LoadingScreen from "../../Components/LoadingScreen";
 
 import * as action from "../../Store/Actions/ActionType";
 import { connect } from "react-redux";
-import db from "../../config/database";
 
-const App = props => {
-  const [user, setUser] = useState(null);
+const App = ({
+  notes,
+  labels,
+  dataChange,
+  LoadServerData,
+  LoadLabels,
+  LoadNotes,
+  DataIsSaved
+}) => {
+  const currentUser = firebase.auth().currentUser;
   const [isLoading, setLoading] = useState(true);
 
   // AuthListener checks if user is signIN
@@ -19,44 +27,41 @@ const App = props => {
     // Listening to user change
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        setUser(user);
         db.collection("users")
           .doc(user.uid)
           .get()
           .then(doc => {
             if (doc.exists) {
               //Load Data to server_data reducer
-              props.LoadServerData(doc.data());
+              LoadServerData(doc.data());
               //Load Data to notes and labels reducers
-              props.LoadLabels(doc.get("labels"));
-              props.LoadNotes(doc.get("notes"));
+              LoadLabels(doc.get("labels"));
+              LoadNotes(doc.get("notes"));
               setLoading(false);
             } else {
               console.log("No user data");
             }
           });
-      } else {
-        setUser(null);
-        setTimeout(() => setLoading(false), 500);
       }
     });
   };
   useEffect(AuthListener, []);
-  useEffect(() => {
-    if (!isLoading && firebase.auth().currentUser !== null) {
+  useMemo(() => {
+    if (currentUser !== null && dataChange === true) {
       console.log("fired");
       db.collection("users")
-        .doc(firebase.auth().currentUser.uid)
-        .update({ notes: props.notes, labels: props.labels });
+        .doc(currentUser.uid)
+        .update({ notes: notes, labels: labels });
+      DataIsSaved();
     }
-  }, [props.notes, props.labels, props.dataChange, isLoading]);
+  }, [notes, labels, dataChange, currentUser, DataIsSaved]);
 
   return (
     <div>
       {isLoading ? (
         <LoadingScreen />
       ) : (
-        <div>{user ? <AppCore /> : <AuthenticationPanel />}</div>
+        <div>{currentUser ? <AppCore /> : <AuthenticationPanel />}</div>
       )}
     </div>
   );
@@ -77,7 +82,8 @@ const mapDispatchToProps = dispatch => {
     LoadNotes: data =>
       dispatch({ type: action.LOAD_NOTES_FROM_SERVER, data: data }),
     LoadLabels: data =>
-      dispatch({ type: action.LOAD_LABELS_FROM_SERVER, data: data })
+      dispatch({ type: action.LOAD_LABELS_FROM_SERVER, data: data }),
+    DataIsSaved: () => dispatch({ type: action.DATA_IS_SAVED })
   };
 };
 

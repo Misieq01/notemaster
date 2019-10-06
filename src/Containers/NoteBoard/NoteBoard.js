@@ -53,39 +53,34 @@ const NoteBoard = props => {
     return Text;
   };
 
-  const filteredNotes = useMemo(() => {
-    const ContentHandler = (type, content, value) => {
-      if (type === "note") {
-        return content.toLowerCase().includes(value.toLowerCase());
-      } else {
-        return PlaceListContentIntoOneString(content)
-          .toLowerCase()
-          .includes(value.toLocaleLowerCase());
-      }
-    };
+  const ContentHandler = (type, content, value) => {
+    if (type === "note") {
+      return content.toLowerCase().includes(value.toLowerCase());
+    } else {
+      return PlaceListContentIntoOneString(content)
+        .toLowerCase()
+        .includes(value.toLocaleLowerCase());
+    }
+  };
 
-    return props.notes.filter(note => {
-      if (search.value === "") {
-        return note;
-      } else {
-        switch (search.type) {
-          case "Title":
-            return note.title
-              .toLowerCase()
-              .includes(search.value.toLowerCase());
-          case "Content":
-            console.log(ContentHandler(note.type, note.content, search.value));
-            return ContentHandler(note.type, note.content, search.value);
-          case "Label":
-            return PlaceLabelsIntoOneString(note.labels)
-              .toLowerCase()
-              .includes(search.value.toLowerCase());
-          default:
-            return note;
-        }
+  const filteredNotes = props.notes.filter(note => {
+    if (search.value === "") {
+      return note;
+    } else {
+      switch (search.type) {
+        case "Title":
+          return note.title.toLowerCase().includes(search.value.toLowerCase());
+        case "Content":
+          return ContentHandler(note.type, note.content, search.value);
+        case "Label":
+          return PlaceLabelsIntoOneString(note.labels)
+            .toLowerCase()
+            .includes(search.value.toLowerCase());
+        default:
+          return note;
       }
-    });
-  }, [props.notes, search]);
+    }
+  });
 
   const Notes = filteredNotes.map((e, i) => {
     return (

@@ -69,7 +69,7 @@ const Icon = styled.div`
   }
 `;
 
-const AddLabel = props => {
+const AddLabel = ({ labels, notes, id, color, Close, ChangeLabels }) => {
   /*
   SO THIS FUCKING FUNCTION BASICLY ADD 'isAdded' TO EACH LABEL, SO LABELS LOOKS LIKE THIS NOW:
   [
@@ -88,62 +88,41 @@ const AddLabel = props => {
   
   I made this to dynamicly change style of added labels
   */
-  const AdjustLabelsDataForDisplayPurpose = (labels, noteLabels) => {
-    let newLabels = [...labels];
-    let newNoteLabels = [...noteLabels];
-    // Check is there any label to restructure
-    if (newLabels.length > 0) {
-      // Restructure labels data by adding isAdded boolean
-      for (let i = 0; i < newLabels.length; i++) {
-        newLabels[i] = { label: newLabels[i], isAdded: false };
-      }
-    }
-
-    // Check is there any label which is added to note
-    if (newNoteLabels.length > 0) {
-      // Change 'isAdded' to true for added labels
-      for (let i = 0; i < newNoteLabels.length; i++) {
-        if (labels.indexOf(newNoteLabels[i]) !== -1) {
-          newLabels[labels.indexOf(newNoteLabels[i])].isAdded = true;
-        }
-      }
-    }
-
-    return newLabels;
+  const AdjustLabelsDataForDisplayPurpose = (oldLabels, noteLabels) => {
+    // Restructure lables y adding isAdded to each
+    const labels = [...oldLabels].map((label, i) => {
+      if (noteLabels.includes(label)) {
+        return { label: label, isAdded: true };
+      } else return { label: label, isAdded: false };
+    });
+    return labels;
   };
 
-  const [labels, setLabels] = useState(
-    AdjustLabelsDataForDisplayPurpose(
-      props.labels,
-      props.notes[props.id].labels
-    )
+  const [changedLabels, setLabels] = useState(
+    AdjustLabelsDataForDisplayPurpose(labels, notes[id].labels)
   );
-  const [noteLabels, setNoteLabels] = useState(props.notes[props.id].labels);
 
-  const ChooseLabel = (id, isAdded, label) => {
-    let newNoteLabels = [...noteLabels];
-    let newLabels = [...labels];
+  console.log(changedLabels);
+
+  const ChooseLabel = (i, isAdded, label) => {
+    const newNoteLabels = [...notes[id].labels];
+    const newLabels = [...changedLabels];
     if (isAdded) {
-      newLabels[id].isAdded = false;
+      newLabels[i].isAdded = false;
       newNoteLabels.splice(newNoteLabels.indexOf(label), 1);
       setLabels(newLabels);
-      setNoteLabels(newNoteLabels);
+      ChangeLabels(newNoteLabels, id);
     } else if (!isAdded) {
-      newLabels[id].isAdded = true;
-      newNoteLabels.push(newLabels[id].label);
+      newLabels[i].isAdded = true;
+      newNoteLabels.push(newLabels[i].label);
       setLabels(newLabels);
-      setNoteLabels(newNoteLabels);
+      ChangeLabels(newNoteLabels, id);
     }
-  };
-
-  const AddLabelHandler = () => {
-    props.AddLabels(noteLabels, props.id);
-    props.Close();
   };
 
   return (
-    <Container background={props.color}>
-      {labels.map((label, index) => {
+    <Container background={color}>
+      {changedLabels.map((label, index) => {
         return (
           <LabelTag
             key={index}
@@ -155,7 +134,7 @@ const AddLabel = props => {
           </LabelTag>
         );
       })}
-      <Button onClick={AddLabelHandler}>Apply</Button>
+      <Button onClick={Close}>Close</Button>
     </Container>
   );
 };
@@ -171,8 +150,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    AddLabels: (labels, id) =>
-      dispatch({ type: action.ADD_LABELS_TO_NOTE, id: id, labels: labels })
+    ChangeLabels: (labels, id) =>
+      dispatch({ type: action.CHANGE_NOTE_LABELS, id: id, labels: labels })
   };
 };
 

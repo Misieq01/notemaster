@@ -27,18 +27,25 @@ const Icon = styled.div`
   float: right;
 `;
 
-const Label = props => {
-  const [newValue, setNewValue] = useState(props.name);
+const Label = ({
+  name,
+  id,
+  Rename,
+  Remove,
+  RefreshLabelNameInNotes,
+  DeleteLabelFromNotes
+}) => {
+  const [newValue, setNewValue] = useState(name);
   const [edit, setEdit] = useState(false);
 
   const RenameHandler = () => {
-    props.Rename(newValue, props.id);
-    props.RefreshLabelNameInNotes(props.name, newValue);
+    Rename(newValue, id);
+    RefreshLabelNameInNotes(name, newValue);
     setEdit(false);
   };
   const RemoveHandler = () => {
-    props.Remove(props.name);
-    props.DeleteLabelFromNotes(props.name);
+    Remove(name);
+    DeleteLabelFromNotes(name);
   };
 
   return (
@@ -58,7 +65,7 @@ const Label = props => {
         </div>
       ) : (
         <div>
-          {props.name}
+          {name}
           <Icon>
             <DeleteIcon title="Delete" onClick={RemoveHandler} />
           </Icon>

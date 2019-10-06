@@ -44,41 +44,39 @@ const Icon = styled.div`
   opacity: 0.75;
 `;
 
-const EditPanel = props => {
-  const [colorPickerDisplay, setColorPickerDisplay] = useState(false);
-  const [addLabelDisplay, setAddLabelDisplay] = useState(false);
-
-  const ColorPickerDisplay = () => {
-    if (colorPickerDisplay) {
-      return <ColorPicker Close={() => setColorPickerDisplay(false)} />;
-    } else {
-      return null;
-    }
-  };
-
-  const ColorPickerEl = ColorPickerDisplay();
+const EditPanel = ({
+  color,
+  id,
+  CloseEditor,
+  RefreshNotesId,
+  CancelAddingNewNote,
+  CopyNote,
+  DeleteNote
+}) => {
+  const [colorDisplay, setColorDisplay] = useState(false);
+  const [labelDisplay, setLabelDisplay] = useState(false);
 
   const DeleteHandler = () => {
-    props.DeleteNote(props.editId);
-    props.RefreshNotesId();
-    props.CloseEditor();
+    DeleteNote(id);
+    RefreshNotesId();
+    CloseEditor();
   };
 
   const CopyHandler = () => {
-    props.CopyNote(props.editId);
-    props.RefreshNotesId();
-    props.CloseEditor();
+    CopyNote(id);
+    RefreshNotesId();
+    CloseEditor();
   };
 
   const CancelHandler = () => {
-    props.CloseEditor();
-    props.CancelAddingNewNote();
-    props.RefreshNotesId();
+    CloseEditor();
+    CancelAddingNewNote();
+    RefreshNotesId();
   };
 
   return (
     <div>
-      <Container background={props.color}>
+      <Container background={color}>
         <Icon>
           <DeleteIcon onClick={DeleteHandler} title="Delete Note" />
         </Icon>
@@ -87,19 +85,21 @@ const EditPanel = props => {
         </Icon>
         <Icon>
           <ColorIcon
-            onClick={() => setColorPickerDisplay(true)}
+            onClick={() => setColorDisplay(true)}
             title="Change Color"
           />
         </Icon>
-        {ColorPickerEl}
+        {colorDisplay ? (
+          <ColorPicker Close={() => setColorDisplay(false)} />
+        ) : null}
         <Icon>
           <LabelIcon
-            onClick={() => setAddLabelDisplay(true)}
+            onClick={() => setLabelDisplay(true)}
             title="Change Labels"
           />
         </Icon>
-        {addLabelDisplay ? (
-          <AddLabel Close={() => setAddLabelDisplay(false)} />
+        {labelDisplay ? (
+          <AddLabel Close={() => setLabelDisplay(false)} />
         ) : null}
         <Icon>
           <CancelIcon onClick={CancelHandler} title="Cancel" />
@@ -111,7 +111,7 @@ const EditPanel = props => {
 
 const mapStateToProps = state => {
   return {
-    editId: state.editing.editId,
+    id: state.editing.editId,
     color: state.editing.color
   };
 };

@@ -78,7 +78,7 @@ const notes = (state = initialState, action) => {
       newState.id = newState.notes.length;
       return newState;
     ///////////////////////////////////////////////////////////
-    case type.ADD_LABELS_TO_NOTE:
+    case type.CHANGE_NOTE_LABELS:
       newState = { ...state, forceRefresh: !state.forceRefresh };
       newState.notes[action.id].labels = action.labels;
       return newState;
@@ -94,6 +94,7 @@ const notes = (state = initialState, action) => {
       }
 
       return newState;
+    ///////////////////////////////////////////////////////////
     case type.DELETE_LABEL_FROM_NOTES:
       newState = { ...state, forceRefresh: !state.forceRefresh };
       for (let i = 0; i < newState.notes.length; i++) {

@@ -1,38 +1,13 @@
 import React, { useState } from "react";
-import firebase from "../../config/config";
-import db from "../../config/database";
+import firebase from "../../FireBase/config";
+import db from "../../FireBase/database";
 import styled from "styled-components";
+
+import Input from "./Input";
 
 import { ReactComponent as NameIcon } from "../../SVGS/name.svg";
 import { ReactComponent as EmailIcon } from "../../SVGS/email.svg";
 import { ReactComponent as PasswordIcon } from "../../SVGS/password.svg";
-
-const InputBox = styled.input`
-  font-size: 22px;
-  margin-left: 5px
-  padding: 10px;
-  outline: none;
-  text-decoration: none;
-  border: none;
-  background: #eeeeee;
-  border-radius: 3px;
-  display: inline-block;
-  transition: all 0.2s ease-in-out;
-  opacity: 0.7;
-  ::placeholder {
-    color: #1c1a1a;
-  }
-:focus{
-  opacity: 1;
-}
-`;
-
-const InputWrapper = styled.div`
-  margin: 20px;
-  display: flex;
-  align-items: center;
-  border-bottom: 1px solid #eeeeee;
-`;
 
 const Button = styled.button`
   background: #eeeeee;
@@ -51,21 +26,19 @@ const Button = styled.button`
     opacity: 1;
   }
 `;
-const Text = styled.p`
-  font-size: ${props => props.fontSize || "19px"};
-  cursor: ${props => props.cursor};
-  color: ${props => props.color};
-  opacity: ${props => props.opacity || 0.7}
+const LoginText = styled.p`
+  font-size: 16px;
+  cursor: pointer;
+  opacity: 0.7
   transition: all 0.2s ease-in-out;
-  :hover {
-    opacity: ${props => props.opacityHover || 0.7};
+  :hover{
+    opacity: 1
   }
 `;
 
-const Icon = styled.div`
-  width: 30px;
-  height: 30px;
-  display: inline-block;
+const Text = styled.p`
+  color: ${props => props.color};
+  font-size: 20px;
 `;
 
 const Signup = props => {
@@ -124,58 +97,35 @@ const Signup = props => {
   return (
     <div style={{ textAlign: "center" }}>
       {error.check ? (
-        <Text color="#fa6e6e" opacity={1}>
-          {error.text}
-        </Text>
+        <Text color="#fa6e6e">{error.text}</Text>
       ) : (
         <Text>Fill required data to signup</Text>
       )}
-      <InputWrapper>
-        <Icon>
-          <NameIcon />
-        </Icon>
-        <InputBox
-          placeholder="FirsName"
-          onChange={event => ChangeData(event, "fName")}
-        />
-      </InputWrapper>
-      <InputWrapper>
-        <Icon>
-          <NameIcon />
-        </Icon>
-        <InputBox
-          placeholder="LastName"
-          onChange={event => ChangeData(event, "lName")}
-        />
-      </InputWrapper>
-      <InputWrapper>
-        <Icon>
-          <EmailIcon />
-        </Icon>
-        <InputBox
-          placeholder="Email"
-          type="email"
-          onChange={event => ChangeData(event, "email")}
-        />
-      </InputWrapper>
-      <InputWrapper>
-        <Icon>
-          <PasswordIcon />
-        </Icon>
-        <InputBox
-          placeholder="Password"
-          type="password"
-          onChange={event => ChangeData(event, "password")}
-        />
-      </InputWrapper>
-      <Text
-        fontSize="16px"
-        cursor="pointer"
-        opacityHover={1}
-        onClick={props.Login}
-      >
-        Back to login
-      </Text>
+      <Input
+        placeholder="FirstName"
+        Icon={NameIcon}
+        type="fName"
+        ChangeData={ChangeData}
+      />
+      <Input
+        placeholder="LastName"
+        Icon={NameIcon}
+        type="lName"
+        ChangeData={ChangeData}
+      />
+      <Input
+        placeholder="Email"
+        Icon={EmailIcon}
+        type="email"
+        ChangeData={ChangeData}
+      />
+      <Input
+        placeholder="Paswword"
+        Icon={PasswordIcon}
+        type="password"
+        ChangeData={ChangeData}
+      />
+      <LoginText onClick={props.Login}>Back to login</LoginText>
       <Button onClick={CreateAccount}>SignUp</Button>
     </div>
   );

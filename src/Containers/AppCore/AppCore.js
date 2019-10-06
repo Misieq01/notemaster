@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import styled from "styled-components";
 
 import { connect } from "react-redux";
@@ -14,19 +14,19 @@ const AppContainer = styled.div`
   height: 100vh;
 `;
 
-const AppCore = props => {
+const AppCore = ({ mode, labelsDisplay, SaveDataToServer }) => {
   useEffect(() => {
     return () => {
-      if (props.mode || props.labelsDisplay) {
-        props.SaveDataToServer(props.notes, props.labels);
+      if (mode || labelsDisplay) {
+        SaveDataToServer();
       }
     };
-  }, [props, props.mode, props.labelsDisplay]);
+  }, [mode, labelsDisplay, SaveDataToServer]);
 
   return (
     <AppContainer>
-      {props.mode ? <Editor /> : null}
-      {props.labelsDisplay ? <LabelsManager /> : null}
+      {mode ? <Editor /> : null}
+      {labelsDisplay ? <LabelsManager /> : null}
       <ConfigPanel />
       <NoteBoard />
     </AppContainer>
@@ -36,18 +36,14 @@ const AppCore = props => {
 const mapStateToProps = state => {
   return {
     mode: state.editing.editMode,
-    notes: state.notes.notes,
-    labels: state.notes.labels,
     labelsDisplay: state.labels.display
   };
 };
 const mapDispatchToProps = dispatch => {
   return {
-    SaveDataToServer: (notes, labels) =>
+    SaveDataToServer: () =>
       dispatch({
-        type: action.SAVE_DATA_TO_SERVER,
-        notes: notes,
-        labels: labels
+        type: action.SAVE_DATA_TO_SERVER
       })
   };
 };

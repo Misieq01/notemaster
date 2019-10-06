@@ -5,24 +5,27 @@ const initialState = {
   labels: [],
   fName: "",
   lName: "",
-  dataChange: true
+  email: "",
+  dataChange: false
 };
 
 const server_data = (state = initialState, action) => {
   switch (action.type) {
     case type.LOAD_SERVER_DATA:
-      return { ...action.data, dataChange: true };
+      return { ...action.data, dataChange: false };
     case type.SAVE_DATA_TO_SERVER:
       return {
         ...state,
-        notes: action.notes,
-        labels: action.labels,
-        dataChange: !state.dataChange
+        dataChange: true
+      };
+    case type.DATA_IS_SAVED:
+      return {
+        ...state,
+        dataChange: false
       };
     default:
       return state;
   }
 };
 
-export const SaveData = state => state;
 export default server_data;

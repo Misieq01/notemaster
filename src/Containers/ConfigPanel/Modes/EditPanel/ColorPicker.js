@@ -48,10 +48,10 @@ const Icon = styled.div`
   }
 `;
 
-const ColorPicker = props => {
+const ColorPicker = ({ ChangeColor, Close }) => {
   const ChangeColorHandler = color => {
-    props.ChangeColor(color);
-    props.Close();
+    ChangeColor(color);
+    Close();
   };
 
   return (
@@ -79,7 +79,7 @@ const ColorPicker = props => {
         onClick={() => ChangeColorHandler("#fec4ff")}
       />
       <Icon>
-        <CloseIcon onClick={props.Close} />
+        <CloseIcon onClick={Close} />
       </Icon>
     </Container>
   );

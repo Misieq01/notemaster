@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-import firebase from "../../config/config";
+import firebase from "../../FireBase/config";
+
+import Input from "./Input";
 
 import { ReactComponent as EmailIcon } from "../../SVGS/email.svg";
 import { ReactComponent as PasswordIcon } from "../../SVGS/password.svg";
@@ -10,33 +12,6 @@ const Container = styled.div`
   height: 100%;
   width: 100%;
   text-align: center;
-`;
-
-const InputBox = styled.input`
-  font-size: 22px;
-  margin-left: 5px
-  padding: 10px;
-  outline: none;
-  text-decoration: none;
-  border: none;
-  background: #eeeeee;
-  border-radius: 3px;
-  display: inline-block;
-  transition: all 0.2s ease-in-out;
-  opacity: 0.7;
-  ::placeholder {
-    color: #1c1a1a;
-  }
-:focus{
-  opacity: 1;
-}
-`;
-
-const InputWrapper = styled.div`
-  margin: 20px;
-  display: flex;
-  align-items: center;
-  border-bottom: 1px solid #eeeeee;
 `;
 
 const Button = styled.button`
@@ -56,21 +31,19 @@ const Button = styled.button`
     opacity: 1;
   }
 `;
-const Text = styled.p`
-  font-size: ${props => props.fontSize || "19px"};
-  cursor: ${props => props.cursor};
-  color: ${props => props.color};
-  opacity: ${props => props.opacity || 0.7}
+const AccountText = styled.p`
+  font-size: 16px;
+  cursor: pointer;
+  opacity: 0.7
   transition: all 0.2s ease-in-out;
   :hover{
-    opacity: ${props => props.opacityHover || 0.7}
+    opacity: 1
   }
 `;
 
-const Icon = styled.div`
-  width: 30px;
-  height: 30px;
-  display: inline-block;
+const Text = styled.p`
+  color: ${props => props.color};
+  font-size: 20px;
 `;
 
 const Login = props => {
@@ -110,42 +83,25 @@ const Login = props => {
   return (
     <Container>
       {error.check ? (
-        <Text color="#fa6e6e" opacity={1}>
-          {error.text}
-        </Text>
+        <Text color="#fa6e6e">{error.text}</Text>
       ) : (
         <Text>Please enter your email and password to login</Text>
       )}
       <div style={{ marginTop: "50px" }}>
-        <InputWrapper>
-          <Icon>
-            <EmailIcon />
-          </Icon>
-          <InputBox
-            placeholder="Email"
-            type="email"
-            onChange={event => ChangeData(event, "email")}
-          />
-        </InputWrapper>
-        <InputWrapper>
-          <Icon>
-            <PasswordIcon />
-          </Icon>
-          <InputBox
-            placeholder="Password"
-            type="password"
-            onChange={event => ChangeData(event, "password")}
-          />
-        </InputWrapper>
+        <Input
+          placeholder="Email"
+          Icon={EmailIcon}
+          type="email"
+          ChangeData={ChangeData}
+        />
+        <Input
+          placeholder="Password"
+          Icon={PasswordIcon}
+          type="password"
+          ChangeData={ChangeData}
+        />
       </div>
-      <Text
-        fontSize="17px"
-        cursor="pointer"
-        opacityHover={1}
-        onClick={props.Register}
-      >
-        Create Account
-      </Text>
+      <AccountText onClick={props.Register}>Create Account</AccountText>
       <Button onClick={UserLogIn}>Login</Button>
     </Container>
   );

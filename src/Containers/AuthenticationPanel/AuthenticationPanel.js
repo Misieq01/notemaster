@@ -32,7 +32,7 @@ const Title = styled.h1`
   opacity: 0.9;
 `;
 
-const AuthenticationPanlel = props => {
+const AuthenticationPanlel = () => {
   const [mode, setMode] = useState("login");
 
   return (

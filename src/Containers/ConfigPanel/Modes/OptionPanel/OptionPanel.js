@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-import firebase from "../../../../config/config";
+import firebase from "../../../../FireBase/config";
 
 import { connect } from "react-redux";
 import * as action from "../../../../Store/Actions/ActionType";
@@ -49,7 +49,7 @@ const Wrapper = styled.div`
   margin: 24px 0;
 `;
 
-const OptionPanel = props => {
+const OptionPanel = ({ id, AddNote, StartEditing, OpenLabelsManager }) => {
   const [addPanel, setAddPanel] = useState(false);
 
   const SingOut = () => {
@@ -57,8 +57,8 @@ const OptionPanel = props => {
   };
 
   const CreateNoteHandler = type => {
-    props.AddNote(type);
-    props.StartEditing(type, props.id);
+    AddNote(type);
+    StartEditing(type, id);
   };
 
   return (
@@ -70,7 +70,7 @@ const OptionPanel = props => {
         {addPanel ? (
           <ChooseAddType Close={setAddPanel} CreateNote={CreateNoteHandler} />
         ) : null}
-        <Icon onClick={props.OpenLabelsManager}>
+        <Icon onClick={OpenLabelsManager}>
           <LabelsIcon title="Edit Labels" />
         </Icon>
       </Wrapper>

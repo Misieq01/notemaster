@@ -5,6 +5,7 @@ import { ReactComponent as BoxIcon } from "../../SVGS/box.svg";
 
 const ListContainer = styled.div`
   text-align: left;
+  padding: 10px;
 `;
 const ListItemWrapper = styled.div`
   display: flex;
@@ -62,7 +63,7 @@ const List = ({ content, color, ...props }) => {
             </Icon>
             <ListElement background={color}>{name}</ListElement>
           </ListItemWrapper>
-          <div style={{ marginLeft: "20px" }}>
+          <div style={{ marginLeft: "10px" }}>
             {childs.map(c => {
               return (
                 <ListItemWrapper key={c.id}>

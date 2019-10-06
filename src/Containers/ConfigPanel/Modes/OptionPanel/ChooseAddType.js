@@ -42,10 +42,10 @@ const Wrapper = styled.div`
   }
 `;
 
-const ChooseAddType = props => {
+const ChooseAddType = ({ Close, CreateNote }) => {
   const AddHandler = type => {
-    props.Close(false);
-    props.CreateNote(type);
+    Close(false);
+    CreateNote(type);
   };
 
   return (

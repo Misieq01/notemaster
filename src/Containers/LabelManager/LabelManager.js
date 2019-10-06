@@ -64,18 +64,26 @@ const LabelsContainer = styled.div`
   display: inline-block;
 `;
 
-const LabelManager = props => {
+const LabelManager = ({
+  labels,
+  AddLabel,
+  RemoveLabel,
+  ChangeLabel,
+  Close,
+  DeleteLabelFromNotes,
+  RefreshNotesLabels
+}) => {
   const [SearchValue, setSearchValue] = useState("");
 
   const AddLabelHandler = () => {
     let isExist = false;
-    for (let i = 0; i < props.labels.length; i++) {
-      if (props.labels[i] === SearchValue) {
+    for (let i = 0; i < labels.length; i++) {
+      if (labels[i] === SearchValue) {
         isExist = true;
       }
     }
     if (!isExist && SearchValue !== "") {
-      props.AddLabel(SearchValue);
+      AddLabel(SearchValue);
       setSearchValue("");
     } else {
       console.log("You cant add label beacause it already exists");
@@ -94,21 +102,21 @@ const LabelManager = props => {
         />
         <AddButton onClick={AddLabelHandler}>Add Label</AddButton>
         <LabelsContainer>
-          {props.labels.map((label, index) => {
+          {labels.map((label, index) => {
             return (
               <Label
                 key={index}
                 id={index}
                 name={label}
-                Remove={props.RemoveLabel}
-                DeleteLabelFromNotes={props.DeleteLabelFromNotes}
-                Rename={props.ChangeLabel}
-                RefreshLabelNameInNotes={props.RefreshNotesLabels}
+                Remove={RemoveLabel}
+                DeleteLabelFromNotes={DeleteLabelFromNotes}
+                Rename={ChangeLabel}
+                RefreshLabelNameInNotes={RefreshNotesLabels}
               />
             );
           })}
         </LabelsContainer>
-        <CloseButton onClick={props.Close}>Finish</CloseButton>
+        <CloseButton onClick={Close}>Finish</CloseButton>
       </Container>
     </div>
   );

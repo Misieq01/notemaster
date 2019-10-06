@@ -39,8 +39,6 @@ const Label = styled.div`
 `;
 
 const Card = ({ labels, type, title, color, id, content, ...props }) => {
-  console.log(type);
-
   const MAX_LABELS_LENGTH = 3;
 
   const TruncateText = (t, len) => {
@@ -62,7 +60,7 @@ const Card = ({ labels, type, title, color, id, content, ...props }) => {
     );
 
   return (
-    <Container onClick={() => props.Click("note", id, color)} color={color}>
+    <Container onClick={() => props.Click(type, id, color)} color={color}>
       <Title>{title}</Title>
       {Content}
       {TruncatedLabels}
