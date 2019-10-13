@@ -12,7 +12,7 @@ import ListEditor from "./ListEditor";
 import Background from "../../Components/Background";
 
 const Container = styled.div`
-  width: 35%;
+  width: 600px;
   min-height: 60px;
   position: fixed;
   z-index: 1000;

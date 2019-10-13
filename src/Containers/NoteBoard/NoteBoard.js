@@ -10,10 +10,10 @@ import Card from "../../Components/Notes/Card";
 import SearchBar from "./SearchBar";
 
 const MasonryDisplay = styled(Masonry)`
-  margin-right: 20px;
-  margin-left: 65px;
   background: #eeeeee;
   position: relative;
+  text-align: center;
+  margin: 0 auto;
 `;
 
 const Container = styled.div`
@@ -30,7 +30,8 @@ const NoteBoard = props => {
 
   const MasonryOptions = {
     columnWidth: 284,
-    transitionDuration: 0
+    transitionDuration: 0,
+    fitWidth: true
   };
 
   const PlaceListContentIntoOneString = list => {
