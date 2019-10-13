@@ -21,7 +21,6 @@ const Container = styled.div`
   float: left;
   width: calc(100vw - 45px - 16px);
   max-width: 1920px;
-  height: 100%;
   background: #eeeeee;
   text-align: center;
 `;

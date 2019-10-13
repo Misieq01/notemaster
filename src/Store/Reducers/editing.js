@@ -4,7 +4,8 @@ const initialState = {
   editMode: false,
   editId: null,
   editType: "",
-  color: ""
+  color: "",
+  dataChange: false
 };
 
 const edit_note = (state = initialState, action) => {
@@ -17,6 +18,8 @@ const edit_note = (state = initialState, action) => {
         editId: action.id,
         color: action.color
       };
+    case type.DATA_CHANGE:
+      return { ...state, dataChange: action.change };
     case type.CLOSE_EDIT_MODE:
       return {
         ...state,

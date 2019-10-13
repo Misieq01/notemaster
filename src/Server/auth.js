@@ -1,6 +1,6 @@
 import app from "./config";
 import firebase from "firebase";
 
-let db = firebase.firestore(app);
+const auth = firebase.auth(app);
 
-export default db;
+export default auth;

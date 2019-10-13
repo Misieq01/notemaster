@@ -1,20 +1,21 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-import firebase from "../../../../FireBase/config";
+import auth from "../../Server/auth";
 
 import { connect } from "react-redux";
-import * as action from "../../../../Store/Actions/ActionType";
+import * as action from "../../Store/Actions/ActionType";
 
 import ChooseAddType from "./ChooseAddType";
+import LabelManager from "./LabelManager/LabelManager";
+import Portal from "../../Components/Portal";
 
-import { ReactComponent as AddIcon } from "../../../../SVGS/circle_plus.svg";
-import { ReactComponent as LogoutIcon } from "../../../../SVGS/logout.svg";
-import { ReactComponent as LabelsIcon } from "../../../../SVGS/tags.svg";
+import { ReactComponent as AddIcon } from "../../SVGS/circle_plus.svg";
+import { ReactComponent as LogoutIcon } from "../../SVGS/logout.svg";
+import { ReactComponent as LabelsIcon } from "../../SVGS/tags.svg";
 
 const Container = styled.div`
-  height: 100vh;
-  max-height: 100%;
+  height: 100%;
   padding: 0 1.2rem;
   background: #eeeeee;
   text-align: center;
@@ -49,11 +50,12 @@ const Wrapper = styled.div`
   margin: 24px 0;
 `;
 
-const OptionPanel = ({ id, AddNote, StartEditing, OpenLabelsManager }) => {
+const OptionPanel = ({ id, AddNote, StartEditing }) => {
   const [addPanel, setAddPanel] = useState(false);
+  const [labelManager, setLabelManager] = useState(false);
 
-  const SingOut = () => {
-    firebase.auth().signOut();
+  const Logout = () => {
+    auth.signOut();
   };
 
   const CreateNoteHandler = type => {
@@ -61,24 +63,42 @@ const OptionPanel = ({ id, AddNote, StartEditing, OpenLabelsManager }) => {
     StartEditing(type, id);
   };
 
+  const PanelElement = addPanel ? (
+    <Portal setState={() => setAddPanel(false)}>
+      <ChooseAddType
+        CreateNote={CreateNoteHandler}
+        Close={() => setAddPanel(false)}
+      />
+    </Portal>
+  ) : null;
+
+  const LabelElement = labelManager ? (
+    <Portal>
+      <LabelManager Close={() => setLabelManager(false)} />
+    </Portal>
+  ) : null;
+
+  const LogoutButton = (
+    <Wrapper>
+      <Icon onClick={Logout}>
+        <LogoutIcon title="Logout" />
+      </Icon>
+    </Wrapper>
+  );
+
   return (
     <Container>
       <Wrapper>
-        <Icon onClick={() => setAddPanel(!addPanel)}>
+        <Icon onClick={() => setAddPanel(true)}>
           <AddIcon title="Add Note" />
         </Icon>
-        {addPanel ? (
-          <ChooseAddType Close={setAddPanel} CreateNote={CreateNoteHandler} />
-        ) : null}
-        <Icon onClick={OpenLabelsManager}>
+        {PanelElement}
+        <Icon onClick={() => setLabelManager(true)}>
           <LabelsIcon title="Edit Labels" />
         </Icon>
+        {LabelElement}
       </Wrapper>
-      <Wrapper>
-        <Icon onClick={SingOut}>
-          <LogoutIcon title="Logout" />
-        </Icon>
-      </Wrapper>
+      {LogoutButton}
     </Container>
   );
 };
@@ -98,9 +118,7 @@ const mapDispatchToProps = dispatch => {
         color: "#fff269",
         id: id
       }),
-    AddNote: type => dispatch({ type: action.ADD_NOTE, noteType: type }),
-    OpenLabelsManager: () =>
-      dispatch({ type: action.OPEN_LABELS_MANAGER, display: true })
+    AddNote: type => dispatch({ type: action.ADD_NOTE, noteType: type })
   };
 };
 

@@ -4,10 +4,11 @@ import styled from "styled-components";
 import TextArea from "../../Components/ResizableTextArea";
 
 const Text = styled(TextArea)`
-  font-size: 25px;
+  font-size: 20px;
+  font-family: Roboto;
   background: ${props => props.background || "#eeeeee"};
   opacity: 0.75;
-  padding: 4% 4% 1% 4%;
+  padding: 1% 4% 1% 4%;
   width: 92%;
   transition: all 0.2s ease-in-out;
   :focus {
@@ -15,7 +16,7 @@ const Text = styled(TextArea)`
   }
 `;
 
-const NoteEditor = ({ color, content, GetContent }) => {
+const NoteEditor = ({ color, content, GetContent, BoxShadow }) => {
   return (
     <Text
       minRows={1}
@@ -25,6 +26,7 @@ const NoteEditor = ({ color, content, GetContent }) => {
       onChange={event => GetContent(event.target.value)}
       value={content}
       background={color}
+      onScroll={BoxShadow}
     />
   );
 };

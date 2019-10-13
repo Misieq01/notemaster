@@ -1,54 +1,25 @@
-import React, { useEffect, useMemo } from "react";
-import styled from "styled-components";
+import React from "react";
 
 import { connect } from "react-redux";
-import * as action from "../../Store/Actions/ActionType";
 
-import ConfigPanel from "../ConfigPanel/ConfigPanel";
+import OptionPanel from "../OptionPanel/OptionPanel";
 import NoteBoard from "../NoteBoard/NoteBoard";
 import Editor from "../Editors/Editor";
-import LabelsManager from "../LabelManager/LabelManager";
 
-const AppContainer = styled.div`
-  width: 100vw;
-  height: 100vh;
-`;
-
-const AppCore = ({ mode, labelsDisplay, SaveDataToServer }) => {
-  useEffect(() => {
-    return () => {
-      if (mode || labelsDisplay) {
-        SaveDataToServer();
-      }
-    };
-  }, [mode, labelsDisplay, SaveDataToServer]);
-
+const AppCore = ({ mode }) => {
   return (
-    <AppContainer>
+    <div>
       {mode ? <Editor /> : null}
-      {labelsDisplay ? <LabelsManager /> : null}
-      <ConfigPanel />
+      <OptionPanel />
       <NoteBoard />
-    </AppContainer>
+    </div>
   );
 };
 
 const mapStateToProps = state => {
   return {
-    mode: state.editing.editMode,
-    labelsDisplay: state.labels.display
-  };
-};
-const mapDispatchToProps = dispatch => {
-  return {
-    SaveDataToServer: () =>
-      dispatch({
-        type: action.SAVE_DATA_TO_SERVER
-      })
+    mode: state.editing.editMode
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AppCore);
+export default connect(mapStateToProps)(AppCore);

@@ -1,12 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 
-import { ReactComponent as NoteIcon } from "../../../../SVGS/ChooseAddType/note.svg";
-import { ReactComponent as ListIcon } from "../../../../SVGS/ChooseAddType/list.svg";
+import { ReactComponent as NoteIcon } from "../../SVGS/ChooseAddType/note.svg";
+import { ReactComponent as ListIcon } from "../../SVGS/ChooseAddType/list.svg";
 
 const Container = styled.div`
   background: #eeeeee;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  border-radius: 10px;
   position: absolute;
   width: 200px;
   top: 20px;

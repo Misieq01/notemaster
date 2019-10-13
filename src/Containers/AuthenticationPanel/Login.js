@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-import firebase from "../../FireBase/config";
-
+import firebase from "../../Server/config";
 import Input from "./Input";
 
 import { ReactComponent as EmailIcon } from "../../SVGS/email.svg";
@@ -106,4 +105,5 @@ const Login = props => {
     </Container>
   );
 };
+
 export default Login;

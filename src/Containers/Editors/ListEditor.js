@@ -5,13 +5,30 @@ import TextArea from "../../Components/ResizableTextArea";
 
 import { ReactComponent as BoxIcon } from "../../SVGS/box.svg";
 
+const Container = styled.div`
+  max-height: 600px
+  overflow: auto;
+  text-align: left;
+    ::-webkit-scrollbar {
+    width: 10px;
+    cursor: default;
+  }
+  ::-webkit-scrollbar-track {
+    background: #eeeeee;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #cccccc;
+  }
+`;
+
 const ListElementText = styled(TextArea)`
   font-size: 25px;
+  font-family: Roboto;
   background: ${props => props.background};
-  opacity: 0.75;
+  color: rgba(0, 0, 0, 0.7);
   transition: all 0.2s ease-in-out;
   :focus {
-    opacity: 1;
+    color: rgba(0, 0, 0, 1);
   }
 `;
 const ListItemWrapper = styled.div`
@@ -22,7 +39,6 @@ const ListItemWrapper = styled.div`
 const NewListElement = styled.div`
     width: '96%'
     min-height: 30px;
-    opacity: 0.75;
     padding: 2%;
     resize:none;
     border:none;
@@ -30,11 +46,12 @@ const NewListElement = styled.div`
     outline:none;
     font-size: 23px;
     background: ${props => props.background || "#eeeeee"};
+    color: rgba(0,0,0,0.8);
     line-height: 30px;
     cursor: pointer
 `;
 const List = styled.div`
-  padding: 2% 2% 1% 2%;
+  padding: 1% 2% 1% 2%;
 `;
 
 const Icon = styled.div`
@@ -44,7 +61,7 @@ const Icon = styled.div`
   margin-left: 5px;
 `;
 
-const ListEditor = ({ content, color, GetContent, ...props }) => {
+const ListEditor = ({ content, color, GetContent, BoxShadow, ...props }) => {
   const AddNewListElement = (isChild, id) => {
     const newList = [...content];
     if (!isChild) {
@@ -96,7 +113,7 @@ const ListEditor = ({ content, color, GetContent, ...props }) => {
   };
 
   return (
-    <div style={{ textAlign: "left" }}>
+    <Container onScroll={event => BoxShadow(event.target.scrollTop)}>
       <List>
         {content.map((parent, index) => {
           return (
@@ -155,7 +172,7 @@ const ListEditor = ({ content, color, GetContent, ...props }) => {
           Add list element
         </NewListElement>
       </List>
-    </div>
+    </Container>
   );
 };
 

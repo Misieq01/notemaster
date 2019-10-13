@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 
 import { connect } from "react-redux";
 import * as action from "../../Store/Actions/ActionType";
 
+import { ReactComponent as CancelIcon } from "../../SVGS/EditPanel/cancel.svg";
+
+import EditPanel from "./EditPanel/EditPanel";
 import NoteEditor from "./NoteEditor";
 import ListEditor from "./ListEditor";
 import Background from "../../Components/Background";
@@ -11,9 +14,9 @@ import Background from "../../Components/Background";
 const Container = styled.div`
   width: 35%;
   min-height: 60px;
-  position: absolute;
+  position: fixed;
   z-index: 1000;
-  top: 200px;
+  top: 100px;
   right: 0;
   left: 0;
   margin: auto;
@@ -28,12 +31,13 @@ const Title = styled.input`
   font-size: 30px;
   line-height: 30px;
   opacity: 0.8;
-  padding: 4% 4% 0 4%;
+  padding: 4% 4% 2% 4%;
   border: none;
   outline: none;
   text-decoration: none;
   background: ${props => props.background || "#eeeeee"};
   border-radius: 8px 8px 0px 0px;
+  box-shadow: ${props => props.boxShadow || null};
   transition: all 0.2s ease-in-out;
   :focus {
     opacity: 1;
@@ -42,8 +46,7 @@ const Title = styled.input`
 
 const CloseButton = styled.button`
   height: 15%;
-  width: 50%;
-  margin: 1.5%;
+  width: 37%;
   cursor: pointer;
   border: none;
   outline: none;
@@ -63,22 +66,78 @@ const Label = styled.div`
   margin: 2px;
   border-radius: 5px;
   display: inline-block;
-  background: #eeeeee;
+  background: none;
+  border: 1px solid rgba(0, 0, 0, 0.5);
   cursor: default;
 `;
 const LabelsWrapper = styled.div`
-  width: 92%;
-  padding: 1%;
   height: 20px;
+  width: 100%;
 `;
 
-const Editor = ({ type, color, id, notes, UpdateNote, CloseEditing }) => {
+const MenuWrapper = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  padding: 2%;
+`;
+const Icon = styled.div`
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  margin: auto;
+  transition: all 155ms ease-in-out;
+  cursor: pointer;
+  :hover {
+    opacity: 1;
+  }
+  opacity: 0.75;
+`;
+
+const Editor = ({
+  type,
+  color,
+  id,
+  notes,
+  UpdateNote,
+  CloseEditor,
+  DeleteNote,
+  CopyNote,
+  CancelAddingNewNote,
+  RefreshNotesId,
+  DataChange
+}) => {
   const [data, setData] = useState(notes[id]);
+  const [TitleShadow, setTitleShadow] = useState(null);
   const NoteLabels = notes[id].labels;
+  const editorRef = useRef();
+
+  useEffect(() => {
+    window.scroll({ top: 0, left: 0, behavior: "smooth" });
+    document.body.style.overflow = "hidden";
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, []);
 
   const GetContent = content => {
     setData({ ...data, content: content });
   };
+
+  const ChangeBoxShadow = top => {
+    if (top === 0) {
+      setTitleShadow(null);
+    } else if (top > 0) {
+      setTitleShadow("0 4px 5px -2px rgba(0, 0, 0, 0.5)");
+    }
+  };
+
   const WhichEditor = type => {
     switch (type) {
       case "note":
@@ -87,6 +146,7 @@ const Editor = ({ type, color, id, notes, UpdateNote, CloseEditing }) => {
             GetContent={GetContent}
             content={data.content}
             color={color}
+            BoxShadow={ChangeBoxShadow}
           />
         );
       case "list":
@@ -95,6 +155,7 @@ const Editor = ({ type, color, id, notes, UpdateNote, CloseEditing }) => {
             GetContent={GetContent}
             content={data.content}
             color={color}
+            BoxShadow={ChangeBoxShadow}
           />
         );
       default:
@@ -105,7 +166,26 @@ const Editor = ({ type, color, id, notes, UpdateNote, CloseEditing }) => {
 
   const FinishEditingHandler = () => {
     UpdateNote({ ...data, color: color, labels: NoteLabels }, id);
-    CloseEditing();
+    DataChange();
+    CloseEditor();
+  };
+
+  const DeleteHandler = () => {
+    DeleteNote(id);
+    RefreshNotesId();
+    CloseEditor();
+  };
+
+  const CopyHandler = () => {
+    CopyNote(id);
+    RefreshNotesId();
+    CloseEditor();
+  };
+
+  const CancelHandler = () => {
+    CloseEditor();
+    CancelAddingNewNote();
+    RefreshNotesId();
   };
 
   const Editor = WhichEditor(type);
@@ -119,17 +199,28 @@ const Editor = ({ type, color, id, notes, UpdateNote, CloseEditing }) => {
 
   return (
     <div>
-      <Background />
-      <Container background={color}>
+      <Background onClick={CancelHandler} />
+      <Container background={color} ref={editorRef}>
         <Title
           placeholder="Title"
           onChange={event => setData({ ...data, title: event.target.value })}
           value={data.title}
           background={color}
+          boxShadow={TitleShadow}
         />
         {Editor}
         {Labels}
-        <CloseButton onClick={FinishEditingHandler}>Finish</CloseButton>
+        <MenuWrapper>
+          <EditPanel
+            Delete={DeleteHandler}
+            Copy={CopyHandler}
+            editorRef={editorRef}
+          />
+          <CloseButton onClick={FinishEditingHandler}>Finish</CloseButton>
+        </MenuWrapper>
+        <Icon>
+          <CancelIcon onClick={CancelHandler} title="Cancel" />
+        </Icon>
       </Container>
     </div>
   );
@@ -149,7 +240,15 @@ const mapDispatchToProps = dispatch => {
   return {
     UpdateNote: (data, editId) =>
       dispatch({ type: action.UPDATE_NOTE, data: data, editId: editId }),
-    CloseEditing: () => dispatch({ type: action.CLOSE_EDIT_MODE })
+    CloseEditor: () => dispatch({ type: action.CLOSE_EDIT_MODE }),
+    DeleteNote: id => dispatch({ type: action.DELETE_NOTE, id: id }),
+    CopyNote: id => dispatch({ type: action.COPY_NOTE, id: id }),
+    RefreshNotesId: () => dispatch({ type: action.REFRESH_NOTES_ID }),
+    CancelAddingNewNote: () =>
+      dispatch({ type: action.CANCEL_ADDING_NEW_NOTE }),
+    DataChange: () => {
+      dispatch({ type: action.DATA_CHANGE, change: true });
+    }
   };
 };
 

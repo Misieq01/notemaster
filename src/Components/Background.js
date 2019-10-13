@@ -9,8 +9,8 @@ const Container = styled.div`
   background: rgba(0, 0, 0, 0.5);
 `;
 
-const Background = () => {
-  return <Container></Container>;
+const Background = ({ onClick }) => {
+  return <Container onClick={onClick}></Container>;
 };
 
 export default Background;

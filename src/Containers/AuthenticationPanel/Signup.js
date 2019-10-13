@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import firebase from "../../FireBase/config";
-import db from "../../FireBase/database";
+import firebase from "../../Server/config";
+import db from "../../Server/database";
 import styled from "styled-components";
 
 import Input from "./Input";
@@ -76,7 +76,8 @@ const Signup = props => {
               lastName: data.lName,
               email: data.email,
               notes: [],
-              labels: []
+              labels: [],
+              date: Date.now()
             });
         })
         .catch(error => {

@@ -22,7 +22,7 @@ const DeleteLabelFromNotes = (labels, deletedLabel) => {
 
 const notes = (state = initialState, action) => {
   switch (action.type) {
-    case type.LOAD_NOTES_FROM_SERVER:
+    case type.LOAD_NOTES:
       return { notes: action.data, id: action.data.length };
     ///////////////////////////////////////////////////////////
     case type.ADD_NOTE:
@@ -47,7 +47,7 @@ const notes = (state = initialState, action) => {
       newState = { ...state };
       if (state.isNew === true) {
         newState.notes.pop();
-        return newState;
+        return { ...newState, isNew: false };
       } else {
         return state;
       }

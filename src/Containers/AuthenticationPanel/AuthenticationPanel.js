@@ -51,4 +51,5 @@ const AuthenticationPanlel = () => {
     </Container>
   );
 };
+
 export default AuthenticationPanlel;

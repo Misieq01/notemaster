@@ -1,17 +1,25 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-import { ReactComponent as RenameIcon } from "../../SVGS/pencil.svg";
-import { ReactComponent as DeleteIcon } from "../../SVGS/x.svg";
-import { ReactComponent as AcceptIcon } from "../../SVGS/tick.svg";
+import { ReactComponent as RenameIcon } from "../../../SVGS/pencil.svg";
+import { ReactComponent as DeleteIcon } from "../../../SVGS/x.svg";
+import { ReactComponent as AcceptIcon } from "../../../SVGS/tick.svg";
 
 const Container = styled.div`
-  width: 40%;
-  margin: 5px;
-  font-size: 18px;
-  padding: 5px;
+  width: 90%;
+  height: 30px;
+  padding: 2% 2% 2% 5%;
   text-align: left;
   background: #eeeeee;
+  transition: all 0.2s ease-in-out;
+  border-bottom: 1px solid #eeeeee;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+  :hover {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  }
 `;
 
 const Icon = styled.div`
@@ -19,12 +27,22 @@ const Icon = styled.div`
   height: 20px;
   transition: all 0.2s ease-in-out;
   cursor: pointer;
+  margin: 0 3px;
+  display: inline-block;
   :hover {
     transform: scale(1.2);
   }
-  display: inline-block;
-  margin: 0px 5px;
-  float: right;
+`;
+
+const Input = styled.input`
+  background: #eeeeee;
+  font-size: 19px;
+  width: 100%;
+`;
+const Text = styled.p`
+  margin: 0;
+  padding: 0;
+  font-size: 18px;
 `;
 
 const Label = ({
@@ -51,28 +69,25 @@ const Label = ({
   return (
     <Container>
       {edit ? (
-        <div>
-          <input
+        <>
+          <Input
             value={newValue}
             onChange={event => setNewValue(event.target.value)}
+            autoFocus={true}
           />
-          <Icon>
-            <DeleteIcon title="Cancle" onClick={() => setEdit(false)} />
-          </Icon>
           <Icon>
             <AcceptIcon title="Confirm" onClick={RenameHandler} />
           </Icon>
-        </div>
+        </>
       ) : (
-        <div>
-          {name}
+        <>
+          <Text title="Click to rename" onClick={() => setEdit(true)}>
+            {newValue}
+          </Text>
           <Icon>
             <DeleteIcon title="Delete" onClick={RemoveHandler} />
           </Icon>
-          <Icon>
-            <RenameIcon title="Rename" onClick={() => setEdit(true)} />
-          </Icon>
-        </div>
+        </>
       )}
     </Container>
   );
