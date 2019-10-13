@@ -76,6 +76,7 @@ const ResizableTextArea = props => {
       background={props.background}
       lineHeight={props.lineHeight + "px"}
       onScroll={event => props.onScroll(event.target.scrollTop)}
+      ref={props.textRef}
     />
   );
 };

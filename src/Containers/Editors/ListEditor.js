@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 
 import TextArea from "../../Components/ResizableTextArea";
@@ -62,6 +62,12 @@ const Icon = styled.div`
 `;
 
 const ListEditor = ({ content, color, GetContent, BoxShadow, ...props }) => {
+  useEffect(() => {
+    listRef.current.scroll({ top: 0, left: 0, behavior: "auto" });
+  }, []);
+
+  const listRef = useRef();
+
   const AddNewListElement = (isChild, id) => {
     const newList = [...content];
     if (!isChild) {
@@ -113,7 +119,10 @@ const ListEditor = ({ content, color, GetContent, BoxShadow, ...props }) => {
   };
 
   return (
-    <Container onScroll={event => BoxShadow(event.target.scrollTop)}>
+    <Container
+      onScroll={event => BoxShadow(event.target.scrollTop)}
+      ref={listRef}
+    >
       <List>
         {content.map((parent, index) => {
           return (

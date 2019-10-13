@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 
 import TextArea from "../../Components/ResizableTextArea";
@@ -17,6 +17,12 @@ const Text = styled(TextArea)`
 `;
 
 const NoteEditor = ({ color, content, GetContent, BoxShadow }) => {
+  const textRef = useRef();
+
+  useEffect(() => {
+    textRef.current.scroll({ top: 0, left: 0, behavior: "auto" });
+  }, []);
+
   return (
     <Text
       minRows={1}
@@ -27,6 +33,7 @@ const NoteEditor = ({ color, content, GetContent, BoxShadow }) => {
       value={content}
       background={color}
       onScroll={BoxShadow}
+      textRef={textRef}
     />
   );
 };
