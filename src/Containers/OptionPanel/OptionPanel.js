@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
 
 import auth from "../../Server/auth";
@@ -15,23 +15,37 @@ import { ReactComponent as LogoutIcon } from "../../SVGS/logout.svg";
 import { ReactComponent as LabelsIcon } from "../../SVGS/tags.svg";
 
 const Container = styled.div`
-  height: 100%;
-  padding: 0 1.2rem;
-  background: #eeeeee;
-  text-align: center;
-  border-left: 2px solid rgba(21, 21, 21, 0.14);
   position: fixed;
   right: 0;
-  top: 0;
+  bottom: 0;
   z-index: 100;
+  width: 100vw;
+  background: #eeeeee;
+  text-align: center;
+  border-top: 2px solid rgba(21, 21, 21, 0.14);
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
-  flex-direction: column;
+  flex-flow: row nowrap;
+
+  @media (min-width: 800px) {
+    flex-flow: column wrap;
+    justify-content: space-between;
+    border-top: none;
+    border-left: 2px solid rgba(21, 21, 21, 0.14);
+    width: 45px;
+    height: calc(100vh - 40);
+    padding: 20px 10px;
+    right: none;
+    bottom: none;
+    top: 0;
+    right: 0;
+  }
 `;
 
 const Icon = styled.div`
   width: 30px;
+  padding: 10px
   height: 30px;
   transition: all 155ms ease-in-out;
   cursor: pointer;
@@ -39,20 +53,20 @@ const Icon = styled.div`
     transform: scale(1.1);
   }
   display: block;
-  margin-bottom: 25px;
 `;
 const Wrapper = styled.div`
-  width: 100%;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  margin: 24px 0;
+  flex-flow: row nowrap;
+  @media (min-width: 800px) {
+    flex-flow: column wrap;
+  }
 `;
 
 const OptionPanel = ({ id, AddNote, StartEditing }) => {
   const [addPanel, setAddPanel] = useState(false);
   const [labelManager, setLabelManager] = useState(false);
+
+  const addPanelRef = useRef();
 
   const Logout = () => {
     auth.signOut();
@@ -68,6 +82,7 @@ const OptionPanel = ({ id, AddNote, StartEditing }) => {
       <ChooseAddType
         CreateNote={CreateNoteHandler}
         Close={() => setAddPanel(false)}
+        addPanelRef={addPanelRef.current}
       />
     </Portal>
   ) : null;
@@ -79,25 +94,30 @@ const OptionPanel = ({ id, AddNote, StartEditing }) => {
   ) : null;
 
   const LogoutButton = (
-    <Wrapper>
-      <Icon onClick={Logout}>
-        <LogoutIcon title="Logout" />
-      </Icon>
-    </Wrapper>
+    <Icon onClick={Logout} style={{ alignSelf: "flex-end" }}>
+      <LogoutIcon title="Logout" />
+    </Icon>
   );
 
   return (
     <Container>
-      <Wrapper>
-        <Icon onClick={() => setAddPanel(true)}>
+      <Wrapper id="chuj">
+        <Icon
+          onClick={() => setAddPanel(true)}
+          style={{ alignSelf: "flex-start" }}
+          ref={addPanelRef}
+        >
           <AddIcon title="Add Note" />
         </Icon>
-        {PanelElement}
-        <Icon onClick={() => setLabelManager(true)}>
+        <Icon
+          onClick={() => setLabelManager(true)}
+          style={{ alignSelf: "flex-start" }}
+        >
           <LabelsIcon title="Edit Labels" />
         </Icon>
-        {LabelElement}
       </Wrapper>
+      {PanelElement}
+      {LabelElement}
       {LogoutButton}
     </Container>
   );

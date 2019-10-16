@@ -11,14 +11,18 @@ import { ReactComponent as ColorIcon } from "../../../SVGS/EditPanel/color.svg";
 import { ReactComponent as LabelIcon } from "../../../SVGS/EditPanel/label.svg";
 
 const Container = styled.div`
-  width: 30%;
+  width: 40%;
   height: 100%;
   background: none;
   padding: 10px;
   display: flex;
   flex-flow: row nowrap;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
+  @media (min-width: 640px) {
+    width: 30%;
+    justify-content: space-around;
+  }
 `;
 
 const Icon = styled.div`

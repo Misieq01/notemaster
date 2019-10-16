@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 import { connect } from "react-redux";
@@ -11,27 +11,33 @@ import SearchBar from "./SearchBar";
 
 const MasonryDisplay = styled(Masonry)`
   background: #eeeeee;
-  position: relative;
-  text-align: center;
   margin: 0 auto;
+  text-align: center;
+  position: relative;
 `;
 
 const Container = styled.div`
   display: block;
-  float: left;
-  width: calc(100vw - 45px - 16px);
+  width: 100%;
+  margin-bottom: 60px;
   max-width: 1920px;
   background: #eeeeee;
   text-align: center;
+  float: left;
+  @media (min-width: 800px) {
+    width: calc(100% - 67px);
+    margin-bottom: 0;
+  }
 `;
 
 const NoteBoard = props => {
   const [search, setSearch] = useState({ value: "", type: "Title" });
 
   const MasonryOptions = {
-    columnWidth: 284,
+    columnWidth: 264,
     transitionDuration: 0,
-    fitWidth: true
+    fitWidth: true,
+    gutter: 20
   };
 
   const PlaceListContentIntoOneString = list => {

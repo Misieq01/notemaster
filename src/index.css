@@ -36,6 +36,8 @@ button {
 body::-webkit-scrollbar {
   width: 10px;
   cursor: default;
+  display: none;
+  overflow: visible;
 }
 body::-webkit-scrollbar-track {
   background: #eeeeee;

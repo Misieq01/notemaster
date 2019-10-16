@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import styled from "styled-components";
 
 import { connect } from "react-redux";
@@ -6,8 +6,8 @@ import * as action from "../../../Store/Actions/ActionType";
 
 const Absolute = styled.div`
   position: absolute;
-  bottom: ${props => props.bottom + "px"};
-  left: ${props => props.left + "px"};
+  top: ${props => props.top + "px"};
+  right: ${props => props.right + "px"};
   margin: auto;
   z-index: 1000;
 `;
@@ -42,10 +42,12 @@ const Color = styled.div`
 `;
 
 const ColorPicker = ({ pos, Close, ChangeColor }) => {
-  const position = pos.getBoundingClientRect();
-  const WINDOW_HEIGHT = window.innerHeight;
-  const bottom = Math.round(WINDOW_HEIGHT - position.bottom + 15);
-  const left = Math.round(position.left + 15);
+  const [top, right] = useMemo(() => {
+    const rect = pos.getBoundingClientRect();
+    let y = rect.top + window.scrollY + rect.height - 20;
+    let x = rect.right + window.scrollX - rect.width * 0.1;
+    return [y, x];
+  }, [pos]);
 
   const ChangeColorHandler = color => {
     ChangeColor(color);
@@ -53,7 +55,7 @@ const ColorPicker = ({ pos, Close, ChangeColor }) => {
   };
 
   return (
-    <Absolute bottom={bottom} left={left}>
+    <Absolute top={top} right={right}>
       <Container>
         <Color
           background="#fff269"

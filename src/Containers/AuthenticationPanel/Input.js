@@ -3,8 +3,8 @@ import styled from "styled-components";
 
 const InputBox = styled.input`
   font-size: 22px;
-  margin-left: 5px
-  padding: 10px;
+  margin-left: 8px
+  padding: 10px 0;
   outline: none;
   text-decoration: none;
   border: none;
@@ -22,10 +22,14 @@ const InputBox = styled.input`
 `;
 
 const InputWrapper = styled.div`
-  margin: 20px;
+  margin: 5px;
   display: flex;
+  justify-content: center;
   align-items: center;
   border-bottom: 1px solid #eeeeee;
+  @media (min-width: 480px) {
+    maring: 20px;
+  }
 `;
 
 const IconContainer = styled.div`

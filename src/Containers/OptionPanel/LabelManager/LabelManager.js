@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
 import { connect } from "react-redux";
@@ -9,38 +9,46 @@ import Label from "./Label";
 
 const Absolute = styled.div`
   position: absolute;
-  top: 0;
+  top: ${props => props.top + "px"};
   right: 0;
-  bottom: 500px;
   left: 0;
   margin: auto;
-  z-index: 1000;
-  width: 300px;
-  height: 100px;
+  z-index 120;
+  text-align: center;
+  width: 100vw;
+    @media (min-width: 640px) {
+    top: ${props => props.top + "px"};
+    max-width: 500px;
+  }
 `;
 
 const Container = styled.div`
-  width: 400px;
+  width: 95vw;
   padding: 5px;
   max-height: 70vh;
   box-shadow: 0px 1px 5px #444444;
   border-radius: 10px;
   background: #eeeeee;
   text-align: center;
+  display: inline-block;
+  @media (min-width: 640px) {
+    width: 500px;
+  }
 `;
 
 const SearchWrapper = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  width: 98%;
-  margin: 3% 1%;
+  width: 85%;
+  margin: 10px auto;
   border-radius: 45px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  background: #ffffff;
 `;
 
 const SearchBar = styled.input`
-  width: 70%;
+  width: calc(80% - 28px);
   font-size: 20px;
   padding: 10px 12px 10px 16px;
   border-radius: 45px 0 0 45px;
@@ -55,10 +63,10 @@ const SearchBar = styled.input`
   }
 `;
 const AddButton = styled.button`
-  width: 30%;
+  width: calc(20% - 10%);
   height: 43px;
   font-size: 16px;
-  padding: 10px 12px 10px 16px;
+  padding: 10px 0 10px 10px;
   cursor: pointer;
   background: #ffffff;
   text-align: center;
@@ -93,6 +101,16 @@ const LabelManager = ({
 }) => {
   const [SearchValue, setSearchValue] = useState("");
 
+  useEffect(() => {
+    document.body.style.overflowY = "hidden";
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      document.body.style.overflowY = "auto";
+    };
+  }, []);
+
   const AddLabelHandler = () => {
     let isExist = false;
     for (let i = 0; i < labels.length; i++) {
@@ -117,10 +135,12 @@ const LabelManager = ({
     return label.toLowerCase().includes(SearchValue.toLowerCase());
   });
 
+  console.log(window.scrollY);
+
   return (
     <>
       <Background onClick={CloseHandler} />
-      <Absolute>
+      <Absolute top={window.scrollY + 50}>
         <Container>
           <SearchWrapper>
             <SearchBar
@@ -128,7 +148,7 @@ const LabelManager = ({
               onChange={event => setSearchValue(event.target.value)}
               value={SearchValue}
             />
-            <AddButton onClick={AddLabelHandler}>Add Label</AddButton>
+            <AddButton onClick={AddLabelHandler}>Add</AddButton>
           </SearchWrapper>
           <LabelsContainer>
             {filteredLabels.map((label, index) => {

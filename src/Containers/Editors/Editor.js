@@ -10,13 +10,13 @@ import EditPanel from "./EditPanel/EditPanel";
 import NoteEditor from "./NoteEditor";
 import ListEditor from "./ListEditor";
 import Background from "../../Components/Background";
-
+// 600px
 const Container = styled.div`
-  width: 600px;
+  width: 100vw;
   min-height: 60px;
   position: fixed;
   z-index: 1000;
-  top: 100px;
+  top: 0;
   right: 0;
   left: 0;
   margin: auto;
@@ -24,6 +24,12 @@ const Container = styled.div`
   border-radius: 8px;
   text-align: center;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  @media (min-width: 640px) {
+    width: 600px;
+  }
+  @media (min-height: 800px) {
+    top: 100px;
+  }
 `;
 
 const Title = styled.input`
@@ -116,13 +122,12 @@ const Editor = ({
   const editorRef = useRef();
 
   useEffect(() => {
-    window.scroll({ top: 0, left: 0, behavior: "smooth" });
-    document.body.style.overflow = "hidden";
+    document.body.style.overflowY = "hidden";
   }, []);
 
   useEffect(() => {
     return () => {
-      document.body.style.overflow = "auto";
+      document.body.style.overflowY = "auto";
     };
   }, []);
 

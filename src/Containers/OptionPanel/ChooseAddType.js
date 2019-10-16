@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import styled from "styled-components";
 
 import { ReactComponent as NoteIcon } from "../../SVGS/ChooseAddType/note.svg";
@@ -8,10 +8,10 @@ const Container = styled.div`
   background: #eeeeee;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   border-radius: 10px;
-  position: absolute;
+  position: fixed;
   width: 200px;
-  top: 20px;
-  right: 60px;
+  top: ${props => props.top + "px"};
+  left: ${props => props.left + "px"};
   z-index: 500;
 `;
 const Button = styled.button`
@@ -43,14 +43,30 @@ const Wrapper = styled.div`
   }
 `;
 
-const ChooseAddType = ({ Close, CreateNote }) => {
+const ChooseAddType = ({ addPanelRef, Close, CreateNote }) => {
   const AddHandler = type => {
     Close(false);
     CreateNote(type);
   };
 
+  const [top, left] = useMemo(() => {
+    const rect = addPanelRef.getBoundingClientRect();
+    let y;
+    let x;
+
+    if (window.innerWidth < 800) {
+      y = rect.top + window.scrollY - 100;
+      x = rect.left + window.scrollX;
+    } else {
+      y = rect.top;
+      x = rect.left - 200;
+    }
+
+    return [y, x];
+  }, [addPanelRef]);
+
   return (
-    <Container>
+    <Container top={top} left={left}>
       <Wrapper>
         <Icon>
           <NoteIcon />

@@ -2,19 +2,23 @@ import React from "react";
 import styled from "styled-components";
 
 const Container = styled.div`
-  margin: 20px 20px 40px 20px;
+  margin: 20px;
   display: flex;
   justify-content: center;
   background: #fff;
   align-items: center;
-  width: 740px;
+  width: 90vw;
   border-radius: 45px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  @media (min-width: 800px) {
+    width: 700px;
+    margin: 20px 20px 40px 20px;
+  }
 `;
 
 const SearchInput = styled.input`
   padding: 10px 16px 10px 24px;
-  width: 600px;
+  width: 70%;
   height: 45px;
   font-size: 21px;
   display: inline-block;
@@ -33,8 +37,8 @@ const SearchInput = styled.input`
 
 const TypeBox = styled.div`
   font-size: 20px;
-  padding: 10px 16px 10px 10px;
-  min-width: 100px;
+  padding: 10px 16px 10px 0;
+  min-width: 70px;
   border-radius: 0px 6px 6px 0px;
   color: #f3b500;
   cursor: pointer;
@@ -62,7 +66,7 @@ const SearchBar = props => {
           }
         ></SearchInput>
         <TypeBox onClick={ChangeSearchType}>
-          by {props.search.type.toLowerCase()}
+          {props.search.type.toLowerCase()}
         </TypeBox>
       </Container>
     </div>

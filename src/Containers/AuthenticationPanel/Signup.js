@@ -15,9 +15,7 @@ const Button = styled.button`
   border-radius: 3px;
   outline: none;
   width: 90%;
-  height: 10%;
   padding: 5px;
-  margin-top: 70px;
   font-size: 25px;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
@@ -96,39 +94,37 @@ const Signup = props => {
   };
 
   return (
-    <div style={{ textAlign: "center" }}>
-      {error.check ? (
-        <Text color="#fa6e6e">{error.text}</Text>
-      ) : (
-        <Text>Fill required data to signup</Text>
-      )}
-      <Input
-        placeholder="FirstName"
-        Icon={NameIcon}
-        type="fName"
-        ChangeData={ChangeData}
-      />
-      <Input
-        placeholder="LastName"
-        Icon={NameIcon}
-        type="lName"
-        ChangeData={ChangeData}
-      />
-      <Input
-        placeholder="Email"
-        Icon={EmailIcon}
-        type="email"
-        ChangeData={ChangeData}
-      />
-      <Input
-        placeholder="Paswword"
-        Icon={PasswordIcon}
-        type="password"
-        ChangeData={ChangeData}
-      />
+    <>
+      {error.check ? <Text color="#fa6e6e">{error.text}</Text> : null}
+      <div>
+        <Input
+          placeholder="FirstName"
+          Icon={NameIcon}
+          type="fName"
+          ChangeData={ChangeData}
+        />
+        <Input
+          placeholder="LastName"
+          Icon={NameIcon}
+          type="lName"
+          ChangeData={ChangeData}
+        />
+        <Input
+          placeholder="Email"
+          Icon={EmailIcon}
+          type="email"
+          ChangeData={ChangeData}
+        />
+        <Input
+          placeholder="Paswword"
+          Icon={PasswordIcon}
+          type="password"
+          ChangeData={ChangeData}
+        />{" "}
+      </div>
       <LoginText onClick={props.Login}>Back to login</LoginText>
       <Button onClick={CreateAccount}>SignUp</Button>
-    </div>
+    </>
   );
 };
 export default Signup;

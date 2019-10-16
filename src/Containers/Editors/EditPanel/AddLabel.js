@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import styled from "styled-components";
 
 import { ReactComponent as BoxIcon } from "../../../SVGS/box.svg";
@@ -10,8 +10,8 @@ import { connect } from "react-redux";
 
 const Absolute = styled.div`
   position: absolute;
-  bottom: ${props => props.bottom + "px"};
-  left: ${props => props.left + "px"};
+  top: ${props => props.top + "px"};
+  right: ${props => props.right + "px"};
   margin: auto;
   z-index: 1000;
 `;
@@ -80,11 +80,30 @@ const SearchBar = styled.input`
 const AddLabel = ({ labels, notes, id, color, pos, ChangeLabels }) => {
   const [search, setSearch] = useState("");
   const MAX_LABEL_TEXT_LENGTH = 15;
-  const position = pos.getBoundingClientRect();
-  const WINDOW_HEIGHT = window.innerHeight;
-  console.log(WINDOW_HEIGHT);
-  const bottom = Math.round(WINDOW_HEIGHT - position.bottom + 15);
-  const left = Math.round(position.left + 15);
+
+  const [top, right] = useMemo(() => {
+    const rect = pos.getBoundingClientRect();
+    let widthReduction;
+    let heightAdjust = 55;
+
+    for (let i = 0; i < labels.length; i++) {
+      heightAdjust += 30;
+    }
+
+    if (window.innerWidth < 400) {
+      widthReduction = 0.5;
+    } else {
+      widthReduction = 0.3;
+    }
+
+    if (rect.height < window.innerHeight * 0.8) {
+      heightAdjust = !heightAdjust;
+    }
+
+    let y = rect.top + window.scrollY + rect.height - heightAdjust;
+    let x = rect.right + window.scrollX - rect.width * widthReduction;
+    return [y, x];
+  }, [pos, labels]);
 
   const TruncateText = (t, len) => {
     if (t.length > len) t = t.slice(0, len) + "...";
@@ -142,7 +161,7 @@ const AddLabel = ({ labels, notes, id, color, pos, ChangeLabels }) => {
   });
 
   return (
-    <Absolute bottom={bottom} left={left}>
+    <Absolute top={top} right={right}>
       <Container>
         <SearchBar
           onChange={event => setSearch(event.target.value)}
